@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { Link } from 'react-router-dom';
 import { Blocks, Building2, ChevronRight, CircleDollarSign, createIcons, Gem, Landmark, Orbit, ShieldCheck, WalletCards } from 'lucide';
@@ -97,18 +97,9 @@ const productPanelVariants = {
   exit: (direction: 1 | -1) => ({ opacity: 0, y: direction * -44 }),
 };
 
-const sellingPointVariants = {
-  enter: (direction: 1 | -1) => ({ opacity: 0, y: direction * 34 }),
-  center: { opacity: 1, y: 0 },
-  exit: (direction: 1 | -1) => ({ opacity: 0, y: direction * -28 }),
-};
-
 export function FinancialProductsPage() {
   const [active, setActive] = useState(products[0]);
-  const [sellingPointIndex, setSellingPointIndex] = useState(0);
   const [transitionDirection, setTransitionDirection] = useState<1 | -1>(1);
-  const productBrowserRef = useRef<HTMLDivElement>(null);
-  const wheelLockedRef = useRef(false);
   const reduceMotion = useReducedMotion();
 
   useEffect(() => {
@@ -121,7 +112,6 @@ export function FinancialProductsPage() {
       const match = products.find((product) => product.id === id);
       if (match) {
         setActive(match);
-        setSellingPointIndex(0);
         window.requestAnimationFrame(() => document.getElementById('product-shelf')?.scrollIntoView({ block: 'start' }));
       }
     };
@@ -137,35 +127,8 @@ export function FinancialProductsPage() {
     const nextIndex = event.key === 'Home' ? 0 : event.key === 'End' ? products.length - 1 : (index + direction + products.length) % products.length;
     setTransitionDirection(direction);
     setActive(products[nextIndex]);
-    setSellingPointIndex(0);
     window.requestAnimationFrame(() => document.getElementById(`product-tab-${products[nextIndex].id}`)?.focus());
   }
-
-  useEffect(() => {
-    const browser = productBrowserRef.current;
-    if (!browser) return;
-    const handleWheel = (event: WheelEvent) => {
-      if (window.matchMedia('(max-width: 800px)').matches) return;
-      event.preventDefault();
-      if (Math.abs(event.deltaY) < 12 || wheelLockedRef.current) return;
-      const direction = event.deltaY > 0 ? 1 : -1;
-      const activeIndex = products.findIndex((product) => product.id === active.id);
-      let nextProductIndex = activeIndex;
-      let nextPointIndex = sellingPointIndex + direction;
-      if (nextPointIndex > 2) { nextProductIndex = Math.min(products.length - 1, activeIndex + 1); nextPointIndex = nextProductIndex === activeIndex ? 2 : 0; }
-      if (nextPointIndex < 0) { nextProductIndex = Math.max(0, activeIndex - 1); nextPointIndex = nextProductIndex === activeIndex ? 0 : 2; }
-      wheelLockedRef.current = true;
-      setTransitionDirection(direction);
-      if (nextProductIndex !== activeIndex) {
-        setActive(products[nextProductIndex]);
-        window.history.replaceState(null, '', `#${products[nextProductIndex].id}`);
-      }
-      setSellingPointIndex(nextPointIndex);
-      window.setTimeout(() => { wheelLockedRef.current = false; }, 420);
-    };
-    browser.addEventListener('wheel', handleWheel, { passive: false });
-    return () => browser.removeEventListener('wheel', handleWheel);
-  }, [active, sellingPointIndex]);
 
   return (
     <main className="product-page" id="main">
@@ -174,14 +137,9 @@ export function FinancialProductsPage() {
         <div className="product-hero-scrim" />
         <div className="product-hero-content">
           <div className="product-hero-copy">
-            <h1>连接多元财富产品，<br />构建完整财富货架</h1>
+            <h1>连接多元财富产品</h1>
             <p>覆盖传统财富与数字资产产品，为金融机构、财富管理机构和企业客户提供多元化的产品供给。</p>
-            <div className="product-hero-actions">
-              <a className="button button-accent" href="#product-shelf">探索产品类别 <i data-lucide="arrow-right" /></a>
-              <Link className="product-hero-link" to="/contact">预约咨询 <i data-lucide="arrow-right" /></Link>
-            </div>
           </div>
-          <div className="product-proof"><strong>8000+</strong><span>财富管理产品</span><small>具体范围与可售规则以上线时核验信息为准</small></div>
         </div>
       </section>
 
@@ -190,35 +148,24 @@ export function FinancialProductsPage() {
           <h2>覆盖多元投资需求的财富产品货架</h2>
           <p>选择产品类别，查看产品定位、覆盖范围与能力边界。从传统财富到数字资产，产品、访问交易能力和平台技术保持清晰分层。</p>
         </div>
-        <div className="product-browser" ref={productBrowserRef}>
+        <div className="product-browser">
           <div className="product-tabs" role="tablist" aria-label="金融产品类别">
             {products.map((product, index) => {
-              return <button id={`product-tab-${product.id}`} key={product.id} role="tab" tabIndex={active.id === product.id ? 0 : -1} aria-selected={active.id === product.id} aria-controls={`panel-${product.id}`} onClick={() => { const currentIndex = products.findIndex(item => item.id === active.id); setTransitionDirection(index >= currentIndex ? 1 : -1); setActive(product); setSellingPointIndex(0); }} onKeyDown={(event) => handleTabKeyDown(event, index)}><i data-lucide={product.icon} aria-hidden="true" /><b>{product.name}</b><i data-lucide="chevron-right" aria-hidden="true" /></button>;
+              return <button id={`product-tab-${product.id}`} key={product.id} role="tab" tabIndex={active.id === product.id ? 0 : -1} aria-selected={active.id === product.id} aria-controls={`panel-${product.id}`} onClick={() => { const currentIndex = products.findIndex(item => item.id === active.id); setTransitionDirection(index >= currentIndex ? 1 : -1); setActive(product); }} onKeyDown={(event) => handleTabKeyDown(event, index)}><i data-lucide={product.icon} aria-hidden="true" /><b>{product.name}</b><i data-lucide="chevron-right" aria-hidden="true" /></button>;
             })}
           </div>
           <AnimatePresence mode="wait" initial={false} custom={transitionDirection}>
             <motion.article className="product-detail" key={active.id} id={`panel-${active.id}`} role="tabpanel" aria-labelledby={`product-tab-${active.id}`} style={{ '--product-background': productBackgrounds[active.id] } as React.CSSProperties & { '--product-background': string }} custom={transitionDirection} variants={productPanelVariants} initial={reduceMotion ? false : 'enter'} animate="center" exit={reduceMotion ? undefined : 'exit'} transition={{ duration: reduceMotion ? 0 : .36, ease: [.22, 1, .36, 1] }}>
               <div className="product-detail-copy">
-                <span className="product-category-label">{active.name}</span>
                 <div className="product-selling-stage">
-                  <AnimatePresence mode="wait" initial={false} custom={transitionDirection}>
-                    <motion.div className="product-selling-point" key={sellingPointIndex} custom={transitionDirection} variants={sellingPointVariants} initial={reduceMotion ? false : 'enter'} animate="center" exit={reduceMotion ? undefined : 'exit'} transition={{ duration: reduceMotion ? 0 : .28, ease: [.22, 1, .36, 1] }}>
-                      <div className="product-selling-text"><strong>{productSellingPoints[active.id][sellingPointIndex].title}</strong><p>{productSellingPoints[active.id][sellingPointIndex].copy}</p></div>
-                      <div className="product-detail-image" aria-hidden="true"><div className="product-detail-image-frame" style={{ backgroundImage: productFeatureImages[active.id][sellingPointIndex] }} /></div>
-                    </motion.div>
-                  </AnimatePresence>
+                  {productSellingPoints[active.id].map((point, index) => <section className="product-selling-point" key={point.title}>
+                    <div className="product-selling-text"><span className="product-category-label">{active.name}</span><strong>{point.title}</strong><p>{point.copy}</p>{active.id === 'rwa' && index === 1 && <Link className="product-rwa-link" to="/products/finrwa">了解 FinRWA →</Link>}</div>
+                    <div className="product-detail-image" aria-hidden="true"><div className="product-detail-image-frame" style={{ backgroundImage: productFeatureImages[active.id][index] }} /></div>
+                  </section>)}
                 </div>
               </div>
-              <div className="product-selling-controls" aria-label={`${active.name}卖点轮播`}>{productSellingPoints[active.id].map((point,index)=><button type="button" key={point.title} className={index === sellingPointIndex ? 'active' : ''} onClick={() => { setTransitionDirection(index >= sellingPointIndex ? 1 : -1); setSellingPointIndex(index); }} aria-label={`查看${point.title}`} aria-current={index === sellingPointIndex ? 'step' : undefined}/>)}</div>
             </motion.article>
           </AnimatePresence>
-        </div>
-      </section>
-
-      <section className="product-lifecycle">
-        <div className="product-lifecycle-inner">
-          <div className="product-lifecycle-copy"><h2>不止连接产品，更连接完整财富业务</h2><p>产品不是简单进入产品库，而是继续进入交易、资产和运营流程。</p></div>
-          <ol>{lifecycle.map(([item, icon], index) => <li key={item}><span>0{index + 1}</span><i data-lucide={icon} aria-hidden="true" /><strong>{item}</strong></li>)}</ol>
         </div>
       </section>
 
@@ -240,6 +187,10 @@ export function FinancialProductsPage() {
           ['04', '跨境财富能力', '覆盖全球基金、多币种产品及跨境财富场景。'],
           ['05', '交易与技术支撑', '让产品继续进入账户、交易、清结算、资产与报告流程。'],
         ].map(([number, title, copy]) => <article key={number}><span>{number}</span><h3>{title}</h3><p>{copy}</p></article>)}</div>
+        <div className="why-products-lifecycle">
+          <div><h3>不止连接产品，更连接完整财富业务</h3><p>产品不是简单进入产品库，而是继续进入交易、资产和运营流程。</p></div>
+          <ol>{lifecycle.map(([item, icon], index) => <li key={item}><span>0{index + 1}</span><i data-lucide={icon} aria-hidden="true" /><strong>{item}</strong></li>)}</ol>
+        </div>
       </section>
 
       <section className="product-cta">

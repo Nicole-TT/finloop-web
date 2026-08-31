@@ -25,9 +25,9 @@ export function PlatformSolutionPage() {
       <div className="platform-shell platform-hero-grid">
         <div className="platform-hero-copy">
           <p className="platform-label">PAYMENT &amp; DIGITAL PLATFORMS</p>
-          <h1>让财富服务成为您现有平台的一部分</h1>
+          <h1>支付与数字平台解决方案</h1>
           <p>无需重新建设完整财富系统，通过产品、账户、投资和运营能力，将财富服务嵌入您已经拥有的数字用户场景。</p>
-          <div className="platform-actions"><a className="button button-accent" href="#journey">探索 Embedded Wealth →</a><Link to="/contact">讨论平台合作 →</Link></div>
+          <div className="platform-actions"><Link className="button button-accent" to="/contact">预约咨询 →</Link></div>
         </div>
         <div className="platform-hero-visual" aria-label="Embedded Wealth 嵌入现有数字平台示意">
           <div className="platform-device"><small>YOUR EXPERIENCE</small><strong>您的 App</strong><div><i /><i /><i /></div></div>

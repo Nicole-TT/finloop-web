@@ -1,69 +1,25 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-const serviceSteps = [
-  ['01', '业务与需求梳理', '结合机构定位、服务对象与现有系统，明确业务目标和实施边界。'],
-  ['02', '方案与能力匹配', '从财富产品、科技平台、AI 与数字资产能力中组合适合的实施方案。'],
-  ['03', '接入与上线协同', '围绕系统连接、流程配置、数据准备和上线安排推进项目落地。'],
-  ['04', '运营与持续优化', '根据实际运营反馈，持续协同产品使用、业务流程与能力扩展。'],
-];
+const principles = [['Open','开放连接','通过标准 API、协议和身份体系连接机构现有系统。'],['Flexible','灵活部署','根据 IT、安全与治理要求选择 SaaS 或私有化部署。'],['Reliable','稳定运行','以账户流水、幂等、对账和故障隔离支持核心业务。'],['Scalable','随业务扩展','通过单元化与分布式架构应对客户和交易规模增长。']];
+const coreDomains = [['Account','账户与资产','父子账户层级、临时子账户、资产隔离与流水追溯。'],['Product','产品与投放','模板化产品构建、多来源接入、上下架与投放策略。'],['Trading','交易与资金','交易单元、多层订单、多 TA、多上手及资金处理。'],['Operations','清结算与数据','资产状态、清结算、对账、报告与持续运营。']];
+const delivery = [['01','Assess','技术评估','确认业务范围、系统环境、部署、安全、数据与交易需求。'],['02','Design','架构与接口设计','明确 API、协议、SSO，以及账户、产品与交易映射。'],['03','Integrate','接入与配置','连接机构系统与 Finloop，完成环境及业务配置。'],['04','Validate','联调与验证','验证业务流程、交易、权限、数据和异常场景。'],['05','Go Live','上线与交付','完成 SaaS 接入，或私有环境部署、上线及交付。']];
 
-const supportAreas = [
-  ['01', '财富产品与业务服务', '连接现金管理、公募基金、私募基金、债券、结构性产品与保险等财富产品能力。', '/products', '查看金融产品'],
-  ['02', '科技平台与系统连接', '围绕 FinOne、FinEAM、星企通、Web Portal、FinRWA 与 FinMix 提供平台选型和接入协同。', '/products', '查看科技平台'],
-  ['03', 'AI 产品与工作流', '通过星路通、FAI、星智通及 Agent & Skills，将 AI 能力连接到具体岗位和业务流程。', '/ai', '查看 Finloop AI'],
-];
+function Head({label,title,copy,light=false}:{label:string;title:string;copy?:string;light?:boolean}){return <div className={`tech-head${light?' light':''}`}><small>{label}</small><div><h2>{title}</h2>{copy&&<p>{copy}</p>}</div></div>}
 
-export function SupportPage() {
-  useEffect(() => {
-    document.title = '技术与支持 | Finloop 星路科技';
-    document.querySelector('meta[name="description"]')?.setAttribute('content', '了解 Finloop 从业务咨询、方案设计、系统接入到上线协同与持续运营的服务支持。');
-  }, []);
-
-  return (
-    <main className="support-page" id="main">
-      <section className="support-hero" data-header-theme="inverse">
-        <div className="support-shell support-hero-grid">
-          <div className="support-hero-copy">
-            <h1>让复杂财富业务，<br />获得持续可用的服务支持</h1>
-            <p>从业务咨询、方案设计与系统接入，到上线协同和持续运营，Finloop 围绕机构实际业务场景提供服务与支持。</p>
-            <div className="support-actions"><Link className="button button-accent" to="/contact">联系服务团队 <span aria-hidden="true">→</span></Link><a href="#service-model">了解服务方式 <span aria-hidden="true">↓</span></a></div>
-          </div>
-          <div className="support-hero-map" aria-label="Finloop 服务支持流程">
-            <div className="support-map-core"><small>FINLOOP SUPPORT</small><strong>业务持续落地</strong></div>
-            {serviceSteps.map(([index, title]) => <div className="support-map-node" key={index}><span>{index}</span><strong>{title}</strong></div>)}
-          </div>
-        </div>
-      </section>
-
-      <section className="support-section support-model" id="service-model">
-        <div className="support-shell">
-          <div className="support-section-head"><h2>从需求到持续运营，<br />服务贯穿业务落地过程</h2><p>根据机构的业务目标、系统基础与推进节奏协同工作，让产品能力与实际运营流程保持连接。</p></div>
-          <ol className="support-journey">
-            {serviceSteps.map(([index, title, description]) => <li key={index}><span>{index}</span><div><h3>{title}</h3><p>{description}</p></div></li>)}
-          </ol>
-        </div>
-      </section>
-
-      <section className="support-section support-scope">
-        <div className="support-shell">
-          <div className="support-section-head support-section-head-wide"><h2>围绕产品、平台与 AI，<br />提供对应支持入口</h2></div>
-          <div className="support-directory">
-            {supportAreas.map(([index, title, description, link, linkText]) => <Link to={link} key={index}><span>{index}</span><h3>{title}</h3><p>{description}</p><strong>{linkText} <i aria-hidden="true">→</i></strong></Link>)}
-          </div>
-        </div>
-      </section>
-
-      <section className="support-section support-connect">
-        <div className="support-shell support-connect-grid">
-          <div className="support-connect-copy"><h2>根据机构环境，<br />协同完成连接与部署</h2><p>支持云端、本地与混合环境的灵活部署，并围绕系统接口、业务流程和运营安排推进实施。</p><div className="support-connect-list"><span>系统与 API 连接</span><span>业务流程配置</span><span>数据与权限准备</span><span>上线与运营协同</span></div></div>
-          <div className="support-deployment" aria-label="部署与连接方式示意图"><div><small>INSTITUTION</small><strong>机构业务环境</strong></div><i aria-hidden="true">↔</i><div className="primary"><small>FINLOOP</small><strong>产品与技术能力</strong></div><div className="support-deployment-options"><span>云端</span><span>本地</span><span>混合环境</span></div></div>
-        </div>
-      </section>
-
-      <section className="support-cta">
-        <div className="support-shell"><div><h2>与服务团队沟通您的业务需求</h2><p>告诉我们您的机构类型、业务场景与当前阶段，团队将与您共同梳理适合的产品和实施路径。</p></div><div className="support-cta-actions"><Link className="button button-accent" to="/contact">预约咨询 <span aria-hidden="true">→</span></Link><a href="mailto:CS@finloop.hk">CS@finloop.hk</a><a href="tel:+85230088996">(852) 3008 8996</a></div></div>
-      </section>
-    </main>
-  );
+export function SupportPage(){
+  useEffect(()=>{document.title='技术与支持 | Finloop 星路科技';document.querySelector('meta[name="description"]')?.setAttribute('content','了解 Finloop 如何通过开放集成、灵活部署、财富核心、交易基础设施与分布式架构，支撑机构财富业务运行。')},[]);
+  return <main className="tech-page" id="main">
+    <section className="tech-hero" data-header-theme="inverse"><div className="tech-shell tech-hero-grid"><div className="tech-hero-copy"><small>TECHNOLOGY &amp; SUPPORT</small><h1>从系统接入，<br/>到规模化运行</h1><p>通过开放 API、灵活部署、财富核心与交易基础设施，将 Finloop 能力连接到机构现有技术体系，并以分布式架构、权限治理和持续交付支撑复杂财富业务长期运行。</p></div><div className="tech-hero-system" aria-label="机构系统与 Finloop 基础设施连接示意"><div className="tech-existing"><small>EXISTING SYSTEMS</small>{['Core','CRM','App','IAM'].map(x=><span key={x}>{x}</span>)}</div><div className="tech-integration"><i/><strong>Integration Layer</strong><small>API · SSO · FIX</small><i/></div><div className="tech-finloop"><small>FINLOOP INFRASTRUCTURE</small><strong>Wealth Core</strong><strong>Trading &amp; Operations</strong></div><footer><span>SaaS</span><span>Private</span><span>DSU</span></footer></div></div></section>
+    <section className="tech-section tech-principles" id="principles"><div className="tech-shell"><Head label="BUILT FOR FINANCIAL INSTITUTIONS" title="企业级财富技术，需要的不只是功能" copy="星路基于这四项原则构架技术框架，并在业务增长后继续稳定运行发展。"/><div className="tech-principle-grid">{principles.map(([en,title,copy])=><article key={en}><div className="tech-principle-visual" aria-hidden="true"><i/><i/><i/></div><h3>{title}</h3><p>{copy}</p></article>)}</div></div></section>
+    <section className="tech-section tech-integration-section" id="integration"><div className="tech-shell"><Head label="OPEN INTEGRATION" title="接入现有系统，而不是从头重建" copy="通过标准化接口与系统连接能力，在保留机构现有客户、业务及核心系统的基础上引入财富产品与交易能力。"/><div className="tech-connect-map"><div><small>INSTITUTION SYSTEMS</small>{['Core System','CRM / App','Identity / IAM'].map(x=><span key={x}>{x}</span>)}</div><div className="tech-connect-lines">{[['OpenAPI','账户 · 产品 · 交易'],['Authentication','鉴权 · 加密 · 访问控制'],['Enterprise SSO','机构统一身份体系'],['FIX / Connectors','交易与报价连接']].map(([a,b])=><article key={a}><strong>{a}</strong><span>{b}</span></article>)}</div><div className="primary"><small>FINLOOP</small><strong>Wealth &amp; Trading Infrastructure</strong><p>标准连接能力减少不同业务的重复接口建设。</p></div></div></div></section>
+    <section className="tech-section tech-deployment" id="deployment"><div className="tech-shell"><Head label="FLEXIBLE DEPLOYMENT" title="根据机构要求，选择适合自己的部署方式" copy="同一套财富能力，适配不同机构技术环境。部署边界根据数据、安全、治理与现有 IT 架构共同确认。"/><div className="tech-deploy-compare"><article><small>ENTERPRISE MULTI-TENANT</small><h3>SaaS</h3><p>通过标准 OpenAPI 快速接入，共享平台功能升级，同时保持不同租户数据隔离。</p><ul><li>降低基础设施投入</li><li>快速完成系统连接</li><li>持续获得平台升级</li></ul></article><article><small>EMBEDDED CAPABILITIES</small><h3>嵌入式部署</h3><p>通过 OpenAPI 将账户、产品与交易能力嵌入机构现有 App、Portal 和业务流程。</p><ul><li>保留现有业务入口</li><li>按需组合平台能力</li><li>统一身份与体验衔接</li></ul></article><article><small>INDEPENDENT ENVIRONMENT</small><h3>私有化部署</h3><p>适配机构私有云或独立资源环境，从服务器准备、系统部署到上线交付提供协同。</p><ul><li>独立技术环境</li><li>适配不同云基础设施</li><li>部署与交付协同</li></ul></article></div></div></section>
+    <section className="tech-section tech-core" id="infrastructure"><div className="tech-shell"><Head label="FINANCIAL CORE INFRASTRUCTURE" title="为真实财富业务构建的底层系统能力" copy="账户、产品和交易围绕财富业务中的资产隔离、产品运营、交易执行与清结算关系设计。" light/><div className="tech-core-grid">{coreDomains.map(([en,title,copy],i)=><article key={en}><span>0{i+1}</span><small>{en}</small><h3>{title}</h3><p>{copy}</p></article>)}</div><div className="tech-account-proof"><div><small>ACCOUNT MODEL</small><h3>为财富业务重新定义账户</h3><p>通过 User → Account → Holdings 三层关系连接客户、账户和持仓，并以父子账户、临时子账户及实时流水支持不同资产用途、交易周期和历史追溯。</p></div><div className="tech-account-tree"><strong>User</strong><i/><section><span>Account A<small>目标 / 偏好</small></span><span>Account B<small>资产隔离</small></span><span>Temporary<small>单笔交易</small></span></section><i/><footer>Holdings · Ledger · Settlement</footer></div></div></div></section>
+    <section className="tech-section tech-trading" id="trading"><div className="tech-shell"><Head label="TRADING & OPERATIONS" title="一套交易底座，适配不同产品与机构连接" copy="交易单元可以适配基金、票据和债券等业务，并共享账户、用户、结单与资金等公共能力。"/><div className="tech-order-flow">{[['Client Order','客户订单'],['Aggregation','集合订单'],['Execution Plan','执行计划'],['Session / Batch','场次与批次'],['Counterparty / TA','上手与 TA'],['Settlement','清结算']].map(([en,cn],i)=><article key={en}><span>0{i+1}</span><small>{en}</small><strong>{cn}</strong></article>)}</div><div className="tech-trading-proof"><div><small>MODULAR EXECUTION</small><h3>复杂交易，不等于固定流程</h3><p>通过执行计划、多 Session 与多批次配置，适配不同地区交易时间、产品规则及订单资金节点。</p></div><div>{[['Multi-TA','多 TA 接入与资产隔离'],['Multi-counterparty','多上手、切换与转仓'],['Decoupled RFQ','邮件 / FIX 报价连接'],['Money Movement','入金、出金与资金处理']].map(([a,b])=><span key={a}><small>{a}</small>{b}</span>)}</div></div><p className="tech-powered">Powered by <strong>FinMix</strong> · Finloop 底层 ToB 运营与交易基础设施</p></div></section>
+    <section className="tech-section tech-scale" id="scale"><div className="tech-shell"><Head label="BUILT TO SCALE" title="让系统容量随业务规模一起增长" copy="采用单元化与分布式设计，帮助系统应对业务规模增长、高可用和故障隔离要求。" light/><div className="tech-dsu"><div className="tech-dsu-copy"><small>DIGITAL STANDARD UNIT</small><h3>从一个单元，扩展到多个业务单元</h3><p>客户或业务请求被路由到相应单元，并尽可能在单元内部完成处理。业务增长时，可通过增加单元扩展容量。</p><div>{['横向扩展','故障隔离','灰度发布','灵活资源配置'].map(x=><span key={x}>{x}</span>)}</div></div><div className="tech-dsu-map"><header>Routing Layer</header><section>{['DSU 01','DSU 02','DSU 03','DSU N'].map((x,i)=><article className={i===2?'isolated':''} key={x}><strong>{x}</strong><small>{i===2?'Isolated':'Active'}</small></article>)}</section><footer>Data Partition · Local Processing · Load Balance · Recovery</footer></div></div></div></section>
+    <section className="tech-section tech-control"><div className="tech-shell"><Head label="ENTERPRISE CONTROL" title="保留机构自己的数据、身份与管理边界"/><div className="tech-control-grid">{[['Tenant Isolation','租户数据隔离','多租户共享平台能力，同时保持不同租户数据独立。'],['Granular Access','细粒度权限','按组织和岗位配置角色，并将控制细化到业务及接口层级。'],['Enterprise Identity','机构身份体系','通过 SSO 连接机构已有身份体系，减少独立账户维护。'],['Branded Experience','品牌化体验','根据机构品牌与工作环境配置界面风格及 Logo。']].map(([en,title,copy])=><article key={en}><small>{en}</small><h3>{title}</h3><p>{copy}</p></article>)}</div></div></section>
+    <section className="tech-section tech-delivery" id="delivery"><div className="tech-shell"><Head label="FROM INTEGRATION TO PRODUCTION" title="从技术评估，到正式运行" copy="交付路径根据 SaaS 或私有化模式调整，覆盖技术评估、架构设计、接入配置、联调验证与上线交付。"/><ol>{delivery.map(([n,en,title,copy])=><li key={n}><span>{n}</span><small>{en}</small><h3>{title}</h3><p>{copy}</p></li>)}</ol></div></section>
+    <section className="tech-section tech-support"><div className="tech-shell"><Head label="CONTINUOUS SUPPORT" title="上线不是技术合作的终点" copy="围绕部署、集成、平台升级与系统运行持续协同。具体服务时间、事件响应、维护责任及可用性指标以双方确认的项目服务方案为准。" light/><div>{[['Deployment Support','服务器与部署协助'],['Integration Support','接口、鉴权与系统对接'],['Platform Upgrade','SaaS 平台功能升级'],['System Operations','监测、隔离与恢复机制']].map(([en,cn],i)=><article key={en}><span>0{i+1}</span><small>{en}</small><strong>{cn}</strong></article>)}</div></div></section>
+    <section className="tech-cta"><div className="tech-shell"><h2>讨论您的机构技术架构</h2><p>告诉我们现有系统、业务范围与部署要求，团队将与您共同梳理连接、部署和上线路径。</p><Link className="button button-light" to="/contact">预约技术沟通 <span>→</span></Link></div></section>
+  </main>
 }

@@ -125,12 +125,6 @@ export function ContactPage() {
         </div></div>
       </section>
 
-      <section className="contact-offices contact-section"><div className="contact-shell"><div className="contact-section-head light"><span>03 / OUR OFFICES</span><h2>扎根香港，服务亚太机构客户</h2></div><div className="contact-office-grid">
-        <article><div><span>HKG</span><small>HONG KONG OFFICE</small></div><h3>Hong Kong</h3><p>Room 2101–2105, 21/F, Champion Tower<br />3 Garden Road, Central, Hong Kong</p><a href="https://www.google.com/maps/search/?api=1&query=Champion+Tower+3+Garden+Road+Hong+Kong" target="_blank" rel="noreferrer">查看地图 <b>↗</b></a></article>
-        <article><div><span>SHA</span><small>SHANGHAI OFFICE</small></div><h3>Shanghai</h3><p>上海市黄浦区中山东二路 600 号<br />外滩金融中心 S1 栋 15 楼</p><a href="https://www.google.com/maps/search/?api=1&query=%E4%B8%8A%E6%B5%B7%E5%A4%96%E6%BB%A9%E9%87%91%E8%9E%8D%E4%B8%AD%E5%BF%83S1%E6%A0%8B" target="_blank" rel="noreferrer">查看地图 <b>↗</b></a></article>
-      </div></div></section>
-
-      <section className="contact-support"><div className="contact-shell"><span>PRIVACY & SUPPORT</span><p>如果表单暂时无法使用，您仍可通过 <a href="mailto:CS@finloop.hk">CS@finloop.hk</a> 或 <a href="tel:+85230088996">(852) 3008 8996</a> 与我们联系。</p><a href="#footer">了解隐私与法律信息 <b>→</b></a></div></section>
     </main>
   );
 }

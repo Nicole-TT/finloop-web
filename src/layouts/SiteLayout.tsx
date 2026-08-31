@@ -19,7 +19,7 @@ export function SiteLayout({ headerMarkup, mobileDrawerMarkup, footerMarkup, ini
     document.documentElement.classList.add('route-changing');
     window.scrollTo({ top: 0, behavior: 'auto' });
     const routeSection = pathname.split('/').filter(Boolean)[0] || 'home';
-    const activeSection = routeSection === 'contact' ? 'about' : routeSection;
+    const activeSection = ['contact', 'careers'].includes(routeSection) ? 'about' : routeSection;
     const navItems = document.querySelectorAll<HTMLElement>('.desktop-nav > .nav-link');
 
     navItems.forEach((item) => {
@@ -51,13 +51,15 @@ export function SiteLayout({ headerMarkup, mobileDrawerMarkup, footerMarkup, ini
 
     function syncHeaderTheme() {
       const inverseRegion = document.querySelector<HTMLElement>('[data-header-theme="inverse"]');
+      const scrollProgress = Math.min(1, Math.max(0, window.scrollY / 100));
       const isOverInverseRegion = Boolean(
         inverseRegion
         && inverseRegion.getBoundingClientRect().bottom > header!.offsetHeight,
       );
 
-      header!.classList.toggle('inverted', isOverInverseRegion);
-      header!.classList.toggle('scrolled', !isOverInverseRegion && window.scrollY > 0);
+      header!.style.setProperty('--header-scroll-progress', String(scrollProgress));
+      header!.classList.toggle('inverted', isOverInverseRegion && scrollProgress < .5);
+      header!.classList.toggle('scrolled', scrollProgress >= .5);
     }
 
     const frame = window.requestAnimationFrame(syncHeaderTheme);

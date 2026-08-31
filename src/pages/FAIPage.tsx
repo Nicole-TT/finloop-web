@@ -1,0 +1,69 @@
+import { Link } from 'react-router-dom';
+
+const problems = [
+  ['01', 'AI 能力分散', '不同团队分别使用不同模型、Agent 和工具，能力难以统一沉淀。'],
+  ['02', '企业知识难复用', '资料、数据和经验分散在个人与不同业务系统中，AI 难获得稳定上下文。'],
+  ['03', 'AI 难进入真实流程', '大量 AI 使用仍停留在问答和内容生成，无法持续参与业务任务。'],
+  ['04', 'AI 缺乏组织治理', '企业难统一管理成员可使用的 Agent、Skill 和数据，也难掌握实际使用情况。'],
+];
+
+const workflow = [
+  ['Knowledge & Data', '企业业务上下文'], ['Skills', '可复用能力'], ['AI Employees', '岗位与目标'],
+  ['Workflow', '组合人与 AI 步骤'], ['Tasks', '持续业务任务'], ['Business Action', '分析·报告·业务处理'],
+];
+
+const capabilities = [
+  ['01', 'AI Employees', '构建面向不同业务岗位的 AI 员工', '围绕角色、任务与业务目标配置 AI 能力，连接 Skills、企业知识与工作流。'],
+  ['02', 'Skills', '将企业能力沉淀为可复用 Skills', '将资料检索、文档分析、数据处理、内容与报告生成等能力标准化。'],
+  ['03', 'Workflow & Tasks', '让 AI 真正进入业务流程', '把 AI 员工、Skills、企业数据和人工步骤组织为可运行、可追踪的任务。'],
+  ['04', 'Data & Knowledge', '让 AI 理解企业自己的知识与数据', '统一连接企业资料、知识库、业务数据、外部资讯与文件。'],
+  ['05', 'Governance', '在统一平台管理企业 AI 能力', '管理 AI 员工、Skills、Workflow、知识数据、成员权限、使用情况与操作记录。'],
+];
+
+const capabilityVisuals = [
+  ['Role', 'AI Employee', 'Goal', 'Skills', 'Knowledge'],
+  ['Input', 'Reusable Skill', 'Output', 'Search', 'Analyze'],
+  ['Trigger', 'Workflow', 'Result', 'AI Task', 'Human Review'],
+  ['Files', 'Knowledge', 'Context', 'Business Data', 'External Info'],
+  ['Members', 'Governance', 'Audit', 'Permission', 'Usage'],
+];
+
+function CapabilityVisual({ index }: { index: number }) {
+  const [left, core, right, bottomLeft, bottomRight] = capabilityVisuals[index];
+  return <div className={`fai-cap-visual fai-cap-visual-${index + 1}`} aria-hidden="true">
+    <div className="fai-cap-visual-top"><span>{left}</span><i/><span>{right}</span></div>
+    <strong><small>0{index + 1}</small>{core}</strong>
+    <div className="fai-cap-visual-bottom"><span>{bottomLeft}</span><span>{bottomRight}</span></div>
+  </div>;
+}
+
+export function FAIPage() {
+  return <main className="fai-page" id="main">
+    <section className="fai-hero" data-header-theme="inverse"><div className="fai-shell fai-hero-grid">
+      <div className="fai-hero-copy"><p className="fai-kicker">FAI · ENTERPRISE AI PLATFORM</p><h1>让 AI 成为企业真正的数字员工</h1><p className="fai-lead">将企业知识、数据、任务、AI 员工与 Skills 连接到统一平台，让 AI 从单次问答进入可执行、可协作、可管理的企业工作流。</p><div className="fai-actions"><Link className="button button-accent" to="/contact">咨询 FAI →</Link><a href="#capabilities">探索平台能力 ↓</a></div></div>
+      <div className="fai-org" aria-label="FAI 组织企业 AI 能力示意图"><div className="fai-org-inputs"><span>企业知识</span><span>业务数据</span><span>企业系统</span></div><i aria-hidden="true"/><strong>FAI<small>ENTERPRISE AI PLATFORM</small></strong><i aria-hidden="true"/><div className="fai-org-resources"><span>AI Employees</span><span>Skills</span><span>Workflow</span></div><footer><span>研究</span><span>分析</span><span>运营</span><span>客服</span><span>营销</span></footer></div>
+    </div></section>
+
+    <section className="fai-section fai-problems"><div className="fai-shell"><header className="fai-head"><h2>企业 AI 建设，难在能力分散与缺乏治理</h2></header><div className="fai-problem-grid">{problems.map(([n,t,c], index)=><article key={n}><div className={`fai-problem-visual visual-${index + 1}`} aria-hidden="true"><span>{n}</span><i/><i/><strong>{['AI','DATA','FLOW','CONTROL'][index]}</strong></div><div className="fai-problem-copy"><h3>{t}</h3><p>{c}</p></div></article>)}</div></div></section>
+
+    <section className="fai-section fai-how"><div className="fai-shell"><header className="fai-head"><h2>把模型能力组装成可执行的企业工作流</h2><p>每一层都可被企业配置、复用和管理，最终从 Prompt → Answer 升级为 Task → Process → Result。</p></header><div className="fai-flow">{workflow.map(([t,c],i)=><article key={t}><span>{String(i+1).padStart(2,'0')}</span><h3>{t}</h3><p>{c}</p></article>)}</div></div></section>
+
+    <section className="fai-section fai-capabilities" id="capabilities"><div className="fai-shell"><header className="fai-head"><h2>从 AI 员工到组织治理，在一个平台持续运营</h2></header><div className="fai-cap-list">{capabilities.map(([n,en,t,c], index)=><article key={n}><div className="fai-cap-copy"><div className="fai-cap-meta"><span>{n}</span><small>{en}</small></div><h3>{t}</h3><p>{c}</p></div><CapabilityVisual index={index}/></article>)}</div></div></section>
+
+    <section className="fai-section fai-govern"><div className="fai-shell"><header className="fai-head"><h2>把 AI 从个人能力，变成组织能力</h2><p>People × AI Resources × Governance，让 AI 能力成为可分配、可共享、可持续优化的企业数字资产。</p></header><div className="fai-govern-map">
+      <section className="fai-govern-people"><small>PEOPLE</small><h3>团队与成员</h3><p>围绕企业组织结构管理成员及其 AI 使用边界。</p><ul>{['成员','团队','角色','权限'].map(item=><li key={item}>{item}</li>)}</ul></section>
+      <i>×</i>
+      <section className="primary fai-govern-resources"><small>AI RESOURCES</small><h3>AI 资源统一分配</h3><p>将不同 AI 能力组合后，分配给对应业务团队。</p><div className="fai-team-allocations">{[
+        ['投资团队','Research Agent','Document Skills','投研知识库'],
+        ['销售团队','Product Agent','Content Skills','产品知识库'],
+        ['运营团队','Operations Agent','Data Skills','业务数据'],
+      ].map(([team,...resources])=><article key={team}><strong>{team}</strong><div>{resources.map(resource=><span key={resource}>{resource}</span>)}</div></article>)}</div><footer>Agent / AI Employee · Skills · Knowledge · Workflow</footer></section>
+      <i>×</i>
+      <section className="fai-govern-control"><small>GOVERNANCE</small><h3>统一治理</h3><p>让管理员持续了解 AI 的使用过程与结果。</p><ol>{['谁在使用什么 AI','使用了哪些企业资源','执行了哪些任务','产生了什么结果','是否符合组织权限'].map(item=><li key={item}>{item}</li>)}</ol></section>
+    </div></div></section>
+
+    <section className="fai-section fai-scenes"><div className="fai-shell"><header className="fai-head"><h2>让同一套 AI 基础能力进入不同业务场景</h2></header><div className="fai-scene-grid">{[['企业知识助手','连接企业资料与知识，让员工快速获取内部信息。'],['文档与数据分析','处理报告、文件及业务数据，辅助提取与分析。'],['专业业务 Agent','根据特定行业与岗位建立专业 AI 员工与工作流。'],['业务运营自动化','让 AI 参与重复的信息处理、任务流转和运营流程。']].map(([t,c],i)=><article key={t}><span>0{i+1}</span><h3>{t}</h3><p>{c}</p></article>)}</div><div className="fai-finance"><div><small>FINANCIAL AI EXAMPLE</small><h3>金融专业 AI</h3><p>产品资料、市场信息、客户需求与风险数据，通过 FAI 组织为产品尽调、KYP、产品配置、风险识别与市场洞察能力。</p><Link to="/ai/xinglutong">了解星路通 →</Link></div><div className="fai-finance-flow"><span>产品资料</span><span>市场信息</span><span>客户需求</span><strong>FAI</strong><span>产品尽调</span><span>KYP</span><span>风险识别</span></div></div></div></section>
+
+    <section className="fai-cta"><div className="fai-shell"><h2>开始构建企业自己的 AI 工作体系</h2><p>从 AI 员工、Skills 到企业工作流，在统一平台中构建、管理并持续运营企业 AI 能力。</p><div><Link className="button button-light" to="/contact">咨询 FAI →</Link><Link to="/solutions/fde-ai">了解企业 AI 解决方案</Link></div></div></section>
+  </main>;
+}

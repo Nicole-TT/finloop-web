@@ -37,9 +37,9 @@ export function BankSolutionPage() {
       <div className="bank-shell bank-hero-grid">
         <div className="bank-hero-copy">
           <p className="bank-label">BANKS &amp; FINANCIAL INSTITUTIONS</p>
-          <h1>通过开放财富科技能力，加速数字财富业务建设</h1>
+          <h1>银行及金融机构解决方案</h1>
           <p>通过财富核心、开放接口与金融产品能力，帮助银行及金融机构在现有技术体系中更灵活地扩展财富产品和数字投资服务。</p>
-          <div className="bank-actions"><Link className="button button-accent" to="/contact">讨论数字财富架构 →</Link><Link to="/contact">联系机构团队 →</Link></div>
+          <div className="bank-actions"><Link className="button button-accent" to="/contact">预约咨询 →</Link></div>
         </div>
         <div className="bank-hero-visual" aria-label="Finloop 作为现有银行系统之上的财富扩展层">
           <div className="bank-core"><small>EXISTING INFRASTRUCTURE</small><strong>机构现有核心系统</strong><span>账户 · 客户 · 业务系统</span></div>
