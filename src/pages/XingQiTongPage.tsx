@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-const pains = [['闲置资金', '部分企业资金长期停留在低利用率账户。'], ['资金分散', '现金、银行账户和投资产品分布在不同渠道。'], ['流动性与资金效率难兼顾', '企业不能简单将所有闲置现金投入长期产品。'], ['操作依赖人工', '资金管理和投资流程可能分散在银行、投资平台和内部记录中。']];
+const pains = [['集中资金视图', '统一查看现金、银行账户和投资资产。'], ['兼顾流动性', '围绕经营需要管理短期资金与流动性安排。'], ['连接投资选择', '将企业资金连接到适合相应场景的投资产品。'], ['持续跟踪状态', '集中了解资金变化、交易记录与资产状态。']];
 const workflow = ['企业开户', '绑卡 / 入金', '了解企业资金', '查看产品', '风险测评', '申购', '资产与交易查看', '赎回', '资金退出'];
 
 function Head({ eyebrow, title, copy }: { eyebrow: string; title: string; copy?: string }) {
@@ -14,7 +14,7 @@ function GreyUI({ title }: { title: string }) {
 export function XingQiTongPage() {
   return <main className="xqt-page" id="main">
     <section className="xqt-hero" data-header-theme="inverse"><div className="xqt-shell xqt-hero-grid"><div><p className="xqt-name">星企通 <span>CORPORATE TREASURY</span></p><h1>星企通连接企业现金、投资与资产</h1><p>将企业开户、资金管理、现金管理、投资交易与资产信息连接到统一平台，帮助企业更清楚地掌握资金状态，更高效地管理和配置企业现金。</p><div className="xqt-actions"><Link className="button button-accent" to="/contact">预约星企通演示 →</Link><a href="#view">探索企业资金管理 ↓</a></div><div className="xqt-promise"><span>看清资金</span><span>灵活调配</span><span>高效管理</span></div></div><div className="xqt-map"><div><span>账户 A</span><span>账户 B</span><span>账户 C</span></div><i/><strong><small>ONE TREASURY CORE</small>星企通</strong><i/><div><span>流动性</span><span>投资</span><span>资产</span></div></div></div></section>
-    <section className="xqt-section xqt-white" id="overview"><div className="xqt-shell"><Head eyebrow="THE REALITY OF CORPORATE CASH" title="企业有现金，不代表资金正在高效运作" copy="企业需要为经营保留充足流动性，但账户、现金和投资往往分散在不同渠道。财务团队需要在安全性、流动性、资金使用效率和操作成本之间持续寻找平衡。"/><div className="xqt-reality"><div className="xqt-fragment"><span>银行账户</span><span>现金池</span><span>投资账户</span><span>内部表格</span><strong>分散的企业资金</strong></div><div className="xqt-list">{pains.map(([t,p],i) => <article key={t}><span>0{i+1}</span><div><h3>{t}</h3><p>{p}</p></div></article>)}</div></div></div></section>
+    <section className="xqt-section xqt-white" id="overview"><div className="xqt-shell"><Head eyebrow="CONNECTED CORPORATE TREASURY" title="让企业现金、投资与资产持续协同" copy="星企通把企业账户、现金管理、投资产品与资产信息连接到统一平台，帮助财务团队兼顾经营流动性和资金管理效率。"/><div className="xqt-reality"><div className="xqt-fragment"><span>银行账户</span><span>现金池</span><span>投资账户</span><span>资金记录</span><strong>统一企业资金视图</strong></div><div className="xqt-list">{pains.map(([t,p],i) => <article key={t}><span>0{i+1}</span><div><h3>{t}</h3><p>{p}</p></div></article>)}</div></div></div></section>
 
     <section className="xqt-section" id="view"><div className="xqt-shell"><Head eyebrow="ONE TREASURY VIEW" title="先看清每一笔企业资金" copy="将企业现金、投资资产、交易及资金记录集中呈现，让财务团队更直观地了解资金在哪里、如何使用以及当前资产状态。"/><div className="xqt-split"><GreyUI title="企业资产总览"/><div className="xqt-values">{[['看清现金状态','了解可用资金及资金变化。'],['看清投资','持续查看企业投资产品及交易。'],['看清资产','将资产和相关信息集中呈现。'],['看清资金与投资历史','减少资金信息散落在多个平台和人工表格。']].map(([t,p],i)=><article key={t}><span>0{i+1}</span><h3>{t}</h3><p>{p}</p></article>)}</div></div></div></section>
 

@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
 
 const workflow = ['客户开户', '准入与合规', '产品研究', '投资判断', '订单与执行', '持仓与组合', '报告与结单', '持续服务'];
-const friction = [
-  ['客户与账户分散', '客户资料、证券账户、投资状态和服务记录分布在不同系统。'],
-  ['产品研究效率低', '大量产品、市场资讯和资料需要业务人员人工整理和比较。'],
-  ['投资与交易割裂', '从投资建议到下单、执行和持仓，需要跨多个系统协调。'],
-  ['客户服务不连续', '机构完成操作后，投资者仍需通过其他渠道查看资产信息。'],
+const coreValues = [
+  ['客户关系更完整', '客户资料、账户、投资状态与服务记录围绕同一客户持续积累', '一个客户视图'],
+  ['团队协作更顺畅', '研究、客户经理、交易与运营人员在同一工作空间协同推进业务', '减少信息断点'],
+  ['服务响应更高效', '从产品判断、订单执行到持仓与报告，关键状态可以持续追踪', '缩短业务路径'],
+  ['专业服务可持续扩展', '复用统一流程和数据基础，支持更多客户、产品与财富服务场景', '能力持续复用'],
 ];
 
 function SectionHead({ title, copy }: { title: string; copy?: string }) {
@@ -22,13 +22,11 @@ function GreyUI({ title, compact = false }: { title: string; compact?: boolean }
 export function FinEAMPage() {
   return <main className="eam-page" id="main">
     <section className="eam-hero" data-header-theme="inverse"><div className="eam-shell eam-hero-grid">
-      <div className="eam-hero-copy"><p className="eam-kicker">FIN<span>EAM</span></p><h1>让 EAM 用一套平台<br />经营完整财富业务</h1><p>从客户与账户、投资产品和交易，到持仓、报告及投资者服务，FinEAM 将财富管理关键流程连接到统一平台，帮助 EAM 提升运营效率并扩展专业服务能力。</p><div className="eam-actions"><Link className="button button-accent" to="/contact">预约 FinEAM 演示 →</Link><a href="#workflow">探索业务流程 ↓</a></div><div className="eam-dual"><span>机构工作空间</span><i>×</i><span>投资者体验</span></div></div>
+      <div className="eam-hero-copy"><p className="eam-kicker">FIN<span>EAM</span></p><h1>FinEAM 一站式管理财富业务</h1><p>从客户与账户、投资产品和交易，到持仓、报告及投资者服务，FinEAM 将财富管理关键流程连接到统一平台，帮助 EAM 提升运营效率并扩展专业服务能力。</p><div className="eam-actions"><Link className="button button-accent" to="/contact">预约 FinEAM 演示 →</Link><a href="#workflow">探索业务流程 ↓</a></div><div className="eam-dual"><span>机构工作空间</span><i>×</i><span>投资者体验</span></div></div>
       <div className="eam-hero-visual"><GreyUI title="财富业务工作空间" /><div className="eam-float-card a" /><div className="eam-float-card b" /></div>
     </div></section>
 
-    <section className="eam-reality eam-section"><div className="eam-shell"><SectionHead title="服务一个客户，往往需要跨越多个业务系统" copy="EAM 的日常工作并不止于客户关系管理。一个财富服务流程，往往需要在多个系统、机构和人工流程之间切换。" /><div className="eam-chaos-stage"><svg viewBox="0 0 1200 650" aria-hidden="true"><path d="M180 175C310 80 360 270 480 230S670 90 790 185 980 220 1080 125"/><path d="M120 430C250 360 330 550 470 465S710 350 805 445 1010 560 1110 450"/><path d="M570 95C520 210 635 320 570 580"/></svg><div className="eam-chaos-card client"><small>CLIENT & ACCOUNT</small><strong>客户资料分散</strong><i/><i/><i/><i/></div><div className="eam-chaos-card sheet"><small>SPREADSHEET</small><strong>人工整理产品</strong><div>{[1,2,3,4,5].map(x=><i key={x}/>)}</div></div><div className="eam-chaos-card product"><small>PRODUCT PORTAL</small><strong>产品研究与比较</strong><figure/><span/><span/></div><div className="eam-chaos-card mail"><small>EMAIL</small><strong>等待交易确认</strong><p>Re: Client order update</p></div><div className="eam-chaos-card trading"><small>TRADING</small><strong>跨系统执行订单</strong><figure>{[1,2,3,4].map(x=><i key={x}/>)}</figure></div><div className="eam-chaos-card report"><small>REPORT</small><strong>重新汇总客户报告</strong><span/><span/><span/></div><div className="eam-chaos-alert a">信息待补充</div><div className="eam-chaos-alert b">等待确认</div><div className="eam-chaos-center"><strong>一个客户</strong><span>六个工作环境</span></div></div><div className="eam-chaos-summary">{friction.map(([t],i)=><span key={t}><i>0{i+1}</i>{t}</span>)}</div></div></section>
-
-    <section className="eam-workspace eam-section"><div className="eam-shell"><SectionHead title="把 EAM 的核心工作，带回一个平台" copy="业务人员围绕同一个客户，在同一个工作环境中连接客户、账户、投资产品、交易、持仓、报告和组织运营。" /><div className="eam-domain"><div>{[['Client', '客户与账户'], ['Investment', '产品与投资'], ['Portfolio', '交易与资产'], ['Operations', '机构运营与服务']].map(([e, c], i) => <article key={e}><span>0{i + 1}</span><small>{e}</small><h3>{c}</h3></article>)}</div><div className="eam-domain-core"><small>ONE WEALTH WORKSPACE</small><strong>FinEAM</strong><span>围绕同一位客户持续工作</span></div></div></div></section>
+    <section className="eam-reality eam-section"><div className="eam-shell"><SectionHead title="一个工作空间，连接 EAM 核心业务" copy="FinEAM 将分散在不同工具和流程中的客户关系、投资工作与资产服务连接起来，让团队围绕同一客户协作，并持续扩展专业财富服务。" /><div className="eam-value-stage"><div className="eam-value-hub"><span>FIN EAM</span><strong>一个客户</strong><p>一个财富工作空间</p><div className="eam-value-orbit" aria-hidden="true"><i>客户关系</i><i>投资工作</i><i>资产服务</i><i>团队协作</i></div></div><div className="eam-value-grid">{coreValues.map(([title,copy,result],i)=><article key={title}><span>0{i+1}</span><h3>{title}</h3><p>{copy}</p><strong>{result}</strong></article>)}</div></div></div></section>
 
     <section className="eam-flow eam-section" id="workflow"><div className="eam-shell"><SectionHead title="从客户准入，到持续财富服务" copy="一笔财富业务在 FinEAM 中沿着连续流程向前推进，每个环节都回到同一客户关系和资产视图。" /><div className="eam-flow-rail">{workflow.map((x, i) => <article key={x}><span>{String(i + 1).padStart(2, '0')}</span><strong>{x}</strong></article>)}</div></div></section>
 

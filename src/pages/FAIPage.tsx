@@ -40,7 +40,7 @@ function CapabilityVisual({ index }: { index: number }) {
 export function FAIPage() {
   return <main className="fai-page" id="main">
     <section className="fai-hero" data-header-theme="inverse"><div className="fai-shell fai-hero-grid">
-      <div className="fai-hero-copy"><p className="fai-kicker">FAI · ENTERPRISE AI PLATFORM</p><h1>让 AI 成为企业真正的数字员工</h1><p className="fai-lead">将企业知识、数据、任务、AI 员工与 Skills 连接到统一平台，让 AI 从单次问答进入可执行、可协作、可管理的企业工作流。</p><div className="fai-actions"><Link className="button button-accent" to="/contact">咨询 FAI →</Link><a href="#capabilities">探索平台能力 ↓</a></div></div>
+      <div className="fai-hero-copy"><p className="fai-kicker">FAI · ENTERPRISE AI PLATFORM</p><h1>FAI 让 AI 成为企业真正的数字员工</h1><p className="fai-lead">将企业知识、数据、任务、AI 员工与 Skills 连接到统一平台，让 AI 从单次问答进入可执行、可协作、可管理的企业工作流。</p><div className="fai-actions"><Link className="button button-accent" to="/contact">咨询 FAI →</Link><a href="#capabilities">探索平台能力 ↓</a></div></div>
       <div className="fai-org" aria-label="FAI 组织企业 AI 能力示意图"><div className="fai-org-inputs"><span>企业知识</span><span>业务数据</span><span>企业系统</span></div><i aria-hidden="true"/><strong>FAI<small>ENTERPRISE AI PLATFORM</small></strong><i aria-hidden="true"/><div className="fai-org-resources"><span>AI Employees</span><span>Skills</span><span>Workflow</span></div><footer><span>研究</span><span>分析</span><span>运营</span><span>客服</span><span>营销</span></footer></div>
     </div></section>
 
