@@ -15,6 +15,16 @@
   --spacing-edge: clamp(20px, 4.5vw, 64px);
 }
 
+@media (min-width: 681px) {
+  .wle-challenge-section .goal-head-plain {
+    max-width: none;
+  }
+
+  .wle-challenge-section .goal-head-plain h2 {
+    white-space: nowrap;
+  }
+}
+
 /* FinOne V0.4 comparison page */
 .f104-page{--f104-ink:#071729;--f104-blue:#0d7df1;--f104-sky:#76bdff;--f104-line:#d4dee6;--f104-muted:#637582;--f104-wash:#edf3f7;background:#fff;color:var(--f104-ink)}
 .f104-shell{width:min(1280px,calc(100% - 64px));margin:0 auto}.f104-section{padding:128px 0}.f104-head{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(300px,.65fr);column-gap:70px}.f104-head>p{grid-column:1/-1;margin:0 0 22px;color:var(--f104-blue);font:600 11px/1 'IBM Plex Sans',sans-serif;letter-spacing:.08em}.f104-head h2{margin:0;max-width:830px;font-size:clamp(38px,4vw,60px);font-weight:500;line-height:1.08;letter-spacing:-.04em}.f104-head>span{align-self:end;color:var(--f104-muted);font-size:16px;line-height:1.75}
@@ -1612,7 +1622,7 @@ svg {
 .goal-hero{min-height:720px;padding:170px 0 100px;background:linear-gradient(135deg,#071523 0%,#0a2745 66%,#0b4874 100%);color:#fff;display:flex;align-items:center}
 .goal-hero .goal-shell{display:flex;flex-direction:column;align-items:flex-start}
 .goal-eyebrow{margin:0 0 24px;font:600 12px/1.2 'IBM Plex Sans',sans-serif;letter-spacing:.14em;color:#74c8ff}
-.goal-hero h1{max-width:1050px;margin:0;font-size:clamp(46px,5.5vw,76px);line-height:1.07;letter-spacing:-.05em;font-weight:500}
+.goal-hero h1{max-width:1050px;margin:0;font-size:clamp(46px,5vw,64px);line-height:1.07;letter-spacing:-.05em;font-weight:500}
 .goal-intro{max-width:780px;margin:30px 0 0;color:rgba(255,255,255,.74);font-size:18px;line-height:1.75}
 .goal-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px}.goal-tags span{padding:9px 13px;border:1px solid rgba(255,255,255,.24);font-size:12px;color:rgba(255,255,255,.82)}
 .goal-hero-actions{display:flex;align-items:center;gap:24px;margin-top:38px}.goal-hero-actions>a:not(.button){color:#fff;font-size:14px}

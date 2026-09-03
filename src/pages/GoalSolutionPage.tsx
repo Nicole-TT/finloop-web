@@ -94,7 +94,7 @@ const compactConfigs: Record<string, Omit<Config, 'key'>> = {
     boundary: '本页仅聚焦企业管理自身现金、投资和资产；不属于面向外部用户的嵌入式财富，也不包含企业作为 RWA 资产方的场景。', ctaTitle: '从企业当前的现金与资金结构出发，找到更合适的管理方案', cta: '预约企业资金方案咨询', secondary: { label: '了解星企通', href: '/products/xingqitong' }, recommendations: [{ label: '企业 AI 落地', href: '/solutions/enterprise-ai' }, { label: 'RWA 与 Web3', href: '/solutions/rwa-web3' }],
   },
   rwa: {
-    eyebrow: 'RWA & WEB3 SOLUTIONS', title: '让真实资产走向合规发行与数字化分销', intro: '从资产设计、Tokenization 与链上部署，到投资者准入、钱包、KYT、交易运营和产品分销，构建连接 Web2 与 Web3 的完整 RWA 能力。', tags: ['资产与发行', '产品接入与分销', 'KYC / KYT', 'Web2 × Web3'], audience: '资产方、基金及资产管理人、金融机构、VASP、交易所、钱包与财富平台',
+    eyebrow: 'RWA & WEB3 SOLUTIONS', title: '构建合规数字资产与 Web3 能力', intro: '从资产设计、Tokenization 与链上部署，到投资者准入、钱包、KYT、交易运营和产品分销，构建连接 Web2 与 Web3 的完整 RWA 能力。', tags: ['资产与发行', '产品接入与分销', 'KYC / KYT', 'Web2 × Web3'], audience: '资产方、基金及资产管理人、金融机构、VASP、交易所、钱包与财富平台',
     situationTitle: 'RWA 不是“发行一个 Token”', situations: ['现实资产与权利识别', '产品与法律结构', '合规、尽调与投资者准入', '认购、结算、持份与持续运营'].map(title => ({ title, copy: '链上技术只是其中一环，这些能力需要在同一业务链路中持续管理。' })),
     scenarios: [{ title: '我有资产，需要代币化与发行', copy: '从项目与资产评估、产品及法律结构，到 Tokenization、链上部署、发行与生命周期管理。' }, { title: '我需要接入或分销 RWA 产品', copy: '从产品筛选与上架、H5 / API 接入，到准入、钱包、KYT、认购、报告与赎回。' }],
     panorama: [{ title: 'RWA H5', copy: '承接产品展示、投资者触达和分销' }, { title: 'FinOne', copy: '承接 ToC 财富业务、账户、产品及分销运营' }, { title: 'FinMix', copy: '承接 ToB 账户、交易、清结算、数据治理与底层运营' }, { title: 'FinTaaS', copy: '提供真实资产上链与资产代币化技术服务' }, { title: '适用的持牌体系', copy: '按具体合作和司法辖区承接适用的金融业务环节' }],

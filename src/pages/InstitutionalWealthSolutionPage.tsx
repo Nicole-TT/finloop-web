@@ -73,8 +73,8 @@ export function InstitutionalWealthSolutionPage() {
 
   return <main className="goal-page iw-page iw-v3" id="main">
     <section className="goal-hero iw-hero" data-header-theme="inverse"><div className="goal-shell">
-      <p className="goal-eyebrow">一站式财富管理平台</p>
-      <h1>机构财富管理解决方案</h1>
+      <p className="goal-eyebrow">机构财富管理解决方案</p>
+      <h1>让财富业务高效协同增长</h1>
       <p className="goal-intro">为EAM、家族办公室、私人银行等专业金融投资机构，提供客户管理、投资组合、多品类金融产品的专业交易及管理能力，构建适合自身业务模式的财富管理体系。</p>
       <div className="goal-hero-actions"><Link className="button button-accent" to="/contact">联系我们</Link><a href="#capabilities">了解财富业务能力 ↓</a></div>
     </div></section>
