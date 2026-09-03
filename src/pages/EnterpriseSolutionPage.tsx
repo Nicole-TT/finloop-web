@@ -25,7 +25,7 @@ function GreyUI({ title, variant }: { title: string; variant: 'account' | 'cash'
 export function EnterpriseSolutionPage() {
   return <main className="enterprise-page" id="main">
     <section className="enterprise-hero" data-header-theme="inverse"><div className="enterprise-shell enterprise-hero-grid">
-      <div className="enterprise-hero-copy"><p className="enterprise-label">CORPORATE CLIENTS</p><h1>企业客户解决方案</h1><p>将企业开户、资金、现金管理、投资和资产信息连接到统一数字平台，帮助财务团队更清楚、更高效地管理企业资金。</p><div className="enterprise-actions"><Link className="button button-accent" to="/contact">预约咨询 →</Link></div></div>
+      <div className="enterprise-hero-copy"><p className="enterprise-label">CORPORATE CLIENTS</p><h1>企业客户解决方案</h1><p>将企业开户、资金、现金管理、投资和资产信息连接到统一数字平台，帮助财务团队更清楚、更高效地管理企业资金。</p><div className="enterprise-actions"><Link className="button button-accent" to="/contact">联系我们</Link></div></div>
       <div className="enterprise-hero-visual" aria-label="企业现金、投资与资产统一管理示意"><div className="enterprise-hero-balance"><small>CASH VISIBILITY</small><strong>企业资金全景</strong><span>账户 · 现金 · 投资 · 资产</span></div><div className="enterprise-hero-path"><i /><span>统一连接</span><i /></div><div className="enterprise-hero-modules"><article><small>LIQUIDITY</small><strong>现金管理</strong></article><article><small>INVESTMENT</small><strong>企业投资</strong></article><article><small>ASSETS</small><strong>资产查看</strong></article></div></div>
     </div></section>
 

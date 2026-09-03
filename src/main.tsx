@@ -7,11 +7,10 @@ import { createIcons, ArrowLeftRight, ArrowRight, ArrowUp, BadgeDollarSign, Chev
 import { Markup } from './components/PageRegions';
 import { CoverageSection, HeroSection, SolutionsSection } from './components/BusinessSections';
 import { SiteLayout } from './layouts/SiteLayout';
-import { NotFoundPage, SectionPage } from './pages/SectionPage';
+import { NotFoundPage } from './pages/SectionPage';
 import { ContactPage } from './pages/ContactPage';
 import { FinancialProductsPage } from './pages/FinancialProductsPage';
 import { FinOnePage } from './pages/FinOnePage';
-import { FinOneV04Page } from './pages/FinOneV04Page';
 import { FinEAMPage } from './pages/FinEAMPage';
 import { XingQiTongPage } from './pages/XingQiTongPage';
 import { FinRWAPage } from './pages/FinRWAPage';
@@ -19,7 +18,6 @@ import { WebPortalPage } from './pages/WebPortalPage';
 import { XingLuTongPage } from './pages/XingLuTongPage';
 import { XingZhiTongPage } from './pages/XingZhiTongPage';
 import { WealthSolutionPage } from './pages/WealthSolutionPage';
-import { BrokerSolutionPage } from './pages/BrokerSolutionPage';
 import { BankSolutionPage } from './pages/BankSolutionPage';
 import { PlatformSolutionPage } from './pages/PlatformSolutionPage';
 import { DigitalAssetSolutionPage } from './pages/DigitalAssetSolutionPage';
@@ -33,6 +31,11 @@ import { SupportPage } from './pages/SupportPage';
 import { TechnologyPlatformPage } from './pages/TechnologyPlatformPage';
 import { CareersPage } from './pages/CareersPage';
 import { WhiteLabelAppPage } from './pages/WhiteLabelAppPage';
+import { SolutionsPage } from './pages/SolutionsPage';
+import { GoalSolutionPage } from './pages/GoalSolutionPage';
+import { InstitutionalWealthSolutionPage } from './pages/InstitutionalWealthSolutionPage';
+import { CorporateTreasurySolutionPage } from './pages/CorporateTreasurySolutionPage';
+import { WhiteLabelEmbeddedSolutionPage } from './pages/WhiteLabelEmbeddedSolutionPage';
 
 const aiItems = [
   ['星路通', '面向金融专业人员的 AI 工作台'],
@@ -68,19 +71,29 @@ const productGroups = [
   },
 ];
 
-const solutionItems: Array<[string, string, string]> = [
+const businessGoalSolutionItems: Array<[string, string, string]> = [
+  ['digital-wealth-management', '机构财富管理', '支持客户财富管理与专业机构交易'],
+  ['corporate-treasury', '企业理财投资', '帮助企业统一管理现金、投资与资产'],
+  ['embedded-wealth', '白标与嵌入式金融', '快速推出自有品牌终端或嵌入财富服务'],
+  ['rwa-web3', '数字资产与代币化', '覆盖 RWA、虚拟资产与稳定币业务'],
+  ['enterprise-ai', '金融 AI 企业落地', '将 AI 接入企业数据与真实业务流程'],
+];
+
+const customerTypeSolutionItems: Array<[string, string, string]> = [
   ['wealth', '财富与资产管理机构', '从客户准入到投资及存续管理，构建一体化财富业务'],
-  ['broker', '证券及经纪机构', '连接财富产品、机构交易与客户终端，拓展数字财富业务'],
-  ['bank', '银行及金融机构', '通过开放的财富科技能力，加速数字财富业务建设'],
-  ['platform', '支付与数字平台', '无需重建完整财富系统，将投资能力嵌入已有用户场景'],
-  ['digital', '数字资产机构', '连接传统金融与数字资产，构建机构级 Web3 金融基础设施'],
+  ['broker', '银行、证券及金融机构', '基于现有客户与系统，扩展财富产品、交易及数字渠道'],
+  ['platform', '跨境支付平台', '无需重建完整财富系统，将投资能力嵌入已有用户场景'],
   ['enterprise', '企业客户', '通过独立平台统一管理企业现金、投资与资产'],
-  ['fde-ai', 'FDE-AI服务', '为企业提供AI落地解决方案'],
+];
+
+const solutionGroups = [
+  { id: 'goals', label: '按业务目标', title: '从想要完成的业务目标出发', description: '围绕财富业务、嵌入式服务、企业资金、RWA 与 AI 落地组合端到端能力。', items: businessGoalSolutionItems },
+  { id: 'customers', label: '按客户类型', title: '面向不同类型的机构与企业', description: '根据财富与资产管理机构、券商、银行、数字平台、数字资产机构和企业客户的业务特征组合对应能力。', items: customerTypeSolutionItems },
 ];
 
 const footerGroups: Array<[string, string[]]> = [
   ['产品与平台', ['FinOne', 'FinEAM', '星企通', 'Web Portal', 'FinTaaS']],
-  ['解决方案', ['财富与资产管理机构', '证券及经纪机构', '银行及金融机构', '数字平台', '数字资产机构', '企业客户']],
+  ['解决方案', ['财富与资产管理机构', '银行、证券及金融机构', '数字平台', '企业客户']],
   ['Finloop AI', ['FAI', '星路通', '星智通']],
   ['资源中心', ['公司动态', '产品资料', '开发者中心']],
   ['关于星路', ['公司介绍', '发展历程', '市场认可', '合作生态', '加入我们', '联系我们']],
@@ -89,12 +102,14 @@ const footerGroups: Array<[string, string[]]> = [
 type MobileNavGroup = [string, string, string[]];
 const mobileNavGroups: MobileNavGroup[] = [
   ['产品与平台', '/products', productGroups.flatMap(g => g.items.map(i => i[0]))],
-  ['解决方案', '/solutions', solutionItems.map(i => i[1])],
+  ['解决方案', '/solutions', [...businessGoalSolutionItems, ...customerTypeSolutionItems].map(i => i[1])],
   ['Finloop AI', '/ai', aiItems.map(i => i[0])],
   ['技术与支持', '/technology-platform', []],
   ['新闻资讯', '/resources', ['公司动态']],
   ['关于星路', '/about', ['公司介绍', '加入我们', '联系我们']],
 ];
+
+const mobileSolutionLinks = solutionGroups.map(group => `<span class="mobile-nav-label">${group.label}</span>${group.items.map(([id, name]) => `<a href="/solutions/${id}">${name}</a>`).join('')}`).join('');
 
 const headerMarkup = `
   <header class="site-header" id="top">
@@ -113,7 +128,7 @@ const headerMarkup = `
       </nav>
       <div class="header-actions">
         <button class="language-button" aria-label="切换语言"><i data-lucide="globe-2"></i><span>简</span></button>
-        <a class="button button-accent header-cta" href="/contact">预约咨询 <i data-lucide="arrow-right"></i></a>
+        <a class="button button-accent header-cta" href="/contact">预约咨询</a>
         <button class="menu-button" aria-label="打开菜单" aria-expanded="false"><i data-lucide="menu"></i></button>
       </div>
     </div>
@@ -123,8 +138,8 @@ const headerMarkup = `
         <div class="mega-grid">${productGroups.map(group => `<div><h3>${group.title}</h3>${group.items.map(([name, desc]) => `<a href="${name === 'FinOne' ? '/products/finone' : name === 'FinEAM' ? '/products/fineam' : name === '星企通' ? '/products/xingqitong' : name === '星路通' ? '/ai/xinglutong' : name === 'FAI平台' ? '/ai/fai' : name === '星智通' ? '/ai/xingzhitong' : name === 'Agent & Skills' ? '/ai/marketplace' : name === 'Web Portal' ? '/products/web-portal' : name === '白标 App' ? '/products/white-label-app' : name === 'FinTaaS' ? 'https://finlooprwa.com/fintaas/' : `/products#${name === '现金管理' ? 'cash' : name === '公募基金' ? 'public' : name === '私募基金' ? 'private' : name === '债券' ? 'bonds' : name === '结构性产品' ? 'structured' : name === '保险' ? 'insurance' : name === '虚拟资产' ? 'virtual' : 'rwa'}`}"${name === 'FinTaaS' ? ' target="_blank" rel="noopener noreferrer"' : ''}><span>${name}</span><small>${desc}</small><i data-lucide="arrow-right"></i></a>`).join('')}</div>`).join('')}</div>
       </div>
       <div class="mega-panel" data-panel="solutions">
-        <div class="mega-intro"><strong>按业务身份找到组合方案</strong><p>不同机构，共享同一套可组合的财富科技底座。</p><a href="/solutions">查看解决方案 <i data-lucide="arrow-right"></i></a></div>
-        <div class="mega-list">${solutionItems.map(([id, name, desc]) => `<a href="/solutions/${id}"><span>${name}</span><small>${desc}</small><i data-lucide="arrow-right"></i></a>`).join('')}</div>
+        <div class="mega-intro"><strong>从业务目标或客户类型找方案</strong><p>两种视角，对应同一套可组合的财富科技底座。</p><a href="/solutions">查看解决方案 <i data-lucide="arrow-right"></i></a></div>
+        <div class="mega-grid mega-solution-grid">${solutionGroups.map(group => `<div><h3>${group.label}</h3>${group.items.map(([id, name, desc]) => `<a href="/solutions/${id}"><span>${name}</span><small>${desc}</small><i data-lucide="arrow-right"></i></a>`).join('')}</div>`).join('')}</div>
       </div>
       <div class="mega-panel compact-panel" data-panel="about">
         <div class="mega-intro"><strong>关于星路</strong><p>总部位于香港的机构财富科技平台。</p><a href="/about">认识 Finloop <i data-lucide="arrow-right"></i></a></div>
@@ -140,7 +155,7 @@ const mobileDrawerMarkup = `
     <div class="drawer-top"><img src="/assets/finloop-logo-transparent.png" alt="Finloop 星路科技" /><button class="drawer-close" aria-label="关闭菜单"><i data-lucide="x"></i></button></div>
     <nav class="mobile-nav" aria-label="移动端导航">
       <a href="/">首页</a>
-      ${mobileNavGroups.map(([title, path, items]) => items.length === 0 || title === '新闻资讯' ? `<a href="${path}">${title}</a>` : `<div class="mobile-group"><button aria-expanded="false">${title}<i data-lucide="chevron-down"></i></button><div><a href="${path}">查看全部</a>${items.map(item => `<a href="${title === '关于星路' ? item === '加入我们' ? '/careers' : item === '联系我们' ? '/contact' : '/about' : title === '技术与支持' ? item === '技术平台' ? '/technology-platform' : '/support' : title === 'Finloop AI' ? item === '星智通' ? '/ai/xingzhitong' : item === '星路通' ? '/ai/xinglutong' : item === 'FAI平台' ? '/ai/fai' : item === 'Agent & Skills' ? '/ai/marketplace' : '/ai' : title === '产品与平台' && item === 'FinTaaS' ? 'https://finlooprwa.com/fintaas/' : title === '产品与平台' && item === '白标 App' ? '/products/white-label-app' : title === '产品与平台' && ['现金管理','公募基金','私募基金','债券','结构性产品','保险','虚拟资产','RWA'].includes(item) ? `/products#${item === '现金管理' ? 'cash' : item === '公募基金' ? 'public' : item === '私募基金' ? 'private' : item === '债券' ? 'bonds' : item === '结构性产品' ? 'structured' : item === '保险' ? 'insurance' : item === '虚拟资产' ? 'virtual' : 'rwa'}` : path}"${item === 'FinTaaS' ? ' target="_blank" rel="noopener noreferrer"' : ''}>${item}</a>`).join('')}</div></div>`).join('')}
+      ${mobileNavGroups.map(([title, path, items]) => items.length === 0 || title === '新闻资讯' ? `<a href="${path}">${title}</a>` : `<div class="mobile-group"><button aria-expanded="false">${title}<i data-lucide="chevron-down"></i></button><div><a href="${path}">查看全部</a>${title === '解决方案' ? mobileSolutionLinks : items.map(item => `<a href="${title === '关于星路' ? item === '加入我们' ? '/careers' : item === '联系我们' ? '/contact' : '/about' : title === '技术与支持' ? item === '技术平台' ? '/technology-platform' : '/support' : title === 'Finloop AI' ? item === '星智通' ? '/ai/xingzhitong' : item === '星路通' ? '/ai/xinglutong' : item === 'FAI平台' ? '/ai/fai' : item === 'Agent & Skills' ? '/ai/marketplace' : '/ai' : title === '产品与平台' && item === 'FinTaaS' ? 'https://finlooprwa.com/fintaas/' : title === '产品与平台' && item === '白标 App' ? '/products/white-label-app' : title === '产品与平台' && ['现金管理','公募基金','私募基金','债券','结构性产品','保险','虚拟资产','RWA'].includes(item) ? `/products#${item === '现金管理' ? 'cash' : item === '公募基金' ? 'public' : item === '私募基金' ? 'private' : item === '债券' ? 'bonds' : item === '结构性产品' ? 'structured' : item === '保险' ? 'insurance' : item === '虚拟资产' ? 'virtual' : 'rwa'}` : path}"${item === 'FinTaaS' ? ' target="_blank" rel="noopener noreferrer"' : ''}>${item}</a>`).join('')}</div></div>`).join('')}
     </nav>
     <div class="drawer-bottom"><button class="language-button"><i data-lucide="globe-2"></i> 简体中文</button><a class="button button-accent" href="/contact">预约咨询 <i data-lucide="arrow-right"></i></a></div>
   </div>
@@ -198,7 +213,7 @@ const mainMarkup = `
 
     <section class="solutions section-pad" id="solutions">
       <div class="section-heading"><h2>解决方案</h2><p>Finloop 按业务场景组合产品、平台与基础设施，为不同类型的机构和企业提供对应的财富科技方案。</p></div>
-      <div class="solution-index">${solutionItems.map(([id, name, desc], i) => `<a href="/solutions/${id}" class="solution-row"><span class="solution-number">0${i + 1}</span><div><h3>${name}</h3><p>${desc}</p></div><i data-lucide="arrow-right"></i></a>`).join('')}</div>
+      <div class="solution-index">${customerTypeSolutionItems.map(([id, name, desc], i) => `<a href="/solutions/${id}" class="solution-row"><span class="solution-number">0${i + 1}</span><div><h3>${name}</h3><p>${desc}</p></div><i data-lucide="arrow-right"></i></a>`).join('')}</div>
     </section>
 
     <section class="architecture section-pad" id="architecture">
@@ -325,7 +340,7 @@ function HomePage() {
       <main id="main">
         <Markup html={beforeCoverageMarkup} />
         <CoverageSection />
-        <SolutionsSection items={solutionItems as [string, string, string][]} />
+        <SolutionsSection groups={solutionGroups} />
         <Markup html={afterCoverageMarkup + afterSolutionsMarkup} />
       </main>
     </>
@@ -333,7 +348,6 @@ function HomePage() {
 }
 
 const productPageItems = productGroups.flatMap(group => group.items.map(([title, description]) => ({ title, description })));
-const solutionPageItems = solutionItems.map(([, title, description]) => ({ title, description }));
 const aiPageItems = aiItems.map(([title, description]) => ({ title, description }));
 
 function App() {
@@ -344,24 +358,25 @@ function App() {
           <Route index element={<HomePage />} />
           <Route path="products" element={<FinancialProductsPage />} />
           <Route path="products/finone" element={<FinOnePage />} />
-          <Route path="products/finone-v04" element={<FinOneV04Page />} />
           <Route path="products/fineam" element={<FinEAMPage />} />
           <Route path="products/xingqitong" element={<XingQiTongPage />} />
           <Route path="products/finrwa" element={<FinRWAPage />} />
           <Route path="products/web-portal" element={<WebPortalPage />} />
           <Route path="products/white-label-app" element={<WhiteLabelAppPage />} />
           <Route path="ai/xinglutong" element={<XingLuTongPage />} />
-          <Route path="solutions" element={<SectionPage title="解决方案" description="按客户业务场景组合产品与基础设施，为不同类型机构提供对应入口。" items={solutionPageItems} />} />
+          <Route path="solutions" element={<SolutionsPage groups={solutionGroups} />} />
+          <Route path="solutions/digital-wealth-management" element={<InstitutionalWealthSolutionPage />} />
+          <Route path="solutions/embedded-wealth" element={<WhiteLabelEmbeddedSolutionPage />} />
+          <Route path="solutions/corporate-treasury" element={<CorporateTreasurySolutionPage />} />
+          <Route path="solutions/rwa-web3" element={<GoalSolutionPage type="rwa" />} />
+          <Route path="solutions/enterprise-ai" element={<GoalSolutionPage type="ai" />} />
           <Route path="solutions/wealth" element={<WealthSolutionPage />} />
-          <Route path="solutions/broker" element={<BrokerSolutionPage />} />
+          <Route path="solutions/broker" element={<BankSolutionPage />} />
           <Route path="solutions/bank" element={<BankSolutionPage />} />
           <Route path="solutions/platform" element={<PlatformSolutionPage />} />
           <Route path="solutions/digital" element={<DigitalAssetSolutionPage />} />
           <Route path="solutions/enterprise" element={<EnterpriseSolutionPage />} />
           <Route path="solutions/fde-ai" element={<FDEAIPage />} />
-          {solutionItems.filter(([id]) => !['wealth', 'broker', 'bank', 'platform', 'digital', 'enterprise', 'fde-ai'].includes(id)).map(([id, title, description]) => (
-            <Route key={id} path={`solutions/${id}`} element={<SectionPage title={title} description={description} items={[{ title, description }]} />} />
-          ))}
           <Route path="ai" element={<FinloopAIPage />} />
           <Route path="ai/fai" element={<FAIPage />} />
           <Route path="ai/xingzhitong" element={<XingZhiTongPage />} />

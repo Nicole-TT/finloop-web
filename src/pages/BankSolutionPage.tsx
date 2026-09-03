@@ -1,17 +1,17 @@
 import { Link } from 'react-router-dom';
 
 const changes = [
-  ['01', '产品类别', '财富产品与服务范围持续扩展'],
-  ['02', '数字渠道', 'Web、App 与新型财富触点持续演进'],
-  ['03', '服务模式', '从产品提供向数字投资服务延伸'],
-  ['04', '新技术', 'AI 与数字资产进入金融业务'],
-  ['05', '上线速度', '新业务需要更快进入真实运营'],
+  ['01', '客户基础', '复用已有银行或证券客户关系与账户基础'],
+  ['02', '产品类别', '连接基金、债券、结构性产品等财富产品'],
+  ['03', '交易能力', '让产品发现、询价、订单与执行进入连续流程'],
+  ['04', '开放集成', '通过接口与机构已有核心及业务系统协同'],
+  ['05', '数字渠道', '将财富服务延伸至 Web、App 与客户终端'],
 ];
 
 const outcomes = [
-  ['01', 'Expand Wealth Capabilities', '扩展财富能力', '在现有业务体系中连接更多金融产品与财富流程。'],
-  ['02', 'Integrate with Existing Systems', '更灵活地集成', '通过 API 与平台能力与机构已有系统协同。'],
-  ['03', 'Build Digital Wealth Experiences', '建设数字财富体验', '支持机构新的 Web、App 与财富业务渠道。'],
+  ['01', 'BROKERAGE EXPANSION', '券商财富业务扩展', '基于已有证券客户与账户，增加财富产品、专业交易和数字客户体验。'],
+  ['02', 'BANKING INTEGRATION', '银行开放架构集成', '保留现有核心系统，通过 API 与平台能力扩展数字财富业务。'],
+  ['03', 'SHARED FOUNDATION', '共用财富技术底座', '两类机构均可按需组合财富核心、交易运营、产品生态与数字渠道。'],
 ];
 
 function SectionHead({ title, copy }: { title: string; copy?: string }) {
@@ -36,12 +36,12 @@ export function BankSolutionPage() {
     <section className="bank-hero" data-header-theme="inverse">
       <div className="bank-shell bank-hero-grid">
         <div className="bank-hero-copy">
-          <p className="bank-label">BANKS &amp; FINANCIAL INSTITUTIONS</p>
-          <h1>银行及金融机构解决方案</h1>
-          <p>通过财富核心、开放接口与金融产品能力，帮助银行及金融机构在现有技术体系中更灵活地扩展财富产品和数字投资服务。</p>
-          <div className="bank-actions"><Link className="button button-accent" to="/contact">预约咨询 →</Link></div>
+          <p className="bank-label">BANKING · SECURITIES · FINANCIAL INSTITUTIONS</p>
+          <h1>银行、证券及金融机构解决方案</h1>
+          <p>基于机构已有客户、账户与核心系统，连接财富产品、专业交易和数字渠道，帮助银行、券商及金融机构更灵活地扩展数字财富业务。</p>
+          <div className="bank-actions"><Link className="button button-accent" to="/contact">联系我们</Link></div>
         </div>
-        <div className="bank-hero-visual" aria-label="Finloop 作为现有银行系统之上的财富扩展层">
+        <div className="bank-hero-visual" aria-label="Finloop 作为金融机构现有系统之上的财富扩展层">
           <div className="bank-core"><small>EXISTING INFRASTRUCTURE</small><strong>机构现有核心系统</strong><span>账户 · 客户 · 业务系统</span></div>
           <div className="bank-bridge"><span>API / INTEGRATION</span><i /></div>
           <div className="bank-extension"><small>WEALTH EXTENSION LAYER</small><strong>Finloop Wealth Capabilities</strong><div><span>Product</span><span>Transaction</span><span>Digital Channel</span></div></div>
@@ -50,13 +50,13 @@ export function BankSolutionPage() {
     </section>
 
     <section className="bank-section bank-white"><div className="bank-shell">
-      <SectionHead title="财富业务持续变化，核心系统不需要每次都重新建设" copy="在保留现有技术体系的同时，通过可组合的能力层响应产品、渠道与服务模式的持续变化。" />
+      <SectionHead title="从现有客户与系统出发，扩展数字财富业务" copy="券商可基于已有证券客户与账户扩展财富服务；银行可保留核心系统，通过开放集成连接新的产品、交易与数字渠道。" />
       <div className="bank-change-grid"><div className="bank-change-lead"><small>EXTEND, NOT REPLACE</small><strong>不替换核心<br />灵活扩展财富能力</strong></div><div className="bank-change-list">{changes.map(([n,t,p])=><article key={n}><span>{n}</span><h3>{t}</h3><p>{p}</p></article>)}</div></div>
     </div></section>
 
-    <section className="bank-section"><div className="bank-shell"><SectionHead title="将开放架构转化为三项业务成果" /><div className="bank-outcomes">{outcomes.map(([n,en,t,p])=><article key={n}><span>{n}</span><small>{en}</small><h3>{t}</h3><p>{p}</p></article>)}</div></div></section>
+    <section className="bank-section"><div className="bank-shell"><SectionHead title="两条业务路径，共用一套财富技术基础" /><div className="bank-outcomes">{outcomes.map(([n,en,t,p])=><article key={n}><span>{n}</span><small>{en}</small><h3>{t}</h3><p>{p}</p></article>)}</div></div></section>
 
-    <section className="bank-section bank-flow-section" id="workflow"><div className="bank-shell"><SectionHead title="在现有金融基础设施之上，延伸到最终客户" copy="Finloop 位于机构已有系统与数字渠道之间，让产品、账户与交易能力通过统一链路被复用。" /><div className="bank-workflow">{['Existing Banking Infrastructure','API / Integration','Finloop Wealth Capabilities','Product / Account / Transaction','Digital Channel','Customer'].map((x,i)=><article className={i===2?'active':''} key={x}><span>{String(i+1).padStart(2,'0')}</span><strong>{x}</strong></article>)}</div></div></section>
+    <section className="bank-section bank-flow-section" id="workflow"><div className="bank-shell"><SectionHead title="在现有客户与系统基础之上，延伸到最终客户" copy="Finloop 位于机构已有系统与数字渠道之间，让产品、账户与交易能力通过统一链路被复用。" /><div className="bank-workflow">{['Existing Clients & Systems','API / Integration','Finloop Wealth Capabilities','Product / Account / Transaction','Digital Channel','Customer'].map((x,i)=><article className={i===2?'active':''} key={x}><span>{String(i+1).padStart(2,'0')}</span><strong>{x}</strong></article>)}</div></div></section>
 
     <section className="bank-section bank-white" id="capabilities"><div className="bank-shell">
       <SectionHead title="一套能力底座，支持不同的财富建设路径" copy="按机构已有架构与业务目标，组合产品能力、开放集成与数字渠道。" />
@@ -67,8 +67,8 @@ export function BankSolutionPage() {
 
     <section className="bank-section bank-stack-section"><div className="bank-shell"><SectionHead title="Powered by Finloop" copy="将机构现有系统、财富核心、交易运营与金融产品生态按层连接。" /><div className="bank-stack">{[['机构现有系统','EXISTING SYSTEMS'],['API / Integration Layer','OPEN CONNECTION'],['FinOne','WEALTH CORE'],['FinMix','TRADING & OPERATIONS'],['产品与金融机构生态','FINANCIAL ECOSYSTEM']].map(([t,s],i)=><article className={i===1?'active':''} key={t}><span>{String(i+1).padStart(2,'0')}</span><small>{s}</small><strong>{t}</strong><i>{i<4?'↓':'OPEN ECOSYSTEM'}</i></article>)}</div></div></section>
 
-    <section className="bank-section"><div className="bank-shell"><SectionHead title="面向机构架构的企业级能力" copy="围绕部署、隔离与业务连续性要求，为银行及大型金融机构提供可适配的技术基础。" /><div className="bank-trust">{[['01','Deployment','支持 SaaS 与本地部署等企业架构场景。'],['02','Availability','围绕机构业务的稳定运行要求设计。'],['03','Tenant & Isolation','支持多租户与数据隔离能力。'],['04','Business Continuity','结合项目要求规划业务连续性机制。'],['05','Financial Infrastructure','连接金融产品、交易与机构运营体系。']].map(([n,t,p])=><article key={n}><span>{n}</span><small>{t}</small><p>{p}</p></article>)}</div></div></section>
+    <section className="bank-section"><div className="bank-shell"><SectionHead title="面向金融机构架构的企业级能力" copy="围绕部署、隔离与业务连续性要求，为银行、券商及大型金融机构提供可适配的技术基础。" /><div className="bank-trust">{[['01','Deployment','支持 SaaS 与本地部署等企业架构场景。'],['02','Availability','围绕机构业务的稳定运行要求设计。'],['03','Tenant & Isolation','支持多租户与数据隔离能力。'],['04','Business Continuity','结合项目要求规划业务连续性机制。'],['05','Financial Infrastructure','连接金融产品、交易与机构运营体系。']].map(([n,t,p])=><article key={n}><span>{n}</span><small>{t}</small><p>{p}</p></article>)}</div></div></section>
 
-    <section className="bank-cta"><div className="bank-shell"><h2>在现有金融体系上，<br />扩展下一代财富能力</h2><p>与 Finloop 机构团队讨论适合现有系统与业务路径的数字财富方案。</p><Link className="button button-light" to="/contact">讨论银行数字财富方案 →</Link></div></section>
+    <section className="bank-cta"><div className="bank-shell"><h2>在现有业务基础上，<br />扩展下一项财富能力</h2><p>与 Finloop 机构团队讨论适合现有系统与业务路径的数字财富方案。</p><Link className="button button-light" to="/contact">咨询金融机构财富方案 →</Link></div></section>
   </main>;
 }

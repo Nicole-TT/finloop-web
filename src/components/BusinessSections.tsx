@@ -76,6 +76,26 @@ export function CoverageSection() {
 type SolutionItem = [string, string, string];
 
 const solutionImages: Record<string, { src: string; alt: string }> = {
+  'digital-wealth-management': {
+    src: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1800&q=82',
+    alt: '数字财富管理团队协作场景',
+  },
+  'embedded-wealth': {
+    src: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1800&q=82',
+    alt: '嵌入式财富服务数字场景',
+  },
+  'corporate-treasury': {
+    src: 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1800&q=82',
+    alt: '企业财富管理场景',
+  },
+  'rwa-web3': {
+    src: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1800&q=82',
+    alt: 'RWA 与 Web3 技术基础设施',
+  },
+  'enterprise-ai': {
+    src: 'https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1800&q=82',
+    alt: '企业 AI 落地项目协作场景',
+  },
   wealth: {
     src: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1800&q=82',
     alt: '财富与资产管理团队协作场景',
@@ -106,7 +126,12 @@ const solutionImages: Record<string, { src: string; alt: string }> = {
   },
 };
 
-export function SolutionsSection({ items }: { items: SolutionItem[] }) {
+type SolutionGroup = { id: string; label: string; title: string; description: string; items: SolutionItem[] };
+
+export function SolutionsSection({ groups }: { groups: SolutionGroup[] }) {
+  const [activeGroupId, setActiveGroupId] = useState(groups[0]?.id ?? '');
+  const activeGroup = groups.find(group => group.id === activeGroupId) ?? groups[0];
+  const items = activeGroup?.items ?? [];
   const [activeId, setActiveId] = useState(items[0]?.[0] ?? '');
   const activeIndex = Math.max(0, items.findIndex(([id]) => id === activeId));
   const activeItem = items[activeIndex] ?? items[0] ?? ['', '', ''];
@@ -121,13 +146,18 @@ export function SolutionsSection({ items }: { items: SolutionItem[] }) {
     return () => window.clearTimeout(timer);
   }, [activeId, activeIndex, items]);
 
+  useEffect(() => setActiveId(items[0]?.[0] ?? ''), [activeGroupId]);
+
   return (
     <section className="solutions section-pad" id="solutions">
       <div className="solution-showcase">
         <div className="solution-copy">
           <div className="solution-heading">
-            <h2>面向不同机构，构建适配的财富科技方案</h2>
-            <p>围绕财富与资产管理机构、证券及经纪机构、银行及金融机构、支付与数字平台、数字资产机构和企业客户的业务场景组合对应能力。</p>
+            <h2>{activeGroup?.title}</h2>
+            <p>{activeGroup?.description}</p>
+          </div>
+          <div className="solution-mode-tabs" role="tablist" aria-label="解决方案分类方式">
+            {groups.map(group => <button key={group.id} type="button" role="tab" aria-selected={group.id === activeGroupId} onClick={() => setActiveGroupId(group.id)}>{group.label}</button>)}
           </div>
           <div className="solution-accordion">
             {items.map(([id, name, desc], index) => {

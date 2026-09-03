@@ -1,40 +1,30 @@
 # Design QA
 
-- Source visual truth: `/var/folders/nr/tf92z2x916l_mzdyq0g5fv6m0000gn/T/codex-clipboard-bcb78475-790e-49a1-a676-4cc7a06ddf19.png`
-- Source dimensions: 1508 × 1774 px
-- Implementation: `http://localhost:5173/products/finone`
-- Implementation screenshot: `/Users/fosunhani/Documents/ChatGPT/Finloop官网/tmp/finone-fusion-qa.png`
-- Implementation viewport: 1292 × 969 CSS px, device scale factor 1
-- State: FinOne merged method/business section, desktop
-- Density normalization: visual comparison used equivalent desktop content width; the source is a taller composite capture, so comparison focused on the merged section rather than browser chrome or total page height.
+- Reference source: conversation attachment, additional visual context for Browser Comment 2 (no local source path exposed).
+- Implementation capture: `/Users/fosunhani/Documents/ChatGPT/Finloop官网/tmp/challenges-implementation.png`
+- Viewport: 1932 × 1329 CSS px; standard browser density.
+- State: `/solutions/digital-wealth-management#challenges`.
 
-## Full-view comparison evidence
+## Full-view comparison
 
-The implementation preserves the source hierarchy: method label and explanatory heading, a centered FinOne wealth-core model, three inputs on the left, three reusable capabilities on the right, five business applications, and one shared FinOne foundation. The two source chapters are intentionally presented as one continuous dark section to satisfy the requested fusion.
+- The challenge heading and supporting copy are centered, and the section sequence number has been removed.
+- The four challenge items use the reference's two-column, two-row card composition.
+- Each card leads with a pale product illustration, followed by a question headline and a concise solution statement.
+- Spacing, soft shadows, rounded corners, and the restrained blue/cyan palette follow the reference while remaining consistent with the Finloop site.
 
-## Focused region comparison evidence
+## Focused comparison
 
-The core-model region and five-column application region were inspected together at 1292 px. Typography remains readable, the core is visually dominant, the transition between model and applications is explicit, and all five application labels fit without clipping. No separate asset comparison was required because the reference contains only interface structure and typography, with no photographic or illustrative asset to reproduce.
+- Card image-to-copy proportions remain consistent across all four items.
+- Heading hierarchy and body-copy spacing are aligned across rows.
+- The layout collapses to one column at the existing mobile breakpoint to prevent overflow.
 
 ## Findings
 
-- No actionable P0, P1, or P2 differences remain.
-- Typography: heading scale, body contrast, labels, and application hierarchy follow the source and existing FinOne type system.
-- Spacing: the model and application map now share one section rhythm, separated by a quiet divider rather than a second oversized section intro.
-- Colors: existing FinOne navy, blue, border, and muted-text tokens are preserved.
-- Image quality: no raster imagery is required by this section.
-- Copy: the two original claims are consolidated into one non-repetitive heading and explanation.
+- P0: none.
+- P1: none.
+- P2: none.
+- P3: the reference's central decorative hub is intentionally omitted so the Finloop business content remains legible and the section does not introduce unrelated ornamentation.
 
-## Comparison history
+## Result
 
-- Initial issue: the two related concepts were split across separate dark and white sections, repeating the same core proposition.
-- Fix: merged both into one `f1-approach` section, retained the core model, appended the five business applications, and added a single shared FinOne foundation.
-- Post-fix evidence: `tmp/finone-fusion-qa.png`; no layout clipping or console errors were observed.
-
-## Primary interactions and console
-
-- This merged content is informational and contains no controls.
-- Existing navigation remained visible.
-- Browser console errors checked: none.
-
-final result: passed
+passed

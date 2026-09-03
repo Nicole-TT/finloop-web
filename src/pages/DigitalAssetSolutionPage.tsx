@@ -27,7 +27,7 @@ export function DigitalAssetSolutionPage() {
           <p className="digital-label">DIGITAL ASSET INSTITUTIONS</p>
           <h1>数字资产机构解决方案</h1>
           <p>将 RWA、Tokenization、Wallet、KYT 与财富产品和金融业务能力连接起来，帮助数字资产机构拓展更加完整的机构金融服务。</p>
-          <div className="digital-actions"><Link className="button button-accent" to="/contact">预约咨询 →</Link></div>
+          <div className="digital-actions"><Link className="button button-accent" to="/contact">联系我们</Link></div>
         </div>
         <div className="digital-bridge" aria-label="Web3 基础设施、Finloop 与传统金融连接示意">
           <div className="digital-bridge-side"><small>WEB3</small><strong>Digital Assets</strong><span>Wallet · On-chain · KYT</span></div>

@@ -27,7 +27,7 @@ export function BrokerSolutionPage() {
           <p className="broker-label">SECURITIES &amp; BROKERAGE</p>
           <h1>证券及经纪机构解决方案</h1>
           <p>在现有证券业务基础上连接更多财富产品、专业交易能力和数字客户体验，帮助机构更快推出和扩展财富业务。</p>
-          <div className="broker-actions"><Link className="button button-accent" to="/contact">预约咨询 →</Link></div>
+          <div className="broker-actions"><Link className="button button-accent" to="/contact">联系我们</Link></div>
         </div>
         <div className="broker-hero-visual" aria-label="从证券经纪业务扩展至数字财富业务的能力路径">
           <div className="broker-hero-source"><small>EXISTING BUSINESS</small><strong>Brokerage</strong><span>已有证券客户与账户</span></div>
