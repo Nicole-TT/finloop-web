@@ -49,12 +49,13 @@ const categoryCopy = {
 };
 
 export function ResourcesRedirect() {
-  return <Navigate replace to="/resources" />;
+  return <Navigate replace to="/resources/insights" />;
 }
 
 export function NewsPage() {
-  const active: NewsCategory = 'company';
-  const copy = categoryCopy.company;
+  const { category } = useParams();
+  const active: NewsCategory = category === 'company' ? 'company' : 'insights';
+  const copy = categoryCopy[active];
 
   return (
     <main className="news-page" id="main">
@@ -62,8 +63,12 @@ export function NewsPage() {
         <div className="news-shell">
           <div className="news-hero-copy">
             <h1>新闻资讯</h1>
-            <p>持续记录 Finloop 的业务进展、市场认可、生态合作与重要里程碑。</p>
+            <p>从行业趋势到公司进展，持续记录机构财富科技的演进与 Finloop 的实践。</p>
           </div>
+          <nav className="news-tabs" aria-label="新闻资讯分类">
+            <Link aria-current={active === 'insights' ? 'page' : undefined} className={active === 'insights' ? 'active' : ''} to="/resources/insights">行业洞察</Link>
+            <Link aria-current={active === 'company' ? 'page' : undefined} className={active === 'company' ? 'active' : ''} to="/resources/company">公司动态</Link>
+          </nav>
         </div>
       </header>
 
@@ -75,7 +80,7 @@ export function NewsPage() {
           </div>
           <div className="news-grid">
             {news[active].map((item) => (
-              <Link className="news-card" key={item.title} to={`/resources/${item.slug}`}>
+              <Link className="news-card" key={item.title} to={`/resources/${active}/${item.slug}`}>
                 <div className={`news-media news-media-${item.visual}`}>
                   {item.image ? <img alt={`${item.title}相关产品界面`} src={item.image} /> : <NewsVisual type={item.visual} />}
                 </div>
@@ -95,15 +100,16 @@ export function NewsPage() {
 }
 
 export function NewsDetailPage() {
-  const { slug } = useParams();
-  const item = news.company.find(entry => entry.slug === slug);
-  if (!item) return <Navigate replace to="/resources" />;
-  const related = news.company.filter(entry => entry.slug !== item.slug).slice(0, 2);
+  const { category, slug } = useParams();
+  const active: NewsCategory = category === 'company' ? 'company' : 'insights';
+  const item = news[active].find(entry => entry.slug === slug);
+  if (!item) return <Navigate replace to={`/resources/${active}`} />;
+  const related = news[active].filter(entry => entry.slug !== item.slug).slice(0, 2);
 
   return <main className="news-detail-page" id="main">
     <header className="news-detail-hero" data-header-theme="inverse">
       <div className="news-detail-shell">
-        <Link className="news-detail-back" to="/resources">← 返回公司动态</Link>
+        <Link className="news-detail-back" to={`/resources/${active}`}>← 返回{categoryCopy[active].title}</Link>
         <span>{item.meta}</span>
         <h1>{item.title}</h1>
         <p>{item.description}</p>
@@ -119,13 +125,8 @@ export function NewsDetailPage() {
         <div className="news-detail-disclaimer"><strong>内容说明</strong><p>本文根据项目现有资料整理，仅用于官网内容展示，不构成投资建议、产品要约或对任何服务范围的承诺。相关业务与事实信息以正式发布及适用主体确认为准。</p></div>
       </article>
     </div>
-    <section className="news-related"><div className="news-detail-shell"><div className="news-related-head"><h2>继续阅读</h2><Link to="/resources">查看全部 →</Link></div><div className="news-related-grid">{related.map(entry => <Link key={entry.slug} to={`/resources/${entry.slug}`}><span>{entry.meta}</span><h3>{entry.title}</h3><p>{entry.description}</p></Link>)}</div></div></section>
+    <section className="news-related"><div className="news-detail-shell"><div className="news-related-head"><h2>继续阅读</h2><Link to={`/resources/${active}`}>查看全部 →</Link></div><div className="news-related-grid">{related.map(entry => <Link key={entry.slug} to={`/resources/${active}/${entry.slug}`}><span>{entry.meta}</span><h3>{entry.title}</h3><p>{entry.description}</p></Link>)}</div></div></section>
   </main>;
-}
-
-export function LegacyNewsDetailRedirect() {
-  const { category, slug } = useParams();
-  return <Navigate replace to={category === 'company' && slug ? `/resources/${slug}` : '/resources'} />;
 }
 
 function NewsVisual({ type }: { type: string }) {
