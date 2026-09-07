@@ -254,11 +254,11 @@ const mainMarkup = `
 
     <section class="ecosystem section-pad" id="ecosystem">
       <div class="section-inner">
-        <div class="case-showcase-head"><h2>从真实项目，看见财富科技如何落地</h2><p>从机构交易连接、RWA 到企业 AI 落地，展示 Finloop 已公开披露的部分项目方向。具体合作范围与项目状态以正式披露为准。</p></div>
+        <div class="case-showcase-head"><h2>从真实项目，看见财富科技如何落地</h2><p>连接金融机构、数字资产与企业业务场景，以专业技术和持续服务推动财富科技融入真实业务流程。</p></div>
         <div class="case-showcase-grid">
-          <article class="client-case client-case-featured"><div class="client-case-top"><span>01</span><small>机构交易连接</small></div><div><h3>Hundsun Ayers</h3><strong>证券交易柜台接入</strong><p>围绕机构证券交易场景，连接相关交易柜台与财富业务技术体系。</p></div><footer><span>Institutional Connectivity</span><i data-lucide="circle-check"></i></footer></article>
-          <article class="client-case"><div class="client-case-top"><span>02</span><small>RWA 项目</small></div><div><h3>泰康资管香港 × OSL</h3><strong>代币化基金份额项目</strong><p>围绕基金份额代币化场景，探索传统资产与数字资产基础设施的连接。</p></div><footer><span>Tokenized Fund</span><i data-lucide="circle-check"></i></footer></article>
-          <a class="client-case" href="/solutions/fde-ai#case"><div class="client-case-top"><span>03</span><small>AI 落地 · 建设中</small></div><div><h3>复星锐正投资</h3><strong>让 AI 进入 VC / PE 真实工作流</strong><p>以 FDE-AI 方法推进需求诊断、统一交互入口与 Agent 能力建设。</p></div><footer><span>查看项目介绍</span><i data-lucide="arrow-right"></i></footer></a>
+          <article class="client-case client-case-featured"><div class="client-case-top"><small>数字财富平台</small></div><div><h3>星财富</h3><strong>FinOne 驱动财富运营升级</strong><p>通过 FinOne 连接客户开户、金融产品、投资交易与财富运营流程，支撑面向个人客户的数字财富服务。</p></div><footer><span>了解详情</span><i data-lucide="arrow-right"></i></footer></article>
+          <article class="client-case"><div class="client-case-top"><small>RWA 项目</small></div><div><h3>泰康资管香港 × OSL</h3><strong>代币化基金份额项目</strong><p>围绕基金份额代币化场景，探索传统资产与数字资产基础设施的连接。</p></div><footer><span>了解详情</span><i data-lucide="arrow-right"></i></footer></article>
+          <a class="client-case" href="/products/white-label-app"><div class="client-case-top"><small>白标财富 App · 已上线</small></div><div><h3>陆浦财富</h3><strong>自有品牌财富 App</strong><p>基于白标财富能力，为机构构建连接账户、产品、交易、资产与持续服务的品牌化客户终端。</p></div><footer><span>了解详情</span><i data-lucide="arrow-right"></i></footer></a>
         </div>
       </div>
     </section>

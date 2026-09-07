@@ -77,7 +77,7 @@ export function CorporateTreasurySolutionPage() {
       <p className="goal-eyebrow">企业理财投资解决方案</p>
       <h1>盘活企业闲置资金</h1>
       <p className="goal-intro">为企业提供从账户与资金管理，到多资产理财产品、投资交易和资产跟踪的一体化能力，帮助企业在兼顾流动性的同时，更高效地管理阶段性闲置资金。</p>
-      <div className="goal-hero-actions"><Link className="button button-accent" to="/contact">联系我们</Link><a href="#capabilities">了解企业理财能力 ↓</a></div>
+      <div className="goal-hero-actions"><Link className="button button-accent" to="/contact">联系我们</Link></div>
     </div></section>
 
     <section className="goal-section iw-audience ct-context"><div className="goal-shell">

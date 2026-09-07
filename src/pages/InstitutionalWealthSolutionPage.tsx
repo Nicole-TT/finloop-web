@@ -76,7 +76,7 @@ export function InstitutionalWealthSolutionPage() {
       <p className="goal-eyebrow">机构财富管理解决方案</p>
       <h1>让财富业务高效协同增长</h1>
       <p className="goal-intro">为EAM、家族办公室、私人银行等专业金融投资机构，提供客户管理、投资组合、多品类金融产品的专业交易及管理能力，构建适合自身业务模式的财富管理体系。</p>
-      <div className="goal-hero-actions"><Link className="button button-accent" to="/contact">联系我们</Link><a href="#capabilities">了解财富业务能力 ↓</a></div>
+      <div className="goal-hero-actions"><Link className="button button-accent" to="/contact">联系我们</Link></div>
     </div></section>
 
     <section className="goal-section iw-audience"><div className="goal-shell"><div className="iw-audience-copy"><small>背景现状</small><h2>机构财富管理正在走向全链路协同</h2><p>随着客户需求、资产类别与业务规模持续增长，机构财富管理需要让客户、账户、投资组合、金融产品、交易与运营在同一业务链路中协同，分散的系统和人工流程越来越难以支撑业务持续发展。</p></div><figure><img src="/assets/wealth-challenge-unified-data.png" alt="客户、账户、资产与投资信息汇聚为统一财富管理视图的示意图" /></figure></div></section>

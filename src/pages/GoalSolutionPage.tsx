@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Blocks, createIcons, FileCheck2, Landmark, Network, ServerCog, ShieldCheck } from 'lucide';
 
 type Item = { title: string; copy: string };
 type Product = Item & { meta: string; href?: string };
@@ -94,16 +95,56 @@ const compactConfigs: Record<string, Omit<Config, 'key'>> = {
     boundary: '本页仅聚焦企业管理自身现金、投资和资产；不属于面向外部用户的嵌入式财富，也不包含企业作为 RWA 资产方的场景。', ctaTitle: '从企业当前的现金与资金结构出发，找到更合适的管理方案', cta: '预约企业资金方案咨询', secondary: { label: '了解星企通', href: '/products/xingqitong' }, recommendations: [{ label: '企业 AI 落地', href: '/solutions/enterprise-ai' }, { label: 'RWA 与 Web3', href: '/solutions/rwa-web3' }],
   },
   rwa: {
-    eyebrow: 'RWA & WEB3 SOLUTIONS', title: '构建合规数字资产与 Web3 能力', intro: '从资产设计、Tokenization 与链上部署，到投资者准入、钱包、KYT、交易运营和产品分销，构建连接 Web2 与 Web3 的完整 RWA 能力。', tags: ['资产与发行', '产品接入与分销', 'KYC / KYT', 'Web2 × Web3'], audience: '资产方、基金及资产管理人、金融机构、VASP、交易所、钱包与财富平台',
-    situationTitle: 'RWA 不是“发行一个 Token”', situations: ['现实资产与权利识别', '产品与法律结构', '合规、尽调与投资者准入', '认购、结算、持份与持续运营'].map(title => ({ title, copy: '链上技术只是其中一环，这些能力需要在同一业务链路中持续管理。' })),
-    scenarios: [{ title: '我有资产，需要代币化与发行', copy: '从项目与资产评估、产品及法律结构，到 Tokenization、链上部署、发行与生命周期管理。' }, { title: '我需要接入或分销 RWA 产品', copy: '从产品筛选与上架、H5 / API 接入，到准入、钱包、KYT、认购、报告与赎回。' }],
-    panorama: [{ title: 'RWA H5', copy: '承接产品展示、投资者触达和分销' }, { title: 'FinOne', copy: '承接 ToC 财富业务、账户、产品及分销运营' }, { title: 'FinMix', copy: '承接 ToB 账户、交易、清结算、数据治理与底层运营' }, { title: 'FinTaaS', copy: '提供真实资产上链与资产代币化技术服务' }, { title: '适用的持牌体系', copy: '按具体合作和司法辖区承接适用的金融业务环节' }],
-    capabilities: [{ title: '资产与 Token', copy: 'Tokenization、链上部署、智能合约与 Token 生命周期。' }, { title: '客户与钱包', copy: '客户钱包管理、角色权限、Micropayment 与钱包绑定。' }, { title: '风险与合规', copy: '链上 AML / KYT、定制 KYT Gateway 和交易风险监控。' }, { title: '资金与流转', copy: 'Token-In / Out、On & Off-Ramp 与适用的多币种结算。' }],
-    products: [{ title: '资产代币化与发行路径', meta: '资产评估 → 产品结构 → Tokenization → 准入 → 生命周期', copy: '项目是否受理、支持链与技术标准需经业务、法律及合规评估。' }, { title: 'RWA 产品接入与分销路径', meta: '产品上架 → H5 / API → KYC / KYT → 结算 → 报告与赎回', copy: '可通过 RWA H5、API 或合作平台实现产品触达和分销。' }],
-    steps: ['角色与项目评估', '产品、法律与合规结构', '技术与系统连接', '准入、交易与结算设计', '上线与持续运营'].map(title => ({ title, copy: '按资产类型、目标市场、投资者、平台现状和司法辖区确认具体交付范围。' })),
-    proof: [{ title: '案例候选池', copy: '泰康资管香港与 OSL 相关代币化份额项目、ChinaAMC Solana ETF 分销及港股表现挂钩 Token 技术方案。' }, { title: '对外状态待核验', copy: '项目主体、合作性质、公开链接、时间、产品状态和 Logo 授权需上线前确认。' }],
-    faq: ['哪些类型的现实资产适合开展 RWA 项目？', '星路提供技术、发行还是分销服务？', 'FRP 与单一 Tokenization 平台有什么区别？', '支持哪些区块链、Token 标准和钱包？', '如何进行 KYC、KYT、钱包绑定及投资者准入？', 'RWA 产品可以通过哪些方式接入现有平台？'].map(title => ({ title, copy: '具体能力取决于资产结构、产品形态、目标投资者、支持市场与司法辖区，需通过项目评估确认。' })),
-    boundary: 'FRP 是 RWA H5、FinOne、FinMix、FinTaaS 与适用金融基础设施协同形成的方案体系，不是单一 SaaS 产品；不使用“保证合规”等无边界表述。', ctaTitle: '从你的 RWA 角色出发，进入下一步', cta: '发起资产与发行项目评估', secondary: { label: '咨询 RWA 产品接入', href: '/contact' }, recommendations: [{ label: '嵌入式财富', href: '/solutions/embedded-wealth' }, { label: '财富管理数字化', href: '/solutions/digital-wealth-management' }],
+    eyebrow: 'RWA & WEB3 SOLUTIONS', title: '构建合规数字资产与 Web3 能力', intro: '从现实资产代币化和数字化发行，到虚拟资产、稳定币产品接入与分销，连接产品、投资者、交易渠道和链上基础设施，帮助机构构建完整数字资产业务能力。', tags: ['现实资产代币化', '数字资产产品接入', '渠道分销', '链上合规'], audience: '企业资产方、基金及资产管理人、金融机构、财富管理平台、虚拟资产服务平台、交易平台、钱包与稳定币相关机构',
+    situationTitle: '开展数字资产业务，需要同时解决产品、交易、分销与合规',
+    situations: [
+      { title: '传统资产如何完成合规上链？', copy: '需要将资产权利、法律结构、代币设计、智能合约与链上部署有效衔接，才能形成清晰、可管理的数字化资产。' },
+      { title: '已有客户与渠道，如何快速补充数字资产产品？', copy: '连接虚拟资产、稳定币、钱包、交易与资金流转能力，帮助机构按实际业务范围扩展产品供给。' },
+      { title: '已经拥有数字资产产品，如何触达更多投资者？', copy: '通过产品接入、渠道配置、投资者准入、订单、结算和数据能力，将产品连接至相应分销体系。' },
+      { title: '链上交易如何兼顾合规与持续运营？', copy: '将客户身份、钱包地址、交易监控、兑换、持仓、赎回和审计留痕纳入统一业务流程。' },
+    ],
+    scenarios: [
+      { title: '现实资产代币化与发行', copy: '资产与项目评估 → 产品与代币结构 → 发行与投资者准入 → 分销 → 生命周期管理。' },
+      { title: '接入星路数字资产产品', copy: '星路虚拟资产或稳定币产品 → 产品配置 → 投资者准入 → 交易或兑换 → 持仓与运营。' },
+      { title: '合作机构产品接入星路分销', copy: '合作机构数字资产产品 → 接入与审核 → 平台配置 → 渠道分销 → 交易与持续运营。' },
+    ],
+    panorama: [{ title: 'FRP', copy: '现实资产代币化、发行与分销的一体化解决方案体系' }, { title: '数字资产产品与分销', copy: '承载星路产品、合作机构产品接入、渠道配置与投资者服务' }, { title: 'FinOne', copy: '支撑产品接入、用户、账户、订单、渠道配置与运营管理' }, { title: 'FinMix', copy: '提供账户、交易、清结算与数据等底层金融能力' }, { title: '链上基础能力', copy: '按项目连接区块链、智能合约、钱包、地址验证与链上监控' }],
+    capabilities: [
+      { title: '现实资产代币化与发行', copy: '从资产与项目评估、产品和权益结构，到智能合约、链上部署、发行、分销及生命周期管理。' },
+      { title: '虚拟资产与稳定币产品', copy: '根据实际业务范围接入虚拟资产、稳定币相关产品，以及买卖、兑换、转入转出和资产管理能力。' },
+      { title: '合作机构产品接入与分销', copy: '支持符合业务和合规要求的数字资产产品接入星路平台，完成配置、渠道分销、交易、结算与运营。' },
+      { title: '投资者准入与链上合规', copy: '将身份识别、反洗钱、投资者资格、钱包绑定、地址验证、风险识别、交易监控与审计留痕纳入统一框架。' },
+      { title: '数字资产持续运营', copy: '支持持仓、转让、交易记录、派息、收益分配、赎回、到期、销毁、兑换记录及资产报告。' },
+    ],
+    products: [
+      { title: '现实资产方', meta: '资产 → 代币化 → 发行 → 分销 → 生命周期管理', copy: '帮助现实资产形成具备清晰结构、发行逻辑与持续运营能力的数字金融产品。' },
+      { title: '需要数字资产产品的机构', meta: '星路产品 → 接入 → 交易 / 兑换 → 持续运营', copy: '为已有客户和渠道的机构补充适用的虚拟资产、稳定币产品与交易能力。' },
+      { title: '拥有数字资产产品的合作机构', meta: '合作方产品 → 星路平台 → 渠道配置 → 分销与运营', copy: '将符合要求的合作方产品接入星路平台，并连接相应渠道和投资者。' },
+    ],
+    steps: [
+      { title: '业务与产品评估', copy: '确认业务目标、资产或产品类型、目标投资者、分销渠道、交易方式、适用地区与合规要求。' },
+      { title: '方案与产品结构设计', copy: '设计代币化发行、星路产品接入或合作机构产品接入方案，以及准入、钱包、交易和系统连接方式。' },
+      { title: '系统配置与上线', copy: '完成产品、前端、渠道、钱包、账户、交易、结算与链上配置，并进行测试和正式上线。' },
+      { title: '分销与持续运营', copy: '持续提供产品运营、渠道管理、投资者服务、交易兑换、结算、持仓、链上监控和数据报告支持。' },
+    ],
+    proof: [
+      { title: '传统金融与数字资产产品', copy: '连接传统财富产品与数字资产产品，将不同资产类别纳入统一产品与分销体系。' },
+      { title: '代币化与数字化发行', copy: '覆盖从资产和产品结构，到数字化发行、分销及持续生命周期管理。' },
+      { title: '开放产品接入与分销', copy: '支持符合条件的合作机构产品接入星路平台，并通过相应渠道运营和分销。' },
+      { title: '交易与运营基础设施', copy: '通过 FinOne、FinMix 等能力连接产品、用户、账户、订单、交易、清结算与数据。' },
+      { title: '投资者准入与链上合规', copy: '根据实际业务连接身份识别、反洗钱、投资者资格、钱包验证、地址风险识别和交易监控。' },
+    ],
+    faq: [
+      { title: '星路是否提供虚拟资产和稳定币相关产品？', copy: '可根据具体业务模式和适用监管要求提供相应产品及交易能力，具体产品、币种、交易方式和服务地区以正式业务范围为准。' },
+      { title: '我们已有虚拟资产或稳定币产品，可以接入星路平台吗？', copy: '可根据产品性质、合作模式及合规要求评估接入；符合相关条件的产品可进行平台配置、运营和渠道分销。' },
+      { title: '接入星路平台后可以分销到哪些渠道？', copy: '渠道范围根据产品类型、投资者准入、合作关系和适用地区确定，包括星路相关业务渠道及合作渠道。' },
+      { title: '什么类型的资产适合进行代币化？', copy: '需要结合资产性质、权利结构、法律安排、投资者需求、发行地区和后续流动性综合判断。' },
+      { title: '是否可以只使用分销能力，而不使用代币化发行服务？', copy: '可以。可根据业务需求选择发行、产品接入、投资者准入、交易、分销或运营等部分能力。' },
+      { title: '是否支持钱包和链上地址验证？', copy: '可根据项目接入钱包绑定、地址验证和链上合规能力，正式支持范围需根据业务模式和适用地区确认。' },
+      { title: '是否支持稳定币兑换？', copy: '星路具备相关稳定币业务能力，具体支持币种、兑换方式和适用地区需按正式业务及合规要求确定。' },
+      { title: '金融服务由哪个主体提供？', copy: '具体账户、交易、兑换、发行或其他金融服务由项目架构中的相应服务主体提供，并按实际牌照及适用司法辖区披露。' },
+    ],
+    boundary: '具体产品、币种、支持链、钱包、交易方式、服务主体和适用司法辖区，需按正式业务范围及合规要求确认。', ctaTitle: '连接资产、产品与数字金融市场', cta: '咨询数字产业与代币化方案', secondary: { label: '咨询数字资产产品接入', href: '/contact' }, recommendations: [{ label: '嵌入式财富', href: '/solutions/embedded-wealth' }, { label: '机构财富管理', href: '/solutions/digital-wealth-management' }],
   },
   ai: {
     eyebrow: 'ENTERPRISE AI TRANSFORMATION', title: '让 AI 从试验走进真实业务流程', intro: '由 FDE 团队深入业务一线，结合 Finloop AI 技术底座，连接模型、企业知识、数据、Agent 与现有系统，从高价值场景识别、原型验证到系统集成和持续运营，推动 AI 进入生产环境。', tags: ['FDE 深入业务', 'Agent 与 Workflow', '企业数据连接', '安全治理', '持续运营'], audience: '金融机构、企业、数字化团队、业务部门、研发团队、数据与 AI 团队',
@@ -125,34 +166,51 @@ function BlockHead({ title, copy }: { title: string; copy?: string }) {
   return <header className="goal-head goal-head-plain"><div><h2>{title}</h2>{copy && <p>{copy}</p>}</div></header>;
 }
 
+const rwaChallengeImages = [
+  { src: '/assets/web3-issuance.png', alt: '传统资产代币化发行界面' },
+  { src: '/assets/web3-rwa.png', alt: '数字资产产品接入界面' },
+  { src: '/assets/web3-card-sheet.png', alt: '数字资产产品与渠道展示界面' },
+  { src: '/assets/web3-wallet.png', alt: '数字钱包与链上合规管理界面' },
+];
+
+const rwaProofIcons = ['landmark', 'blocks', 'network', 'server-cog', 'shield-check', 'file-check-2'];
+
 export function GoalSolutionPage({ type }: { type: 'wealth' | 'embedded' | 'treasury' | 'rwa' | 'ai' }) {
   const page = configs[type];
   const [activeCapability, setActiveCapability] = useState(0);
   const capability = page.capabilities[activeCapability];
-  const contextTitle = type === 'rwa' ? '真实资产数字化，需要连接资产、合规与持续运营' : '企业 AI 正在从工具试用走向真实业务协同';
-  const contextCopy = type === 'rwa' ? 'RWA 项目不仅涉及链上技术，还需要让资产权利、产品结构、投资者准入、交易结算与生命周期管理进入同一条业务链路。' : '当模型、知识、数据与现有系统彼此分散，AI 很难进入员工每天使用的流程。企业需要从业务场景出发，建立可连接、可治理、可持续运营的 AI 能力。';
+  useEffect(() => {
+    if (type === 'rwa') createIcons({ icons: { Blocks, FileCheck2, Landmark, Network, ServerCog, ShieldCheck } });
+  }, [type]);
+  const contextTitle = type === 'rwa' ? '让传统资产进入更广阔的数字金融市场' : '企业 AI 正在从工具试用走向真实业务协同';
+  const contextCopy = type === 'rwa' ? '通过资产数字化，企业和金融机构有机会将原本线下、封闭或分散的资产，连接到更灵活的发行机制、更广的投资者触达渠道和更高效的持续运营体系中。' : '当模型、知识、数据与现有系统彼此分散，AI 很难进入员工每天使用的流程。企业需要从业务场景出发，建立可连接、可治理、可持续运营的 AI 能力。';
   return <main className={`goal-page iw-page iw-v3 goal-modern goal-${page.key}`} id="main">
-    <section className="goal-hero iw-hero" data-header-theme="inverse"><div className="goal-shell"><p className="goal-eyebrow">{type === 'rwa' ? '数字资产与代币化解决方案' : '金融 AI 企业落地解决方案'}</p><h1>{page.title}</h1><p className="goal-intro">{page.intro}</p><div className="goal-hero-actions"><Link className="button button-accent" to="/contact">联系我们</Link><a href="#capabilities">了解核心能力 ↓</a></div></div></section>
+    <section className="goal-hero iw-hero" data-header-theme="inverse"><div className="goal-shell"><p className="goal-eyebrow">{type === 'rwa' ? '数字资产与代币化解决方案' : '金融 AI 企业落地解决方案'}</p><h1>{page.title}</h1><p className="goal-intro">{page.intro}</p><div className="goal-hero-actions"><Link className="button button-accent" to="/contact">联系我们</Link></div></div></section>
 
-    <section className="goal-section iw-audience modern-context"><div className="goal-shell"><div className="iw-audience-copy"><small>背景现状</small><h2>{contextTitle}</h2><p>{contextCopy}</p></div><figure aria-hidden="true"><div className="modern-context-core">{type === 'rwa' ? '真实资产' : '业务场景'}</div><div>{page.tags.slice(0, 4).map((tag, i) => <span key={tag}><b>0{i + 1}</b>{tag}</span>)}</div></figure></div></section>
+    <section className="goal-section iw-audience modern-context"><div className="goal-shell"><div className="iw-audience-copy"><small>背景现状</small><h2>{contextTitle}</h2><p>{contextCopy}</p></div>{type === 'rwa' ? <figure className="rwa-context-image"><img src="https://images.pexels.com/photos/35496838/pexels-photo-35496838.jpeg" alt="虚拟资产与数字金融市场" /></figure> : <figure aria-hidden="true"><div className="modern-context-core">业务场景</div><div>{page.tags.slice(0, 4).map((tag, i) => <span key={tag}><b>0{i + 1}</b>{tag}</span>)}</div></figure>}</div></section>
 
     {type === 'ai' && <section className="goal-section modern-fde"><div className="goal-shell"><BlockHead title="平台让能力可复用，FDE 让能力真正落地" copy="FDE 不是另一层软件，而是一种深入客户业务现场的工程交付方式，以业务目标倒推技术实现。" /><div className="modern-fde-grid"><article><span>01</span><h3>深入业务</h3><p>与业务角色共同梳理高频任务、隐性规则、决策节点与真正值得改变的流程。</p></article><article><span>02</span><h3>深入系统</h3><p>连接投管、ERP、OA、知识库、数据库与权限体系，让 AI 获得执行真实任务所需的上下文和工具。</p></article><article><span>03</span><h3>进入生产</h3><p>通过原型验证、系统集成、治理上线与持续运营，把模型、Skills 和 Agent 变成可控的业务动作。</p></article></div><div className="modern-fde-equation"><strong>FDE 团队</strong><i>+</i><strong>可复用 AI 技术底座</strong><i>=</i><strong>进入生产的企业 AI</strong></div></div></section>}
 
-    <section className="goal-section" id="situation"><div className="goal-shell"><BlockHead title={type === 'rwa' ? '让复杂的发行与分销环节形成连续链路' : '帮助企业跨过 AI 从试验到落地的断点'} copy={type === 'rwa' ? '围绕资产、产品、合规和运营逐项建立可执行能力。' : '让场景、知识、模型、系统与治理围绕业务结果协同。'} /><div className="modern-challenges">{page.situations.map((item, i) => <article key={item.title}><span>0{i + 1}</span><h3>{item.title}</h3><p>{item.copy}</p></article>)}</div></div></section>
+    <section className="goal-section" id="situation"><div className="goal-shell">{type === 'rwa' ? <><header className="iw-challenge-head"><h2>破解数字资产业务落地中的关键问题</h2><p>从资产发行、产品接入和投资者触达，到链上合规与持续运营，为不同业务难题连接对应能力。</p></header><div className="iw-challenges">{page.situations.map((item, i) => <article key={item.title}><img src={rwaChallengeImages[i].src} alt={rwaChallengeImages[i].alt} /><div><h3>{item.title}</h3><p>{item.copy}</p></div></article>)}</div></> : <><BlockHead title="帮助企业跨过 AI 从试验到落地的断点" copy="让场景、知识、模型、系统与治理围绕业务结果协同。" /><div className="modern-challenges">{page.situations.map((item, i) => <article key={item.title}><span>0{i + 1}</span><h3>{item.title}</h3><p>{item.copy}</p></article>)}</div></>}</div></section>
 
-    <section className="goal-section modern-paths"><div className="goal-shell"><BlockHead title={type === 'rwa' ? '根据你的 RWA 角色进入对应路径' : '从高价值业务场景开始'} /><div>{page.scenarios.map((item, i) => <article key={item.title}><span>0{i + 1}</span><h3>{item.title}</h3><p>{item.copy}</p></article>)}</div></div></section>
+    {type !== 'rwa' && <section className="goal-section modern-paths"><div className="goal-shell"><BlockHead title="从高价值业务场景开始" /><div>{page.scenarios.map((item, i) => <article key={item.title}><span>0{i + 1}</span><h3>{item.title}</h3><p>{item.copy}</p></article>)}</div></div></section>}
 
-    <section className="goal-section iw-integrated" id="capabilities"><div className="goal-shell"><BlockHead title={type === 'rwa' ? '连接 RWA 全链路能力' : '将 AI 接入企业数据与真实业务流程'} copy={type === 'rwa' ? '从资产与 Token，到客户钱包、风险合规和资金流转，按项目角色组合需要的能力。' : '从模型治理和企业数据，到 Agent、工作流与持续运营，形成可落地的企业 AI 能力。'} /><div className="iw-capability-tabs" role="tablist" aria-label="解决方案核心能力">{page.capabilities.map((item, i) => <button key={item.title} id={`${type}-tab-${i}`} role="tab" aria-selected={activeCapability === i} aria-controls={`${type}-capability-panel`} onClick={() => setActiveCapability(i)}>{item.title}</button>)}</div><article className="iw-capability-panel modern-capability-panel" id={`${type}-capability-panel`} role="tabpanel" aria-labelledby={`${type}-tab-${activeCapability}`}><figure aria-hidden="true"><strong>{capability.title}</strong>{page.panorama.slice(0, 4).map((item, i) => <span key={item.title}><b>0{i + 1}</b>{item.title}</span>)}</figure><div className="iw-capability-copy"><h3>{capability.title}</h3><p>{capability.copy}</p><div className="iw-capability-items">{page.panorama.map(item => <span key={item.title}>{item.title}</span>)}</div><footer><b>{type === 'rwa' ? 'RWA H5 · FinOne · FinMix · FinTaaS' : 'FAI · 星路通 · AI PaaS · 星智通 MaaS'}</b></footer></div></article></div></section>
+    <section className="goal-section iw-integrated" id="capabilities"><div className="goal-shell"><BlockHead title={type === 'rwa' ? '覆盖数字资产全链路解决方案' : '将 AI 接入企业数据与真实业务流程'} copy={type === 'rwa' ? '从现实资产代币化，到虚拟资产与稳定币产品接入，再到合作机构产品分销，按业务目标灵活组合产品、交易、运营与链上能力。' : '从模型治理和企业数据，到 Agent、工作流与持续运营，形成可落地的企业 AI 能力。'} /><div className="iw-capability-tabs" role="tablist" aria-label="解决方案核心能力">{page.capabilities.map((item, i) => <button key={item.title} id={`${type}-tab-${i}`} role="tab" aria-selected={activeCapability === i} aria-controls={`${type}-capability-panel`} onClick={() => setActiveCapability(i)}>{item.title}</button>)}</div><article className="iw-capability-panel modern-capability-panel" id={`${type}-capability-panel`} role="tabpanel" aria-labelledby={`${type}-tab-${activeCapability}`}>{type === 'rwa' ? <figure className="rwa-capability-placeholder" aria-hidden="true">{[0, 1, 2, 3].map(item => <i key={item} />)}</figure> : <figure aria-hidden="true"><strong>{capability.title}</strong>{page.panorama.slice(0, 4).map((item, i) => <span key={item.title}><b>0{i + 1}</b>{item.title}</span>)}</figure>}<div className="iw-capability-copy"><h3>{capability.title}</h3><p>{capability.copy}</p><div className="iw-capability-items">{page.panorama.map(item => <span key={item.title}>{item.title}</span>)}</div><footer><b>{type === 'rwa' ? 'FRP · FinOne · FinMix · 链上基础能力' : 'FAI · 星路通 · AI PaaS · 星智通 MaaS'}</b></footer></div></article></div></section>
 
-    <section className="goal-section modern-offers" id="products"><div className="goal-shell"><BlockHead title={type === 'rwa' ? '发行与分销双路径' : '交付物与合作方式'} copy={type === 'rwa' ? '根据你是资产方、发行参与方或产品分销平台，选择相应的项目路径。' : '从场景诊断开始，逐步进入首批场景共建和企业级平台运营。'} /><div>{page.products.map(item => <article key={item.title}><small>{item.meta}</small><h3>{item.title}</h3><p>{item.copy}</p>{item.href && <Link to={item.href}>了解更多 →</Link>}</article>)}</div></div></section>
+    {type === 'rwa' && <section className="goal-section rwa-platforms"><div className="goal-shell"><BlockHead title="相关产品与平台" copy="进入对应产品，了解资产代币化与财富业务核心能力。" /><div className="rwa-platform-grid">{[
+      { title: 'FinTaaS', copy: '提供现实资产上链、资产代币化与数字化发行技术服务。', href: 'https://finlooprwa.com/fintaas/', external: true },
+      { title: 'FinOne', copy: '支撑产品、用户、账户、订单、渠道配置与财富业务运营管理。', href: '/products/finone', external: false },
+    ].map((item, i) => item.external ? <a href={item.href} target="_blank" rel="noopener noreferrer" key={item.title}><span>0{i + 1}</span><h3>{item.title}</h3><p>{item.copy}</p><b>了解产品 →</b></a> : <Link to={item.href} key={item.title}><span>0{i + 1}</span><h3>{item.title}</h3><p>{item.copy}</p><b>了解产品 →</b></Link>)}</div></div></section>}
+
+    <section className="goal-section modern-offers" id="products"><div className="goal-shell"><BlockHead title={type === 'rwa' ? '覆盖发行、产品接入与分销全链路' : '交付物与合作方式'} copy={type === 'rwa' ? '根据你是现实资产方、数字资产产品需求方或产品提供方，组合相应业务能力。' : '从场景诊断开始，逐步进入首批场景共建和企业级平台运营。'} /><div>{page.products.map(item => <article key={item.title}><small>{item.meta}</small><h3>{item.title}</h3><p>{item.copy}</p>{item.href && <Link to={item.href}>了解更多 →</Link>}</article>)}</div></div></section>
 
     <section className="goal-section goal-soft" id="delivery"><div className="goal-shell"><BlockHead title={type === 'ai' ? 'FDE-AI 落地方法' : '我们的服务流程'} copy={type === 'ai' ? '由业务场景诊断进入设计、构建、部署和持续运营。' : '从角色和项目评估，到方案设计、系统连接、上线与持续运营。'} /><ol className="goal-timeline iw-delivery">{page.steps.map((item, i) => <li key={item.title}><span>{String(i + 1).padStart(2, '0')}</span><div><h3>{item.title}</h3><p>{item.copy}</p></div></li>)}</ol></div></section>
 
-    <section className="goal-section" id="proof"><div className="goal-shell"><BlockHead title={type === 'rwa' ? '支撑数字资产业务的专业基础' : '支撑企业 AI 持续运行的专业基础'} /><div className="iw-proof modern-proof">{page.proof.map((item, i) => <article key={item.title}><span>0{i + 1}</span><h3>{item.title}</h3><p>{item.copy}</p></article>)}<article><span>0{page.proof.length + 1}</span><h3>{type === 'rwa' ? '项目边界清晰' : '安全与人工复核'}</h3><p>{page.boundary}</p></article></div></div></section>
+    <section className="goal-section" id="proof"><div className="goal-shell"><BlockHead title={type === 'rwa' ? '支撑数字资产业务的专业基础' : '支撑企业 AI 持续运行的专业基础'} /><div className="iw-proof modern-proof">{page.proof.map((item, i) => <article key={item.title}>{type === 'rwa' ? <i data-lucide={rwaProofIcons[i]} aria-hidden="true" /> : <span>0{i + 1}</span>}<h3>{item.title}</h3><p>{item.copy}</p></article>)}<article>{type === 'rwa' ? <i data-lucide={rwaProofIcons[5]} aria-hidden="true" /> : <span>0{page.proof.length + 1}</span>}<h3>{type === 'rwa' ? '项目边界清晰' : '安全与人工复核'}</h3><p>{page.boundary}</p></article></div></div></section>
 
-    <section className="goal-section iw-customer-case" id="case"><div className="goal-shell"><BlockHead title="客户案例" copy="仅展示已确认的信息；客户名称、项目结果与合作性质需完成授权后公开。" /><article className="iw-case-study"><header><small>案例信息待公开</small><h3>{type === 'rwa' ? '真实资产发行与数字化分销场景' : '企业 AI 进入专业业务流程场景'}</h3><p>{page.proof[0].copy}</p></header><div>{page.scenarios.slice(0, 3).map((item, i) => <section key={item.title}><span>0{i + 1}</span><h4>{item.title}</h4><p>{item.copy}</p></section>)}</div></article></div></section>
+    {type === 'ai' && <section className="goal-section iw-customer-case" id="case"><div className="goal-shell"><BlockHead title="客户案例" copy="仅展示已确认的信息；客户名称、项目结果与合作性质需完成授权后公开。" /><article className="iw-case-study"><header><small>案例信息待公开</small><h3>企业 AI 进入专业业务流程场景</h3><p>{page.proof[0].copy}</p></header><div>{page.scenarios.slice(0, 3).map((item, i) => <section key={item.title}><span>0{i + 1}</span><h4>{item.title}</h4><p>{item.copy}</p></section>)}</div></article></div></section>}
 
     <section className="goal-section goal-soft" id="faq"><div className="goal-shell"><BlockHead title="常见问题" /><div className="goal-faq">{page.faq.map(item => <details key={item.title}><summary>{item.title}<span>+</span></summary><p>{item.copy}</p></details>)}</div></div></section>
-    <section className="goal-cta"><div className="goal-shell"><div className="iw-cta-copy"><h2>{page.ctaTitle}</h2><p>{type === 'rwa' ? '根据资产类型、目标市场与业务角色，评估适合的发行、接入或分销路径。' : '从真实业务、高价值任务与现有系统出发，规划首个可落地的 AI 场景。'}</p></div><div><Link className="button button-light" to="/contact">{page.cta}</Link></div></div></section>
+    <section className="goal-cta"><div className="goal-shell"><div className="iw-cta-copy"><h2>{page.ctaTitle}</h2><p>{type === 'rwa' ? '无论是现实资产代币化、接入虚拟资产与稳定币产品，还是将已有数字资产产品接入星路平台分销，都可以根据业务目标构建相应方案。' : '从真实业务、高价值任务与现有系统出发，规划首个可落地的 AI 场景。'}</p></div><div><Link className="button button-light" to="/contact">{page.cta}</Link></div></div></section>
   </main>;
 }

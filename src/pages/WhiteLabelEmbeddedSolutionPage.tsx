@@ -37,7 +37,7 @@ export function WhiteLabelEmbeddedSolutionPage(){
   const [activeMode, setActiveMode] = useState(0);
   const mode = modes[activeMode];
   return <main className="goal-page iw-page iw-v3 goal-modern wle-page" id="main">
-  <section className="goal-hero iw-hero" data-header-theme="inverse"><div className="goal-shell"><p className="goal-eyebrow">白标与嵌入式金融解决方案</p><h1>财富服务，融入品牌与客户场景</h1><p className="goal-intro">通过白标 App、嵌入式财富 H5 和企业财富 Web，将多资产财富服务带入合作机构已有品牌、渠道与客户关系，并由统一财富中台持续支撑产品与运营。</p><div className="goal-hero-actions"><Link className="button button-accent" to="/contact">联系我们</Link><a href="#modes">了解接入模式 ↓</a></div></div></section>
+  <section className="goal-hero iw-hero" data-header-theme="inverse"><div className="goal-shell"><p className="goal-eyebrow">白标与嵌入式金融解决方案</p><h1>财富服务，融入品牌与客户场景</h1><p className="goal-intro">通过白标 App、嵌入式财富 H5 和企业财富 Web，将多资产财富服务带入合作机构已有品牌、渠道与客户关系，并由统一财富中台持续支撑产品与运营。</p><div className="goal-hero-actions"><Link className="button button-accent" to="/contact">联系我们</Link></div></div></section>
 
   <section className="goal-section iw-audience wle-context"><div className="goal-shell"><div className="iw-audience-copy"><small>背景现状</small><h2>品牌与渠道已就位，财富能力仍需快速补齐</h2><p>金融机构和数字平台往往已有客户、品牌与流量入口，但从零建设账户、产品、交易和运营体系成本高、周期长。通过白标或嵌入式接入，可在保留既有体验的同时补齐财富服务能力。</p></div><figure aria-label="品牌、渠道与财富能力连接示意图"><div><strong>你的品牌与渠道</strong><span>现有 App</span><span>数字平台</span><span>企业服务入口</span></div><b>连接</b><div><strong>财富服务能力</strong><span>账户</span><span>产品与交易</span><span>资产与运营</span></div></figure></div></section>
 

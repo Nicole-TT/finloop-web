@@ -26,7 +26,7 @@ export function FDEAIPage() {
           <p className="fde-label">FDE-AI · FINANCIAL AI DEPLOYMENT</p>
           <h1>让业务真正把AI用起来</h1>
           <p>由兼具工程能力与金融业务 Know-how 的 FDE 团队深入业务一线，从场景诊断、原型验证、系统集成到持续运营，以真实业务结果作为交付目标。</p>
-          <div className="fde-actions"><Link className="button button-light" to="/contact">联系我们</Link><a href="#case">查看真实案例 ↓</a></div>
+          <div className="fde-actions"><Link className="button button-light" to="/contact">联系我们</Link></div>
         </div>
         <div className="fde-hero-media">
           <img src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=1600&q=82" alt="企业团队在办公室协作" />

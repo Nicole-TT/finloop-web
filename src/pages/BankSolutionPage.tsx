@@ -65,7 +65,12 @@ export function BankSolutionPage() {
       <div className="bank-capability"><div className="bank-capability-copy"><span>03</span><small>DIGITAL WEALTH</small><h3>数字财富建设</h3><p>支持机构自有财富终端、白标体验、新业务渠道与财富运营平台。</p><div>{['自有终端','White-label','新业务渠道','财富运营'].map(x=><i key={x}>{x}</i>)}</div></div><GreyUI title="数字财富终端" variant="channel" /></div>
     </div></section>
 
-    <section className="bank-section bank-stack-section"><div className="bank-shell"><SectionHead title="Powered by Finloop" copy="将机构现有系统、财富核心、交易运营与金融产品生态按层连接。" /><div className="bank-stack">{[['机构现有系统','EXISTING SYSTEMS'],['API / Integration Layer','OPEN CONNECTION'],['FinOne','WEALTH CORE'],['FinMix','TRADING & OPERATIONS'],['产品与金融机构生态','FINANCIAL ECOSYSTEM']].map(([t,s],i)=><article className={i===1?'active':''} key={t}><span>{String(i+1).padStart(2,'0')}</span><small>{s}</small><strong>{t}</strong><i>{i<4?'↓':'OPEN ECOSYSTEM'}</i></article>)}</div></div></section>
+    <section className="bank-section bank-stack-section"><div className="bank-shell"><SectionHead title="相关产品与平台" copy="根据机构现有系统与业务目标，进入对应产品了解财富核心、专业交易、数字终端与底层技术能力。" /><div className="bank-product-links">{[
+      ['01','财富业务核心','FinOne','统一支撑客户、账户、产品、交易、资产与运营管理。','/products/finone'],
+      ['02','机构交易工作台','Web Portal','面向专业机构连接产品浏览、询价、订单与交易运营。','/products/web-portal'],
+      ['03','品牌化投资终端','白标 App','以机构自有品牌快速构建财富与股票投资终端。','/products/white-label-app'],
+      ['04','交易与技术基础设施','FinMix','连接账户、交易、清结算、数据与开放集成能力。','/technology-platform'],
+    ].map(([n,type,name,copy,to])=><Link to={to} key={name}><span>{n}</span><small>{type}</small><h3>{name}</h3><p>{copy}</p><b>了解产品 →</b></Link>)}</div></div></section>
 
     <section className="bank-section"><div className="bank-shell"><SectionHead title="面向金融机构架构的企业级能力" copy="围绕部署、隔离与业务连续性要求，为银行、券商及大型金融机构提供可适配的技术基础。" /><div className="bank-trust">{[['01','Deployment','支持 SaaS 与本地部署等企业架构场景。'],['02','Availability','围绕机构业务的稳定运行要求设计。'],['03','Tenant & Isolation','支持多租户与数据隔离能力。'],['04','Business Continuity','结合项目要求规划业务连续性机制。'],['05','Financial Infrastructure','连接金融产品、交易与机构运营体系。']].map(([n,t,p])=><article key={n}><span>{n}</span><small>{t}</small><p>{p}</p></article>)}</div></div></section>
 
