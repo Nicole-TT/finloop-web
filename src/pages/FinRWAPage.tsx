@@ -32,7 +32,7 @@ export function FinRWAPage() {
           <p className="rwa-label">FINRWA · REAL-WORLD ASSETS</p>
           <h1>从资产上链到分销，<br /><em>一套完整的 RWA 体系</em></h1>
           <p>将资产设计、Tokenization、链上部署、持份管理、合规及分销连接到统一体系，帮助金融机构与企业更高效地进入 Web3 数字金融生态。</p>
-          <div className="rwa-actions"><Link className="rwa-button" to="/contact">咨询 RWA 方案 <span>↗</span></Link><a className="rwa-external" href="https://www.finlooprwa.com/" target="_blank" rel="noopener noreferrer">FinRWA 官网 ↗</a></div>
+          <div className="rwa-actions"><Link className="rwa-button" to="/contact">预约演示</Link></div>
         </div>
         <div className="rwa-transform" aria-label="真实资产数字化并进入市场的过程示意">
           <div className="rwa-object physical"><span>REAL ASSET</span><i /><i /><i /></div>

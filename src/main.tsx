@@ -17,8 +17,7 @@ import { FinRWAPage } from './pages/FinRWAPage';
 import { WebPortalPage } from './pages/WebPortalPage';
 import { XingLuTongPage } from './pages/XingLuTongPage';
 import { XingZhiTongPage } from './pages/XingZhiTongPage';
-import { WealthSolutionPage } from './pages/WealthSolutionPage';
-import { BankSolutionPage } from './pages/BankSolutionPage';
+import { BrokerSolutionPage } from './pages/BrokerSolutionPage';
 import { PlatformSolutionPage } from './pages/PlatformSolutionPage';
 import { DigitalAssetSolutionPage } from './pages/DigitalAssetSolutionPage';
 import { EnterpriseSolutionPage } from './pages/EnterpriseSolutionPage';
@@ -34,6 +33,7 @@ import { WhiteLabelAppPage } from './pages/WhiteLabelAppPage';
 import { SolutionsPage } from './pages/SolutionsPage';
 import { GoalSolutionPage } from './pages/GoalSolutionPage';
 import { InstitutionalWealthSolutionPage } from './pages/InstitutionalWealthSolutionPage';
+import { ProfessionalWealthSolutionPage } from './pages/ProfessionalWealthSolutionPage';
 import { CorporateTreasurySolutionPage } from './pages/CorporateTreasurySolutionPage';
 import { WhiteLabelEmbeddedSolutionPage } from './pages/WhiteLabelEmbeddedSolutionPage';
 
@@ -80,10 +80,10 @@ const businessGoalSolutionItems: Array<[string, string, string]> = [
 ];
 
 const customerTypeSolutionItems: Array<[string, string, string]> = [
-  ['wealth', '财富与资产管理机构', '从客户准入到投资及存续管理，构建一体化财富业务'],
-  ['broker', '银行、证券及金融机构', '基于现有客户与系统，扩展财富产品、交易及数字渠道'],
-  ['platform', '跨境支付平台', '无需重建完整财富系统，将投资能力嵌入已有用户场景'],
-  ['enterprise', '企业客户', '通过独立平台统一管理企业现金、投资与资产'],
+  ['broker', '银行与证券机构', '扩展财富产品、数字财富、AI、RWA 与 API 能力。'],
+  ['wealth', '财富管理与专业金融机构', '灵活建设财富管理、产品分销与专业投资服务能力。'],
+  ['platform', '支付与平台机构', '将投资与财富服务快速接入现有平台。'],
+  ['enterprise', '企业与机构投资者', '满足企业自有资金的现金管理与多资产投资需求。'],
 ];
 
 const solutionGroups = [
@@ -370,9 +370,9 @@ function App() {
           <Route path="solutions/corporate-treasury" element={<CorporateTreasurySolutionPage />} />
           <Route path="solutions/rwa-web3" element={<GoalSolutionPage type="rwa" />} />
           <Route path="solutions/enterprise-ai" element={<GoalSolutionPage type="ai" />} />
-          <Route path="solutions/wealth" element={<WealthSolutionPage />} />
-          <Route path="solutions/broker" element={<BankSolutionPage />} />
-          <Route path="solutions/bank" element={<BankSolutionPage />} />
+          <Route path="solutions/wealth" element={<ProfessionalWealthSolutionPage />} />
+          <Route path="solutions/broker" element={<BrokerSolutionPage />} />
+          <Route path="solutions/bank" element={<BrokerSolutionPage />} />
           <Route path="solutions/platform" element={<PlatformSolutionPage />} />
           <Route path="solutions/digital" element={<DigitalAssetSolutionPage />} />
           <Route path="solutions/enterprise" element={<EnterpriseSolutionPage />} />

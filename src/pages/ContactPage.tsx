@@ -118,7 +118,7 @@ export function ContactPage() {
 
       <section className="contact-direct contact-section">
         <div className="contact-shell"><div className="contact-section-head"><span>02 / DIRECT CONTACT</span><h2>也可以直接与我们联系</h2><p>根据您的所在地或联系目的，选择对应入口。</p></div><div className="contact-direct-grid">
-          <article><span>01</span><h3>香港商务咨询</h3><p>Jason Hui</p><a href="mailto:jason.hui@finloop.hk">jason.hui@finloop.hk <b>↗</b></a></article>
+          <article><span>01</span><h3>香港商务咨询</h3><p>Thomas</p><a href="mailto:thomas.ng@finloop.hk">thomas.ng@finloop.hk <b>↗</b></a></article>
           <article><span>02</span><h3>中国内地商务咨询</h3><p>Yanchun Gong</p><a href="mailto:yanchun.gong@finloop.hk">yanchun.gong@finloop.hk <b>↗</b></a></article>
           <article><span>03</span><h3>客户服务</h3><p><a href="tel:+85230088996">(852) 3008 8996</a></p><a href="mailto:CS@finloop.hk">CS@finloop.hk <b>↗</b></a></article>
           <article><span>04</span><h3>投资者关系</h3><p>Tong Wang</p><a href="mailto:tong.wang@fosunhn.net">tong.wang@fosunhn.net <b>↗</b></a></article>

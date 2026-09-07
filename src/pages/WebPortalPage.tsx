@@ -22,7 +22,7 @@ function PortalUI({ title, mode = 'table' }: { title: string; mode?: 'table' | '
 export function WebPortalPage() {
   return <main className="portal-page" id="main">
     <section className="portal-hero" data-header-theme="inverse"><div className="portal-shell portal-hero-grid">
-      <div className="portal-hero-copy"><p className="portal-kicker">WEB PORTAL <span>·</span> PROFESSIONAL WORKSPACE</p><h1>一个机构工作台，<br />连接产品、询价与交易</h1><p>面向 RM、投资顾问、交易员及运营人员，将金融产品、询价、报价、订单与交易流程连接到统一工作环境。</p><div className="portal-actions"><Link className="button button-accent" to="/contact">预约 Web Portal 演示 →</Link><a href="#workflow">探索交易流程 ↓</a></div>
+      <div className="portal-hero-copy"><p className="portal-kicker">WEB PORTAL <span>·</span> PROFESSIONAL WORKSPACE</p><h1>一个机构工作台，<br />连接产品、询价与交易</h1><p>面向 RM、投资顾问、交易员及运营人员，将金融产品、询价、报价、订单与交易流程连接到统一工作环境。</p><div className="portal-actions"><Link className="button button-accent" to="/contact">预约演示</Link></div>
       </div>
       <div className="portal-hero-stage"><PortalUI title="Product & Trading Workspace" /><div className="portal-live"><i /> LIVE QUOTES</div><div className="portal-status">订单状态 <strong>EXECUTED</strong></div></div>
     </div></section>

@@ -1,84 +1,39 @@
 import { Link } from 'react-router-dom';
 
-const workflow = ['账户 / 客户身份', '财富产品', '产品发现', 'RFQ / Quote', 'Order / Execution', 'Holdings', '数字财富体验'];
+type Capability = { label: string; title: string; copy: string; items: string[]; links: Array<[string, string]>; visual: 'products' | 'channels' | 'api' | 'ai' | 'rwa' };
 
-function SectionHead({ title, copy }: { title: string; copy?: string }) {
-  return <div className="broker-head"><h2>{title}</h2>{copy && <p>{copy}</p>}</div>;
-}
+const capabilities: Capability[] = [
+  { label: '财富产品供给', title: '快速扩充财富产品与投资服务', copy: '连接多元财富产品，为现有个人、企业及机构客户补充不同风险、期限与资产类别的投资选择。', items: ['现金管理', '公募基金', '私募基金', '债券', '结构性产品', '多资产投资产品', '产品数据与运营'], links: [['机构财富管理', '/solutions/digital-wealth-management']], visual: 'products' },
+  { label: '数字财富平台', title: '快速补充现有数字渠道的财富能力', copy: '在现有手机银行、证券 App 或 Web 服务中增加产品展示、投资账户、交易、持仓及资产服务，无需重新建设完整前端体系。', items: ['财富 H5', '模块化页面', '白标财富前端', '财富中台', '产品与交易能力', '资产展示'], links: [['机构财富管理', '/solutions/digital-wealth-management'], ['FinOne', '/products/finone']], visual: 'channels' },
+  { label: '开放 API', title: 'API 灵活接入财富业务能力', copy: '保留现有账户、交易和运营系统，通过标准接口接入产品、订单、交易、持仓及资产数据。', items: ['产品 API', '账户 API', '订单 API', '交易 API', '持仓与资产 API', '数据 API', '系统集成'], links: [['API 与技术平台', '/technology-platform']], visual: 'api' },
+  { label: '金融 AI', title: '让 AI 进入财富服务与业务运营', copy: '以 AI 辅助产品理解、投顾服务、客户运营及内部工作流程，提升专业服务与运营效率。', items: ['AI 产品检索', 'AI 产品解读', 'AI 投顾辅助', '客户服务', '智能运营', '智能 Agent', '数据洞察'], links: [['Finloop AI', '/ai']], visual: 'ai' },
+  { label: 'RWA 与数字资产', title: '连接传统金融与数字资产市场', copy: '帮助银行与证券机构拓展资产代币化、RWA 发行与分销及 Web3 相关金融业务。', items: ['资产代币化', 'RWA 发行', 'RWA 分销', '数字资产接入', 'Web2 / Web3 连接', '相关技术基础设施'], links: [['数字产业与代币化', '/solutions/rwa-web3']], visual: 'rwa' },
+];
 
-function GreyProductUI({ title, mode = 'products' }: { title: string; mode?: 'products' | 'trading' | 'mobile' }) {
-  return <div className={`broker-ui broker-ui-${mode}`} role="img" aria-label={`${title}产品界面占位`}>
-    <div className="broker-ui-bar"><span /><strong>{title}</strong><i /></div>
-    <div className="broker-ui-body">
-      <aside>{[1, 2, 3, 4, 5].map(i => <i key={i} />)}</aside>
-      <div className="broker-ui-canvas">
-        <div className="broker-ui-metrics">{[1, 2, 3].map(i => <i key={i} />)}</div>
-        <div className="broker-ui-panels"><section>{[1, 2, 3, 4].map(i => <i key={i} />)}</section><figure>{[1, 2, 3, 4, 5].map(i => <i key={i} />)}</figure></div>
-      </div>
-    </div>
-  </div>;
+const plans = [
+  { type: '大型银行 / 券商', context: '已有成熟前端、核心账户及交易体系。', stack: ['API', '产品与财富能力', 'AI', 'RWA', '定制化 / 本地化部署'], note: '以能力和接口接入为主，减少对现有系统的改造。' },
+  { type: '中型银行 / 券商', context: '已有基础金融系统，希望快速补齐数字财富能力。', stack: ['财富 H5', 'FinOne 财富中台', 'API', 'Web Portal', 'AI'] },
+  { type: '成长型机构 / 新财富业务团队', context: '希望快速形成较完整的财富业务能力。', stack: ['白标财富 App / H5', 'FinOne', '标准 API', 'AI'] },
+];
+
+function CapabilityVisual({ type }: { type: Capability['visual'] }) {
+  const items = { products: ['现金', '基金', '债券', '结构性产品'], channels: ['手机银行', '证券 App', 'Web', '财富 H5'], api: ['PRODUCT', 'ACCOUNT', 'ORDER', 'ASSET'], ai: ['产品理解', '投顾辅助', '智能运营', '数据洞察'], rwa: ['REAL ASSET', 'TOKENIZATION', 'DISTRIBUTION', 'WEB3'] }[type];
+  const core = type === 'api' ? 'OPEN API' : type === 'ai' ? 'AI' : type === 'rwa' ? 'RWA' : 'WEALTH';
+  return <figure className={`bfi-visual bfi-visual-${type}`} aria-label={`${items.join('、')}能力连接示意`}><div className="bfi-visual-core"><strong>{core}</strong></div><div className="bfi-visual-items">{items.map(item => <span key={item}>{item}</span>)}</div></figure>;
 }
 
 export function BrokerSolutionPage() {
-  return <main className="broker-page" id="main">
-    <section className="broker-hero" data-header-theme="inverse">
-      <div className="broker-shell broker-hero-grid">
-        <div className="broker-hero-copy">
-          <p className="broker-label">SECURITIES &amp; BROKERAGE</p>
-          <h1>证券及经纪机构解决方案</h1>
-          <p>在现有证券业务基础上连接更多财富产品、专业交易能力和数字客户体验，帮助机构更快推出和扩展财富业务。</p>
-          <div className="broker-actions"><Link className="button button-accent" to="/contact">联系我们</Link></div>
-        </div>
-        <div className="broker-hero-visual" aria-label="从证券经纪业务扩展至数字财富业务的能力路径">
-          <div className="broker-hero-source"><small>EXISTING BUSINESS</small><strong>Brokerage</strong><span>已有证券客户与账户</span></div>
-          <div className="broker-hero-line"><i /><i /><i /></div>
-          <div className="broker-hero-target"><small>WEALTH EXPANSION</small><strong>Digital Wealth</strong><div><span>Products</span><span>Trading</span><span>Experience</span></div></div>
-        </div>
-      </div>
-    </section>
+  return <main className="bfi-page" id="main">
+    <section className="bfi-hero" data-header-theme="inverse"><div className="bfi-shell bfi-hero-grid"><div className="bfi-hero-copy"><p className="bfi-kicker">银行与证券机构解决方案</p><h1>在现有金融体系上，持续扩展新的财富业务能力</h1><p>面向银行与证券机构，在已有客户、账户、交易及核心系统基础上，灵活接入财富产品、数字财富、AI、RWA 与开放 API 能力。</p><div className="bfi-actions"><a className="button button-accent" href="#capabilities">探索适合您的能力</a><Link to="/contact">联系我们</Link></div></div><div className="bfi-hero-system" aria-label="在机构现有金融体系上扩展财富能力的示意图"><div className="existing"><small>EXISTING FINANCIAL SYSTEM</small><strong>机构现有体系</strong><span>客户 · 账户 · 交易 · 核心系统</span></div><i>连接</i><div className="extensions">{['财富产品', '数字财富', 'AI', 'RWA', 'API'].map(item => <span key={item}>{item}</span>)}</div></div></div></section>
 
-    <section className="broker-section broker-white"><div className="broker-shell">
-      <SectionHead title="已有证券客户，也可以承接更完整的财富需求" copy="客户需求正在从股票交易延伸至更丰富的财富配置。机构需要让新增产品、交易运营与客户体验进入同一条业务主线。" />
-      <div className="broker-opportunity">
-        <div className="broker-opportunity-lead"><small>BROKERAGE → WEALTH</small><strong>从交易关系<br />延伸至财富关系</strong><p>基于既有客户与账户基础，持续扩展可服务的产品与场景。</p></div>
-        <div className="broker-opportunity-list">{[['01','需求延伸','客户需求从股票交易向财富配置延伸'],['02','品类增加','基金、债券与结构化产品持续进入服务范围'],['03','能力升级','新业务需要对应的交易与运营能力'],['04','体验统一','客户期望在同一数字终端完成更多服务']].map(([n,t,p])=><article key={n}><span>{n}</span><div><h3>{t}</h3><p>{p}</p></div></article>)}</div>
-      </div>
-    </div></section>
+    <section className="bfi-capabilities-intro" id="capabilities"><div className="bfi-shell bfi-section-head"><h2>在现有体系上，按需组合新的业务能力</h2><p>从单项产品与接口接入，到数字财富、AI 与数字资产业务建设，根据现有架构选择合适的能力组合。</p></div></section>
 
-    <section className="broker-section"><div className="broker-shell">
-      <SectionHead title="把业务扩展转化为三项可落地的能力" />
-      <div className="broker-outcomes">{[['01','Expand Product Offering','扩展财富产品','让基金、债券、结构化产品等进入已有证券业务。'],['02','Enable Institutional Trading','提升交易能力','连接询价、报价、订单和执行流程。'],['03','Extend Digital Experience','建设数字客户终端','通过白标财富或股票 App 延伸客户服务。']].map(([n,en,t,p])=><article key={n}><span>{n}</span><small>{en}</small><h3>{t}</h3><p>{p}</p></article>)}</div>
-    </div></section>
+    <div className="bfi-capability-list">{capabilities.map((item, index) => <section className={`bfi-capability ${index % 2 ? 'reverse' : ''}`} key={item.title}><div className="bfi-shell bfi-capability-grid"><div className="bfi-capability-copy"><h2>{item.title}</h2><p>{item.copy}</p><div className="bfi-tags">{item.items.map(capability => <span key={capability}>{capability}</span>)}</div><div className="bfi-links">{item.links.map(([label, href]) => <Link to={href} key={label}>{label} <span>→</span></Link>)}</div></div><CapabilityVisual type={item.visual} /></div></section>)}</div>
 
-    <section className="broker-section broker-flow-section" id="workflow"><div className="broker-shell">
-      <SectionHead title="从已有证券客户，到新的财富业务" copy="保留既有客户关系，让产品发现、专业交易与持仓服务顺着同一条链路持续延伸。" />
-      <div className="broker-workflow"><div className="broker-flow-start"><small>START</small><strong>Existing<br />Brokerage Client</strong></div><div className="broker-flow-track">{workflow.map((x,i)=><article key={x}><span>{String(i+1).padStart(2,'0')}</span><strong>{x}</strong></article>)}</div></div>
-    </div></section>
+    <section className="bfi-custom"><div className="bfi-shell bfi-custom-grid"><div><h2>适配大型金融机构的复杂系统环境</h2><p>根据机构现有架构、监管要求、部署环境与业务流程，提供系统集成、功能定制及本地化部署。</p><div className="bfi-links"><Link to="/technology-platform">技术平台 <span>→</span></Link><Link to="/support">实施与服务 <span>→</span></Link></div></div><div className="bfi-custom-map">{['定制开发', '系统集成', '私有化部署', '本地化部署', '品牌适配', '权限与安全适配'].map(item => <span key={item}>{item}</span>)}</div></div></section>
 
-    <section className="broker-section broker-white" id="capabilities"><div className="broker-shell">
-      <SectionHead title="围绕增长路径，组合所需的产品与交易能力" copy="按业务阶段连接产品、专业工作终端和客户体验，无需为每个财富品类重复建设完整系统。" />
-      <div className="broker-capability"><div className="broker-capability-copy"><span>01</span><small>PRODUCT EXPANSION</small><h3>财富产品扩展</h3><p>连接新的财富产品类别，并贯通产品接入、管理、发布与客户可见的完整过程。</p><div>{['产品接入','产品管理','产品发布','客户可见'].map(x=><i key={x}>{x}</i>)}</div></div><GreyProductUI title="财富产品管理" /></div>
-      <div className="broker-capability reverse"><div className="broker-capability-copy"><span>02</span><small>INSTITUTIONAL EXECUTION</small><h3>机构交易执行</h3><p>从产品发现到询价、报价、订单与执行，让专业团队在连续工作流中完成交易。</p><div>{['Product','RFQ','Quote','Order','Execution'].map(x=><i key={x}>{x}</i>)}</div></div><GreyProductUI title="专业交易工作台" mode="trading" /></div>
-      <div className="broker-capability"><div className="broker-capability-copy"><span>03</span><small>CLIENT EXPERIENCE</small><h3>客户数字终端</h3><p>基于统一财富核心，支持机构构建自有品牌的财富 App、股票与财富综合 App 及 H5 场景。</p><div>{['财富 App','股票 / 财富 App','H5','白标体验'].map(x=><i key={x}>{x}</i>)}</div></div><GreyProductUI title="数字客户终端" mode="mobile" /></div>
-    </div></section>
+    <section className="bfi-plans"><div className="bfi-shell"><header><h2>按机构基础灵活组合</h2></header><div className="bfi-plan-grid">{plans.map(plan => <article key={plan.type}><h3>{plan.type}</h3><p>{plan.context}</p><small>推荐方式</small><div>{plan.stack.map(item => <b key={item}>{item}</b>)}</div>{plan.note && <footer>{plan.note}</footer>}</article>)}</div></div></section>
 
-    <section className="broker-section broker-stack-section"><div className="broker-shell">
-      <SectionHead title="由 Finloop 的可组合技术栈提供支持" copy="客户体验、财富核心、专业工作终端与底层交易运营相互连接，并可围绕实际业务阶段灵活组合。" />
-      <div className="broker-stack">
-        <article className="client"><small>CLIENT EXPERIENCE</small><strong>White-label App</strong><span>机构自有品牌的数字客户体验</span></article>
-        <div className="broker-stack-connector"><i /><span>统一连接</span><i /></div>
-        <div className="broker-stack-middle"><article><small>WEALTH CORE</small><strong>FinOne</strong><span>统一财富核心</span></article><article><small>PROFESSIONAL WORKSPACE</small><strong>Web Portal</strong><span>机构产品与交易工作台</span></article></div>
-        <div className="broker-stack-connector"><i /><span>交易与运营</span><i /></div>
-        <article><small>TRADING &amp; OPERATIONS CORE</small><strong>FinMix</strong><span>底层交易与运营基础设施</span></article>
-        <article className="source"><small>OPEN ECOSYSTEM</small><strong>金融产品 / 上游机构</strong><span>连接产品与金融服务网络</span></article>
-      </div>
-    </div></section>
-
-    <section className="broker-section"><div className="broker-shell">
-      <SectionHead title="让每一次扩展都复用同一套业务基础" />
-      <div className="broker-why">{[['01','更快进入新业务','不为每个财富品类重复建设核心系统。'],['02','产品 + 交易','不仅提供产品货架，同时连接实际交易能力。'],['03','B2B + Client Experience','同时覆盖专业工作人员与最终客户。'],['04','可扩展核心','后续新增业务继续复用 FinOne 与 FinMix。']].map(([n,t,p])=><article key={n}><span>{n}</span><h3>{t}</h3><p>{p}</p></article>)}</div>
-    </div></section>
-
-    <section className="broker-cta"><div className="broker-shell"><h2>将下一项财富业务<br />更快带给您的客户</h2><p>与 Finloop 团队讨论产品扩展、交易执行与数字客户体验的组合方案。</p><Link className="button button-light" to="/contact">咨询券商财富业务方案 →</Link></div></section>
+    <section className="bfi-cta"><div className="bfi-shell"><h2>从现有系统出发，规划下一项业务能力</h2><Link className="button button-light" to="/contact">联系我们</Link></div></section>
   </main>;
 }

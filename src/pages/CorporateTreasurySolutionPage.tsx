@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Building2, CalendarClock, CircleDollarSign, createIcons, Landmark, Network, RefreshCw, ShieldCheck, WalletCards } from 'lucide';
+import { Building2, CalendarClock, CircleDollarSign, createIcons, Landmark, Network, ShieldCheck, WalletCards } from 'lucide';
 
 const challenges = [
   { icon: 'landmark', title: '资金与投资资产分散，难以统一掌握？', copy: '连接企业账户、现金、投资和持仓信息，形成企业自身的资金与投资资产视图。' },
@@ -69,7 +69,7 @@ export function CorporateTreasurySolutionPage() {
   const capability = capabilities[activeCapability];
 
   useEffect(() => {
-    createIcons({ icons: { Building2, CalendarClock, CircleDollarSign, Landmark, Network, RefreshCw, ShieldCheck, WalletCards } });
+    createIcons({ icons: { Building2, CalendarClock, CircleDollarSign, Landmark, Network, ShieldCheck, WalletCards } });
   }, []);
 
   return <main className="goal-page iw-page iw-v3 ct-page" id="main">
@@ -80,20 +80,15 @@ export function CorporateTreasurySolutionPage() {
       <div className="goal-hero-actions"><Link className="button button-accent" to="/contact">联系我们</Link></div>
     </div></section>
 
-    <section className="goal-section iw-audience ct-context"><div className="goal-shell">
-      <div className="iw-audience-copy"><small>背景现状</small><h2>企业资金管理正在走向精细化配置</h2><p>随着企业跨境经营、多币种账户和资金规模持续增长，企业不仅需要掌握当前现金状况，也需要在保障日常经营和流动性的基础上，对阶段性闲置资金进行更精细的配置和持续管理。</p></div>
-      <figure className="ct-fund-map" aria-label="企业资金在经营资金、流动性储备和阶段性可投资资金之间分层管理的示意图"><div className="ct-fund-source"><i data-lucide="building-2" aria-hidden="true"/><span>企业总资金</span></div><div className="ct-fund-groups"><span>日常经营资金</span><span>流动性储备</span><span className="is-investable">阶段性可投资资金</span></div><div className="ct-fund-target"><span>适用理财产品</span><i data-lucide="refresh-cw" aria-hidden="true"/><span>资产与资金回笼</span></div></figure>
-    </div></section>
-
     <section className="goal-section" id="challenges"><div className="goal-shell"><header className="iw-challenge-head"><h2>帮助企业统筹资金、流动性与投资</h2><p>从看清企业资金状态，到选择适用理财产品和掌握未来资金回笼，让经营安排与理财投资保持协调。</p></header><div className="ct-challenges">{challenges.map(({ icon, title, copy }) => <article key={title}><i data-lucide={icon} aria-hidden="true"/><h3>{title}</h3><p>{copy}</p></article>)}</div></div></section>
+
+    <section className="goal-section" id="trust"><div className="goal-shell"><Heading title="支撑企业理财投资的专业基础" copy="以产品、企业账户、交易运营和合规风控能力，支撑企业自身资金的理财投资。" /><div className="iw-proof">{proof.map(({ icon, title, copy }) => <article key={title}><i data-lucide={icon} aria-hidden="true"/><h3>{title}</h3><p>{copy}</p></article>)}</div></div></section>
 
     <section className="goal-section iw-integrated" id="capabilities"><div className="goal-shell"><header className="iw-integrated-head"><div><h2>打通企业资金与理财投资全流程</h2><p>从企业账户和资金，到理财产品、投资交易和资产管理，星路将企业资金与投资连接在统一业务体系中，让企业更清晰地管理每一笔可投资资金。</p></div></header><div className="iw-capability-tabs" role="tablist" aria-label="企业理财投资能力">{capabilities.map((item, i) => <button key={item.title} id={`treasury-tab-${i}`} role="tab" aria-selected={activeCapability === i} aria-controls="treasury-capability-panel" onClick={() => setActiveCapability(i)}>{item.title}</button>)}</div><article className="iw-capability-panel ct-capability-panel" id="treasury-capability-panel" role="tabpanel" aria-labelledby={`treasury-tab-${activeCapability}`}><figure className="ct-capability-visual" aria-hidden="true"><div className="ct-visual-core">{capability.title}</div><div className="ct-visual-steps">{capability.visual.map((item, i) => <span key={item}><b>0{i + 1}</b>{item}</span>)}</div></figure><div className="iw-capability-copy"><h3>{capability.heading}</h3><p>{capability.copy}</p><div className="iw-capability-items">{capability.items.map(x => <span key={x}>{x}</span>)}</div><footer><b>{capability.system}</b></footer></div></article></div></section>
 
     <section className="goal-section ct-platforms" id="platforms"><div className="goal-shell"><Heading title="平台与基础设施支撑" copy="从企业端投资平台，到产品运营和底层金融基础设施，为企业理财投资提供完整技术与业务支撑。" /><div className="ct-platform-cards">{platforms.map((item, i) => <article key={item.name}><div><small>{item.type}</small><h3>{item.name}</h3><p>{item.position}</p>{i < 2 && <Link to={i === 0 ? '/products/xingqitong' : '/products/finone'}>了解 {item.name} →</Link>}</div><figure aria-hidden="true">{item.flow.map((x, j) => <span key={x}><b>0{j + 1}</b>{x}</span>)}</figure></article>)}</div></div></section>
 
     <section className="goal-section goal-soft" id="delivery"><div className="goal-shell"><Heading title="我们的服务流程" copy="从企业资金情况与投资需求出发，完成开户配置、理财投资和持续资产管理。" /><ol className="goal-timeline iw-delivery">{delivery.map(([title, copy], i) => <li key={title}><span>0{i + 1}</span><div><h3>{title}</h3><p>{copy}</p></div></li>)}</ol></div></section>
-
-    <section className="goal-section" id="trust"><div className="goal-shell"><Heading title="支撑企业理财投资的专业基础" copy="以产品、企业账户、交易运营和合规风控能力，支撑企业自身资金的理财投资。" /><div className="iw-proof">{proof.map(({ icon, title, copy }) => <article key={title}><i data-lucide={icon} aria-hidden="true"/><h3>{title}</h3><p>{copy}</p></article>)}</div></div></section>
 
     <section className="goal-section iw-customer-case" id="case"><div className="goal-shell"><Heading title="客户案例" copy="从企业资金安排出发，展示理财投资方案如何进入实际管理流程。" /><article className="iw-case-study"><header><small>{customerCase.label}</small><h3>{customerCase.title}</h3><p>{customerCase.intro}</p></header><div>{customerCase.items.map(([title, copy], i) => <section key={title}><span>0{i + 1}</span><h4>{title}</h4><p>{copy}</p></section>)}</div></article></div></section>
 

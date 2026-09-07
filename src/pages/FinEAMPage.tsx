@@ -22,7 +22,7 @@ function GreyUI({ title, compact = false }: { title: string; compact?: boolean }
 export function FinEAMPage() {
   return <main className="eam-page" id="main">
     <section className="eam-hero" data-header-theme="inverse"><div className="eam-shell eam-hero-grid">
-      <div className="eam-hero-copy"><p className="eam-kicker">FIN<span>EAM</span></p><h1>FinEAM 一站式管理财富业务</h1><p>从客户与账户、投资产品和交易，到持仓、报告及投资者服务，FinEAM 将财富管理关键流程连接到统一平台，帮助 EAM 提升运营效率并扩展专业服务能力。</p><div className="eam-actions"><Link className="button button-accent" to="/contact">预约 FinEAM 演示 →</Link><a href="#workflow">探索业务流程 ↓</a></div><div className="eam-dual"><span>机构工作空间</span><i>×</i><span>投资者体验</span></div></div>
+      <div className="eam-hero-copy"><p className="eam-kicker">FIN<span>EAM</span></p><h1>FinEAM 一站式管理财富业务</h1><p>从客户与账户、投资产品和交易，到持仓、报告及投资者服务，FinEAM 将财富管理关键流程连接到统一平台，帮助 EAM 提升运营效率并扩展专业服务能力。</p><div className="eam-actions"><Link className="button button-accent" to="/contact">预约演示</Link></div><div className="eam-dual"><span>机构工作空间</span><i>×</i><span>投资者体验</span></div></div>
       <div className="eam-hero-visual"><GreyUI title="财富业务工作空间" /><div className="eam-float-card a" /><div className="eam-float-card b" /></div>
     </div></section>
 

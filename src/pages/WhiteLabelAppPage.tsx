@@ -37,7 +37,7 @@ function AppScreen({ type }: { type: 'home' | 'products' | 'stocks' | 'assets' }
 export function WhiteLabelAppPage() {
   return <main className="wl-page" id="main">
     <section className="wl-hero" data-header-theme="inverse"><div className="wl-shell wl-hero-grid">
-      <div className="wl-hero-copy"><h1>快速构建数字财富与投资 App</h1><p>基于成熟的财富科技基础设施，为金融机构提供可配置的白标财富 / 股票投资终端，连接客户、产品、交易与资产服务。</p><div className="wl-actions"><Link className="button button-accent" to="/contact">咨询白标方案 →</Link><Link to="/products/finone">了解 FinOne →</Link></div><div className="wl-hero-line"><span>灵活组合不同客户端</span><i /><span>一个财富核心</span></div></div>
+      <div className="wl-hero-copy"><h1>快速构建数字财富与投资 App</h1><p>基于成熟的财富科技基础设施，为金融机构提供可配置的白标财富 / 股票投资终端，连接客户、产品、交易与资产服务。</p><div className="wl-actions"><Link className="button button-accent" to="/contact">预约演示</Link></div><div className="wl-hero-line"><span>灵活组合不同客户端</span><i /><span>一个财富核心</span></div></div>
       <div className="wl-phone-stage wl-phone-stage-v2"><div><Phone brand="WEALTH" tone="blue" /><small>白标财富 App</small></div><b>+</b><div><Phone brand="WEALTH + STOCK" tone="green" stock /><small>白标股票 App</small></div><div className="wl-stage-label">POWERED BY FINLOOP WEALTH INFRASTRUCTURE</div></div>
     </div></section>
 
