@@ -33,8 +33,6 @@ export function ProfessionalWealthSolutionPage() {
 
     <section className="pwi-plans"><div className="pwi-shell"><header><h2>根据业务模式与规模灵活组合</h2><p>不同机构无需从同一个起点开始。基于现有渠道、系统和团队，选择更适合的建设方式。</p></header><div className="pwi-plan-grid">{plans.map(plan => <article key={plan.title}><h3>{plan.title}</h3><p>{plan.copy}</p><div>{plan.stack.map((item, index) => <span key={item}>{index > 0 && <i>＋</i>}{item}</span>)}</div></article>)}</div></div></section>
 
-    <section className="pwi-related"><div className="pwi-shell"><h2>继续了解相关能力</h2><div>{[['机构财富管理', '建设完整财富业务', '/solutions/digital-wealth-management'], ['FinEAM', '管理客户、投顾、交易与资产', '/products/fineam'], ['数字产业与代币化', '进入 RWA 与数字资产市场', '/solutions/rwa-web3'], ['Finloop AI', '提升财富服务效率', '/ai']].map(([title, copy, href]) => <Link to={href} key={title}><h3>{title}</h3><p>{copy}</p><span>→</span></Link>)}</div></div></section>
-
     <section className="pwi-cta"><div className="pwi-shell"><div><h2>构建适合您的专业财富平台</h2><p>从现有业务与系统出发，与 Finloop 团队共同规划下一步能力组合。</p></div><Link className="button button-light" to="/contact">联系我们</Link></div></section>
   </main>;
 }

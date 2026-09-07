@@ -1,52 +1,34 @@
 import { Link } from 'react-router-dom';
 
-const frictions = ['资金分散', '闲置资金', '投资和银行信息分离', '资金数据依赖人工汇总', '流动性与投资管理难平衡'];
-const outcomes = [
-  ['01', 'See Cash Clearly', '看清企业资金状态', '将账户、资金与资产信息归集到统一视图。'],
-  ['02', 'Manage Liquidity', '持续管理流动性', '围绕日常资金需要，保持现金管理与使用节奏清晰。'],
-  ['03', 'Connect Cash to Investment', '连接现金与投资', '将适当的闲置资金连接到企业投资产品与流程。'],
+const capabilities = [
+  { title: '提升闲置及短期资金使用效率', copy: '根据企业资金期限和流动性需求，为短期闲置资金提供灵活的现金管理及投资选择。', items: ['货币基金', '现金管理产品', '短期投资', '灵活申赎', '流动性管理', '收益查看'], links: [['企业理财投资', '/solutions/corporate-treasury']], kind: 'cash', core: 'LIQUIDITY', visual: ['经营资金', '短期闲置资金', '现金管理与投资'] },
+  { title: '为企业资金提供更多投资选择', copy: '根据企业投资资格、风险偏好及资金期限，连接不同类型的传统及创新投资产品。', items: ['基金', '债券', '结构性产品', '私募产品', '其他合资格投资产品'], links: [['企业理财投资', '/solutions/corporate-treasury']], kind: 'products', core: 'MULTI-ASSET', visual: ['资金期限', '投资资格与风险', '多资产产品'] },
+  { title: '从开户、交易到资产统一管理', copy: '在线管理企业投资账户、资金、交易与资产信息，减少不同产品和渠道之间的管理割裂。', items: ['企业开户', 'KYC / KYB', 'PI 认证', '出入金', '交易', '持仓', '资产', '流水', '报表'], links: [['星企通', '/products/xingqitong']], kind: 'account', core: '星企通', visual: ['企业账户', '交易与资金', '资产与报表'] },
+  { title: '适配企业内部投资决策与管理流程', copy: '通过多角色、多权限和操作留痕，支持不同规模企业建立更加清晰的投资管理机制。', items: ['企业成员管理', '角色权限', '投资权限', '操作授权', '审批', '操作留痕', '多账户管理'], links: [['星企通', '/products/xingqitong']], kind: 'governance', core: 'CONTROL', visual: ['成员与角色', '授权与审批', '操作记录'] },
+  { title: '让企业投资连接现有 Treasury 与内部系统', copy: '大型企业可通过 API 获取账户、资产、交易及报表数据，并与现有资金管理系统进行集成。', items: ['账户数据', '资产数据', '交易数据', '资金数据', '报表数据', 'API 集成'], links: [['API 与技术平台', '/technology-platform']], kind: 'api', core: 'API', visual: ['Treasury 系统', '企业投资能力', '账户与资产数据'] },
+  { title: '更高效地获取、理解和使用投资信息', copy: '通过 AI 辅助产品理解、资产分析与报告生成，为企业投资管理提供更高效的信息支持。', items: ['产品检索', '产品解读', '投资信息查询', '资产分析', '报告生成', '智能助手'], links: [['Finloop AI', '/ai']], kind: 'ai', core: 'AI', visual: ['投资信息', '分析与理解', '报告与助手'] },
 ];
-const workflow = ['企业数字开户', '银行 / 资金账户', '资金进入', 'Cash Visibility', '现金管理 / 产品', '风险评估', '投资', 'Asset Monitoring', '赎回 / 资金退出'];
 
-function SectionHead({ title, copy }: { title: string; copy?: string }) {
-  return <div className="enterprise-head"><h2>{title}</h2>{copy && <p>{copy}</p>}</div>;
-}
+const plans = [
+  { title: '单一产品投资需求', copy: '适合投资目标明确、投资频率较低的企业或法团专业投资者。', stack: ['企业投资账户', '财富产品', '标准交易与服务能力'] },
+  { title: '持续企业理财需求', copy: '存在持续现金管理与多资产投资需求。', stack: ['星企通', '财富产品', '账户及交易能力', 'AI'] },
+  { title: '大型企业 / 集团企业', copy: '存在多账户、多成员、复杂权限或已有 Treasury 系统。', stack: ['星企通', 'API', '多账户与权限管理', 'AI', '定制化集成'] },
+];
 
-function GreyUI({ title, variant }: { title: string; variant: 'account' | 'cash' | 'assets' }) {
-  return <div className={`enterprise-ui enterprise-ui-${variant}`} role="img" aria-label={`${title}界面占位`}>
-    <header><i /><strong>{title}</strong><span /></header>
-    <div className="enterprise-ui-body"><aside>{[1, 2, 3, 4, 5].map(i => <i key={i} />)}</aside><div className="enterprise-ui-canvas">
-      <div className="enterprise-ui-metrics">{[1, 2, 3].map(i => <i key={i} />)}</div>
-      <div className="enterprise-ui-content"><section>{[1, 2, 3, 4].map(i => <i key={i} />)}</section><figure>{[1, 2, 3, 4, 5, 6].map(i => <i key={i} />)}</figure></div>
-    </div></div>
-  </div>;
+function TreasuryVisual({ kind, core, items }: { kind: string; core: string; items: string[] }) {
+  return <figure className={`cif-visual ${kind}`} aria-label={`${core} 企业投资能力结构`}><div className="cif-core"><small>ENTERPRISE</small><strong>{core}</strong></div><div className="cif-steps">{items.map((item, index) => <span key={item}><i>0{index + 1}</i>{item}</span>)}</div></figure>;
 }
 
 export function EnterpriseSolutionPage() {
-  return <main className="enterprise-page" id="main">
-    <section className="enterprise-hero" data-header-theme="inverse"><div className="enterprise-shell enterprise-hero-grid">
-      <div className="enterprise-hero-copy"><p className="enterprise-label">CORPORATE CLIENTS</p><h1>企业客户解决方案</h1><p>将企业开户、资金、现金管理、投资和资产信息连接到统一数字平台，帮助财务团队更清楚、更高效地管理企业资金。</p><div className="enterprise-actions"><Link className="button button-accent" to="/contact">联系我们</Link></div></div>
-      <div className="enterprise-hero-visual" aria-label="企业现金、投资与资产统一管理示意"><div className="enterprise-hero-balance"><small>CASH VISIBILITY</small><strong>企业资金全景</strong><span>账户 · 现金 · 投资 · 资产</span></div><div className="enterprise-hero-path"><i /><span>统一连接</span><i /></div><div className="enterprise-hero-modules"><article><small>LIQUIDITY</small><strong>现金管理</strong></article><article><small>INVESTMENT</small><strong>企业投资</strong></article><article><small>ASSETS</small><strong>资产查看</strong></article></div></div>
-    </div></section>
+  return <main className="cif-page" id="main">
+    <section className="cif-hero" data-header-theme="inverse"><div className="cif-shell cif-hero-grid"><div><h1>让企业自有资金得到<br />更高效的管理与投资</h1><p>面向企业、集团公司及法团专业投资者，连接现金管理与多元财富产品，并通过企业级账户、权限及资产管理能力提升资金使用效率。</p><div className="cif-actions"><a className="button button-accent" href="#capabilities">探索企业理财方案</a><Link to="/contact">联系我们</Link></div></div><div className="cif-hero-board" aria-label="企业资金与投资管理示意"><header><small>CORPORATE TREASURY</small><strong>企业资金全景</strong><span>账户 · 权限 · 投资 · 资产</span></header><div>{[['可用资金','CASH'],['现金管理','LIQUIDITY'],['多资产投资','INVESTMENT'],['资产与报表','ASSETS']].map(([title, label], index) => <article className={index === 1 ? 'active' : ''} key={title}><small>{label}</small><strong>{title}</strong></article>)}</div></div></div></section>
 
-    <section className="enterprise-section enterprise-white"><div className="enterprise-shell"><SectionHead title="企业有现金，不代表资金正在被有效管理" copy="当账户、投资与资金信息分散在不同系统和表格中，财务团队很难持续掌握真实的资金状态。" /><div className="enterprise-frictions"><div className="enterprise-friction-lead"><small>CASH ≠ VISIBILITY</small><strong>从拥有现金<br />到看清现金</strong></div><div>{frictions.map((item, i) => <article key={item}><span>{String(i + 1).padStart(2, '0')}</span><h3>{item}</h3></article>)}</div></div></div></section>
+    <section className="cif-intro" id="capabilities"><div className="cif-shell"><h2>围绕企业资金，建立连续的投资管理能力</h2><p>从短期流动性管理和产品选择，到企业账户、内部权限、Treasury 集成与 AI 辅助，让资金信息与投资流程保持连接。</p></div></section>
 
-    <section className="enterprise-section"><div className="enterprise-shell"><SectionHead title="让企业资金管理形成三个连续结果" /><div className="enterprise-outcomes">{outcomes.map(([n, en, title, copy]) => <article key={n}><span>{n}</span><small>{en}</small><h3>{title}</h3><p>{copy}</p></article>)}</div></div></section>
+    <div className="cif-capabilities">{capabilities.map((item, index) => <section className={`cif-capability${index % 2 ? ' reverse' : ''}`} key={item.title}><div className="cif-shell cif-capability-grid"><div className="cif-copy"><h2>{item.title}</h2><p>{item.copy}</p><div className="cif-tags">{item.items.map(value => <span key={value}>{value}</span>)}</div><div className="cif-links">{item.links.map(([label, href]) => <Link to={href} key={label}>{label} <span>→</span></Link>)}</div></div><TreasuryVisual kind={item.kind} core={item.core} items={item.visual} /></div></section>)}</div>
 
-    <section className="enterprise-section enterprise-flow-section" id="workflow"><div className="enterprise-shell"><SectionHead title="从企业开户到资金退出，沿一条链路持续管理" copy="把开户、资金可见性、流动性管理、投资与资产查看连接起来，减少业务环节之间的信息断点。" /><div className="enterprise-workflow">{workflow.map((item, i) => <article className={i === 3 || i === 7 ? 'active' : ''} key={item}><span>{String(i + 1).padStart(2, '0')}</span><strong>{item}</strong>{i < workflow.length - 1 && <i>→</i>}</article>)}</div></div></section>
+    <section className="cif-plans"><div className="cif-shell"><header><h2>根据企业投资复杂度灵活组合</h2><p>从单一投资账户到集团级系统连接，按资金规模、管理频率与内部治理要求选择对应方案。</p></header><div className="cif-plan-grid">{plans.map(plan => <article key={plan.title}><h3>{plan.title}</h3><p>{plan.copy}</p><div>{plan.stack.map((item, index) => <span key={item}>{index > 0 && <i>＋</i>}{item}</span>)}</div></article>)}</div></div></section>
 
-    <section className="enterprise-section enterprise-white" id="capabilities"><div className="enterprise-shell"><SectionHead title="围绕企业资金，连接账户、投资与资产视图" copy="三组能力共享同一条企业资金主线，并根据财务团队的实际管理需要组合使用。" />
-      <div className="enterprise-capability"><div className="enterprise-capability-copy"><span>01</span><small>CORPORATE ACCOUNT &amp; FUNDS</small><h3>企业账户与资金</h3><p>支持企业数字开户及持续资金操作，让企业资料、账户与入出金进入统一流程。</p><div>{['企业信息', '股东 / UBO', '税务', '绑卡', '入金 / 出金'].map(x => <i key={x}>{x}</i>)}</div></div><GreyUI title="企业账户与资金" variant="account" /></div>
-      <div className="enterprise-capability reverse"><div className="enterprise-capability-copy"><span>02</span><small>CASH &amp; INVESTMENT</small><h3>现金与投资管理</h3><p>以流动性管理为优先，连接现金管理产品、基金浏览、风险测评与申购赎回流程。</p><div>{['现金管理产品', '基金浏览', '风险测评', '申购 / 赎回'].map(x => <i key={x}>{x}</i>)}</div></div><GreyUI title="现金与投资管理" variant="cash" /></div>
-      <div className="enterprise-capability"><div className="enterprise-capability-copy"><span>03</span><small>ASSET OVERVIEW</small><h3>企业资产全景</h3><p>集中查看企业资产、投资、交易与资金明细，让财务团队持续掌握企业资金状态。</p><div>{['资产', '投资', '交易', '资金明细', '基金收益相关信息'].map(x => <i key={x}>{x}</i>)}</div></div><GreyUI title="企业资产全景" variant="assets" /></div>
-    </div></section>
-
-    <section className="enterprise-section enterprise-stack-section"><div className="enterprise-shell"><SectionHead title="Powered by Finloop" copy="从企业使用体验到财富核心、交易基础设施与金融产品，形成完整的能力层级。" /><div className="enterprise-stack">{[['星企通', 'CORPORATE TREASURY EXPERIENCE'], ['FinOne', 'WEALTH CORE'], ['Trading & Financial Infrastructure', 'TRANSACTION & OPERATIONS'], ['Wealth Products', 'FINANCIAL PRODUCTS']].map(([title, label], i) => <article className={i === 0 ? 'active' : ''} key={title}><span>{String(i + 1).padStart(2, '0')}</span><small>{label}</small><strong>{title}</strong><i>{i < 3 ? '↓' : 'CONNECTED'}</i></article>)}</div></div></section>
-
-    <section className="enterprise-section"><div className="enterprise-shell"><SectionHead title="企业资金管理，不止是一个产品入口" /><div className="enterprise-why">{[['01', '企业直接使用', '以完整独立平台承接企业财务团队的日常使用。'], ['02', '资金 + 投资', '将现金管理与财富投资连接在同一条业务链路。'], ['03', '财富产品基础', '连接真实金融产品与对应的投资流程。'], ['04', '数字化流程', '从企业开户到资产查看形成连续业务链路。']].map(([n, title, copy]) => <article key={n}><span>{n}</span><h3>{title}</h3><p>{copy}</p></article>)}</div></div></section>
-
-    <section className="enterprise-section enterprise-case-section"><div className="enterprise-shell"><SectionHead title="让分散的企业资金信息回到同一处" /><div className="enterprise-case"><div><small>CORPORATE SCENARIO</small><strong>跨境 / 中型企业</strong><p>将日常资金管理与企业投资从分散工具迁移到连续的数字平台。</p></div><ol><li><span>BEFORE</span><p>多个银行账户 + Excel + 人工投资记录</p></li><li><span>AFTER</span><p>Cash → Investment → Assets 集中进入星企通</p></li></ol></div></div></section>
-
-    <section className="enterprise-cta"><div className="enterprise-shell"><h2>让企业资金管理<br />更加清晰、连续</h2><p>与 Finloop 团队讨论适合企业财务、资金与投资管理需求的独立平台方案。</p><Link className="button button-light" to="/contact">咨询企业资金管理方案 →</Link></div></section>
+    <section className="cif-cta"><div className="cif-shell"><div><h2>让企业资金管理与投资<br />进入同一条业务链路</h2><p>与 Finloop 团队讨论适合企业资金规模、流动性需求与系统基础的理财方案。</p></div><Link className="button button-light" to="/contact">联系我们</Link></div></section>
   </main>;
 }
