@@ -83,7 +83,7 @@ const productLinks: Record<string, string> = {
 const mobileItemHref = (title: string, item: string, fallback: string) => {
   if (title === '金融产品' || title === '科技平台') return productLinks[item] || fallback;
   if (title === 'Finloop AI') return productLinks[item] || '/ai';
-  if (title === '资源中心') return item === '技术与支持' ? '/technology-platform' : '/resources';
+  if (title === '资源中心') return item === '技术平台' ? '/technology-platform' : '/resources';
   if (title === '关于星路') return item === '加入我们' ? '/careers' : item === '联系我们' ? '/contact' : '/about';
   return fallback;
 };
@@ -122,7 +122,7 @@ const mobileNavGroups: MobileNavGroup[] = [
   ['科技平台', '/technology-platform', productGroups[1].items.map(i => i[0])],
   ['解决方案', '/solutions', [...businessGoalSolutionItems, ...customerTypeSolutionItems].map(i => i[1])],
   ['Finloop AI', '/ai', aiItems.map(i => i[0])],
-  ['资源中心', '/resources', ['技术与支持', '新闻资讯']],
+  ['资源中心', '/resources', ['技术平台', '新闻资讯']],
   ['关于星路', '/about', ['公司介绍', '加入我们', '联系我们']],
 ];
 
@@ -162,8 +162,8 @@ const headerMarkup = `
         <div class="mega-grid mega-solution-grid">${solutionGroups.map(group => `<div><h3>${group.label}</h3>${group.items.map(([id, name, desc]) => `<a href="/solutions/${id}"><span>${name}</span><small>${desc}</small><i data-lucide="arrow-right"></i></a>`).join('')}</div>`).join('')}</div>
       </div>
       <div class="mega-panel compact-panel" data-panel="resources">
-        <div class="mega-intro"><strong>资源中心</strong><p>查看技术平台、接入支持与 Finloop 最新内容。</p><a href="/resources">进入资源中心 <i data-lucide="arrow-right"></i></a></div>
-        <div class="mega-list"><a href="/technology-platform"><span>技术平台</span><small>财富核心、交易基础设施与开放连接</small><i data-lucide="arrow-right"></i></a><a href="/support"><span>技术支持</span><small>API、系统接入与持续运行支持</small><i data-lucide="arrow-right"></i></a><a href="/resources"><span>新闻资讯</span><small>行业洞察与公司动态</small><i data-lucide="arrow-right"></i></a></div>
+        <div class="mega-intro"><strong>资源中心</strong><p>查看技术平台与 Finloop 最新内容。</p><a href="/resources">进入资源中心 <i data-lucide="arrow-right"></i></a></div>
+        <div class="mega-list"><a href="/technology-platform"><span>技术平台</span><small>财富核心、交易基础设施与开放连接</small><i data-lucide="arrow-right"></i></a><a href="/resources"><span>新闻资讯</span><small>行业洞察与公司动态</small><i data-lucide="arrow-right"></i></a></div>
       </div>
       <div class="mega-panel compact-panel" data-panel="about">
         <div class="mega-intro"><strong>关于星路</strong><p>总部位于香港的机构财富科技平台。</p><a href="/about">认识 Finloop <i data-lucide="arrow-right"></i></a></div>
