@@ -18,15 +18,21 @@ export function SiteLayout({ headerMarkup, mobileDrawerMarkup, footerMarkup, ini
   useEffect(() => {
     document.documentElement.classList.add('route-changing');
     window.scrollTo({ top: 0, behavior: 'auto' });
-    const routeSection = pathname.split('/').filter(Boolean)[0] || 'home';
-    const activeSection = ['contact', 'careers'].includes(routeSection) ? 'about' : routeSection;
+    const routeSection = pathname.split('/').filter(Boolean)[0] || '';
+    const activeSection = pathname === '/products'
+      ? 'financial'
+      : pathname.startsWith('/products/') || routeSection === 'technology-platform'
+        ? 'technology'
+        : ['support', 'resources'].includes(routeSection)
+          ? 'resources'
+          : ['contact', 'careers'].includes(routeSection)
+            ? 'about'
+            : routeSection;
     const navItems = document.querySelectorAll<HTMLElement>('.desktop-nav > .nav-link');
 
     navItems.forEach((item) => {
       const href = item.getAttribute('href');
-      const itemSection = href === '/'
-        ? 'home'
-        : item.dataset.menu || href?.split('/').filter(Boolean)[0];
+      const itemSection = item.dataset.menu || href?.split('/').filter(Boolean)[0];
       const isActive = itemSection === activeSection;
 
       item.classList.toggle('active', isActive);

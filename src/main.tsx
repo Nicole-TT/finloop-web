@@ -71,6 +71,23 @@ const productGroups = [
   },
 ];
 
+const productLinks: Record<string, string> = {
+  '现金管理': '/products#cash', '公募基金': '/products#public', '私募基金': '/products#private',
+  '债券': '/products#bonds', '结构性产品': '/products#structured', '保险': '/products#insurance',
+  '虚拟资产': '/products#virtual', 'RWA': '/products#rwa', 'FinOne': '/products/finone',
+  'FinEAM': '/products/fineam', '星企通': '/products/xingqitong', 'Web Portal': '/products/web-portal',
+  'FinTaaS': 'https://finlooprwa.com/fintaas/', '白标 App': '/products/white-label-app',
+  '星路通': '/ai/xinglutong', 'FAI平台': '/ai/fai', '星智通': '/ai/xingzhitong',
+};
+
+const mobileItemHref = (title: string, item: string, fallback: string) => {
+  if (title === '金融产品' || title === '科技平台') return productLinks[item] || fallback;
+  if (title === 'Finloop AI') return productLinks[item] || '/ai';
+  if (title === '资源中心') return item === '技术与支持' ? '/technology-platform' : '/resources';
+  if (title === '关于星路') return item === '加入我们' ? '/careers' : item === '联系我们' ? '/contact' : '/about';
+  return fallback;
+};
+
 const businessGoalSolutionItems: Array<[string, string, string]> = [
   ['digital-wealth-management', '机构财富管理', '支持客户财富管理与专业机构交易'],
   ['corporate-treasury', '企业理财投资', '帮助企业统一管理现金、投资与资产'],
@@ -101,11 +118,11 @@ const footerGroups: Array<[string, string[]]> = [
 
 type MobileNavGroup = [string, string, string[]];
 const mobileNavGroups: MobileNavGroup[] = [
-  ['产品与平台', '/products', productGroups.flatMap(g => g.items.map(i => i[0]))],
+  ['金融产品', '/products', productGroups[0].items.map(i => i[0])],
+  ['科技平台', '/technology-platform', productGroups[1].items.map(i => i[0])],
   ['解决方案', '/solutions', [...businessGoalSolutionItems, ...customerTypeSolutionItems].map(i => i[1])],
   ['Finloop AI', '/ai', aiItems.map(i => i[0])],
-  ['技术与支持', '/technology-platform', []],
-  ['新闻资讯', '/resources', ['行业洞察', '公司动态']],
+  ['资源中心', '/resources', ['技术与支持', '新闻资讯']],
   ['关于星路', '/about', ['公司介绍', '加入我们', '联系我们']],
 ];
 
@@ -118,12 +135,11 @@ const headerMarkup = `
         <img src="/assets/finloop-logo-transparent.png" alt="Finloop 星路科技" />
       </a>
       <nav class="desktop-nav" aria-label="主导航">
-        <a class="nav-link active" href="/">首页</a>
-        <button class="nav-link nav-trigger" data-menu="products" aria-expanded="false">产品与平台 <i data-lucide="chevron-down"></i></button>
+        <button class="nav-link nav-trigger" data-menu="financial" aria-expanded="false">金融产品 <i data-lucide="chevron-down"></i></button>
+        <button class="nav-link nav-trigger" data-menu="technology" aria-expanded="false">科技平台 <i data-lucide="chevron-down"></i></button>
         <button class="nav-link nav-trigger" data-menu="solutions" aria-expanded="false">解决方案 <i data-lucide="chevron-down"></i></button>
         <a class="nav-link" href="/ai">Finloop AI</a>
-        <a class="nav-link" href="/technology-platform">技术与支持</a>
-        <a class="nav-link" href="/resources">新闻资讯</a>
+        <button class="nav-link nav-trigger" data-menu="resources" aria-expanded="false">资源中心 <i data-lucide="chevron-down"></i></button>
         <button class="nav-link nav-trigger" data-menu="about" aria-expanded="false">关于星路 <i data-lucide="chevron-down"></i></button>
       </nav>
       <div class="header-actions">
@@ -133,13 +149,21 @@ const headerMarkup = `
       </div>
     </div>
     <div class="mega-shell" aria-hidden="true">
-      <div class="mega-panel" data-panel="products">
-        <div class="mega-intro"><strong>连接财富业务全链路</strong><p>覆盖科技平台、数字资产与财富产品能力。</p><a href="/products">查看平台全景 <i data-lucide="arrow-right"></i></a></div>
-        <div class="mega-grid">${productGroups.map(group => `<div><h3>${group.title}</h3>${group.items.map(([name, desc]) => `<a href="${name === 'FinOne' ? '/products/finone' : name === 'FinEAM' ? '/products/fineam' : name === '星企通' ? '/products/xingqitong' : name === '星路通' ? '/ai/xinglutong' : name === 'FAI平台' ? '/ai/fai' : name === '星智通' ? '/ai/xingzhitong' : name === 'Agent & Skills' ? '/ai/marketplace' : name === 'Web Portal' ? '/products/web-portal' : name === '白标 App' ? '/products/white-label-app' : name === 'FinTaaS' ? 'https://finlooprwa.com/fintaas/' : `/products#${name === '现金管理' ? 'cash' : name === '公募基金' ? 'public' : name === '私募基金' ? 'private' : name === '债券' ? 'bonds' : name === '结构性产品' ? 'structured' : name === '保险' ? 'insurance' : name === '虚拟资产' ? 'virtual' : 'rwa'}`}"${name === 'FinTaaS' ? ' target="_blank" rel="noopener noreferrer"' : ''}><span>${name}</span><small>${desc}</small><i data-lucide="arrow-right"></i></a>`).join('')}</div>`).join('')}</div>
+      <div class="mega-panel" data-panel="financial">
+        <div class="mega-intro"><strong>连接多元金融产品</strong><p>覆盖传统财富、数字资产与 RWA 产品类别。</p><a href="/products">查看金融产品 <i data-lucide="arrow-right"></i></a></div>
+        <div class="mega-grid"><div><h3>金融产品</h3>${productGroups[0].items.map(([name, desc]) => `<a href="${productLinks[name]}"><span>${name}</span><small>${desc}</small><i data-lucide="arrow-right"></i></a>`).join('')}</div></div>
+      </div>
+      <div class="mega-panel" data-panel="technology">
+        <div class="mega-intro"><strong>财富科技平台</strong><p>从客户终端、业务工作台到财富核心与资产上链能力。</p><a href="/technology-platform">查看科技平台 <i data-lucide="arrow-right"></i></a></div>
+        <div class="mega-grid"><div><h3>科技平台</h3>${productGroups[1].items.map(([name, desc]) => `<a href="${productLinks[name]}"${name === 'FinTaaS' ? ' target="_blank" rel="noopener noreferrer"' : ''}><span>${name}</span><small>${desc}</small><i data-lucide="arrow-right"></i></a>`).join('')}</div></div>
       </div>
       <div class="mega-panel" data-panel="solutions">
         <div class="mega-intro"><strong>从业务目标或客户类型找方案</strong><p>两种视角，对应同一套可组合的财富科技底座。</p><a href="/solutions">查看解决方案 <i data-lucide="arrow-right"></i></a></div>
         <div class="mega-grid mega-solution-grid">${solutionGroups.map(group => `<div><h3>${group.label}</h3>${group.items.map(([id, name, desc]) => `<a href="/solutions/${id}"><span>${name}</span><small>${desc}</small><i data-lucide="arrow-right"></i></a>`).join('')}</div>`).join('')}</div>
+      </div>
+      <div class="mega-panel compact-panel" data-panel="resources">
+        <div class="mega-intro"><strong>资源中心</strong><p>查看技术平台、接入支持与 Finloop 最新内容。</p><a href="/resources">进入资源中心 <i data-lucide="arrow-right"></i></a></div>
+        <div class="mega-list"><a href="/technology-platform"><span>技术平台</span><small>财富核心、交易基础设施与开放连接</small><i data-lucide="arrow-right"></i></a><a href="/support"><span>技术支持</span><small>API、系统接入与持续运行支持</small><i data-lucide="arrow-right"></i></a><a href="/resources"><span>新闻资讯</span><small>行业洞察与公司动态</small><i data-lucide="arrow-right"></i></a></div>
       </div>
       <div class="mega-panel compact-panel" data-panel="about">
         <div class="mega-intro"><strong>关于星路</strong><p>总部位于香港的机构财富科技平台。</p><a href="/about">认识 Finloop <i data-lucide="arrow-right"></i></a></div>
@@ -152,10 +176,9 @@ const headerMarkup = `
 
 const mobileDrawerMarkup = `
   <div class="mobile-drawer" aria-hidden="true">
-    <div class="drawer-top"><img src="/assets/finloop-logo-transparent.png" alt="Finloop 星路科技" /><button class="drawer-close" aria-label="关闭菜单"><i data-lucide="x"></i></button></div>
+    <div class="drawer-top"><a href="/" aria-label="Finloop 星路科技首页"><img src="/assets/finloop-logo-transparent.png" alt="Finloop 星路科技" /></a><button class="drawer-close" aria-label="关闭菜单"><i data-lucide="x"></i></button></div>
     <nav class="mobile-nav" aria-label="移动端导航">
-      <a href="/">首页</a>
-      ${mobileNavGroups.map(([title, path, items]) => items.length === 0 || title === '新闻资讯' ? `<a href="${path}">${title}</a>` : `<div class="mobile-group"><button aria-expanded="false">${title}<i data-lucide="chevron-down"></i></button><div><a href="${path}">查看全部</a>${title === '解决方案' ? mobileSolutionLinks : items.map(item => `<a href="${title === '关于星路' ? item === '加入我们' ? '/careers' : item === '联系我们' ? '/contact' : '/about' : title === '技术与支持' ? item === '技术平台' ? '/technology-platform' : '/support' : title === 'Finloop AI' ? item === '星智通' ? '/ai/xingzhitong' : item === '星路通' ? '/ai/xinglutong' : item === 'FAI平台' ? '/ai/fai' : item === 'Agent & Skills' ? '/ai/marketplace' : '/ai' : title === '产品与平台' && item === 'FinTaaS' ? 'https://finlooprwa.com/fintaas/' : title === '产品与平台' && item === '白标 App' ? '/products/white-label-app' : title === '产品与平台' && ['现金管理','公募基金','私募基金','债券','结构性产品','保险','虚拟资产','RWA'].includes(item) ? `/products#${item === '现金管理' ? 'cash' : item === '公募基金' ? 'public' : item === '私募基金' ? 'private' : item === '债券' ? 'bonds' : item === '结构性产品' ? 'structured' : item === '保险' ? 'insurance' : item === '虚拟资产' ? 'virtual' : 'rwa'}` : path}"${item === 'FinTaaS' ? ' target="_blank" rel="noopener noreferrer"' : ''}>${item}</a>`).join('')}</div></div>`).join('')}
+      ${mobileNavGroups.map(([title, path, items]) => `<div class="mobile-group"><button aria-expanded="false">${title}<i data-lucide="chevron-down"></i></button><div><a href="${path}">查看全部</a>${title === '解决方案' ? mobileSolutionLinks : items.map(item => `<a href="${mobileItemHref(title, item, path)}"${item === 'FinTaaS' ? ' target="_blank" rel="noopener noreferrer"' : ''}>${item}</a>`).join('')}</div></div>`).join('')}
     </nav>
     <div class="drawer-bottom"><button class="language-button"><i data-lucide="globe-2"></i> 简体中文</button><a class="button button-accent" href="/contact">预约咨询 <i data-lucide="arrow-right"></i></a></div>
   </div>
