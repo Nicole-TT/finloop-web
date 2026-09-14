@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useFinloopAssistant } from './FinloopAssistant';
 
 const assetContent: Record<string, [string, string, string, string]> = {
   cash: ['企业流动性与现金管理', '连接多币种货币基金与机构运营流程，支持企业与金融机构进行现金配置、申赎和资产查看。', 'USD · HKD · CNH', '产品范围与规则以上线时核验信息为准'],
@@ -19,12 +20,12 @@ const assetTabs: Array<[string, string]> = [
 
 export function HeroSection() {
   const [question, setQuestion] = useState('');
-  const [submittedQuestion, setSubmittedQuestion] = useState('');
+  const { ask, hasConversation } = useFinloopAssistant();
 
   function submitQuestion(value: string) {
     const nextQuestion = value.trim();
     if (!nextQuestion) return;
-    setSubmittedQuestion(nextQuestion);
+    ask(nextQuestion);
     setQuestion('');
   }
 
@@ -35,15 +36,25 @@ export function HeroSection() {
           <p className="hero-kicker">WEB2 × WEB3 × AI</p>
           <h1>AI 驱动的<br />全球一站式 Web5 财富科技平台</h1>
           <p>连接传统金融、数字资产与 AI，为金融机构、数字平台及企业提供覆盖财富管理、交易、RWA 与智能化业务的科技能力。</p>
-          <div className="hero-ai-chat" aria-label="Finloop AI 业务助手">
-            <div className="hero-ai-chat-head"><span><i aria-hidden="true" />Finloop AI</span><small>业务助手</small></div>
-            <div className="hero-ai-chat-body" aria-live="polite">
-              <p>您想了解哪类财富科技能力？我可以帮您快速找到对应的产品与解决方案。</p>
-              {submittedQuestion && <><p className="is-user">{submittedQuestion}</p><p>已记录您的问题。当前为官网导航助手，您可继续浏览产品与解决方案，或联系团队获取针对性建议。</p></>}
+          {hasConversation ? (
+            <div className="hero-actions">
+              <a className="button button-accent" href="#architecture">
+                探索产品与平台 <i data-lucide="arrow-right" />
+              </a>
+              <a className="text-link" href="#contact">
+                预约咨询 <i data-lucide="arrow-right" />
+              </a>
             </div>
-            {!submittedQuestion && <div className="hero-ai-suggestions" aria-label="示例问题">{['如何上线数字财富业务？', '如何管理企业闲置资金？', 'AI 如何进入金融业务流程？'].map(item => <button type="button" key={item} onClick={() => submitQuestion(item)}>{item}</button>)}</div>}
-            <form onSubmit={event => { event.preventDefault(); submitQuestion(question); }}><label className="sr-only" htmlFor="hero-ai-question">输入您的业务问题</label><input id="hero-ai-question" value={question} onChange={event => setQuestion(event.target.value)} placeholder="输入您的业务问题…" /><button type="submit" aria-label="发送问题" disabled={!question.trim()}>↑</button></form>
-          </div>
+          ) : (
+            <div className="hero-ai-chat" aria-label="Finloop AI 业务助手">
+              <div className="hero-ai-chat-head"><span><i aria-hidden="true" />Finloop AI</span><small>业务助手</small></div>
+              <div className="hero-ai-chat-body" aria-live="polite">
+                <p>您想了解哪类财富科技能力？我可以帮您快速找到对应的产品与解决方案。</p>
+              </div>
+              <div className="hero-ai-suggestions" aria-label="示例问题">{['如何上线数字财富业务？', '如何管理企业闲置资金？', 'AI 如何进入金融业务流程？'].map(item => <button type="button" key={item} onClick={() => submitQuestion(item)}>{item}</button>)}</div>
+              <form onSubmit={event => { event.preventDefault(); submitQuestion(question); }}><label className="sr-only" htmlFor="hero-ai-question">输入您的业务问题</label><input id="hero-ai-question" value={question} onChange={event => setQuestion(event.target.value)} placeholder="输入您的业务问题…" /><button type="submit" aria-label="发送问题" disabled={!question.trim()}>↑</button></form>
+            </div>
+          )}
         </div>
       </div>
     </section>

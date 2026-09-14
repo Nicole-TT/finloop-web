@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { MobileDrawer, SiteFooter, SiteHeader } from '../components/PageRegions';
+import { FinloopAssistantProvider } from '../components/FinloopAssistant';
 
 type SiteLayoutProps = {
   headerMarkup: string;
@@ -56,15 +57,10 @@ export function SiteLayout({ headerMarkup, mobileDrawerMarkup, footerMarkup, ini
     if (!header) return;
 
     function syncHeaderTheme() {
-      const inverseRegion = document.querySelector<HTMLElement>('[data-header-theme="inverse"]');
       const scrollProgress = Math.min(1, Math.max(0, window.scrollY / 100));
-      const isOverInverseRegion = Boolean(
-        inverseRegion
-        && inverseRegion.getBoundingClientRect().bottom > header!.offsetHeight,
-      );
 
       header!.style.setProperty('--header-scroll-progress', String(scrollProgress));
-      header!.classList.toggle('inverted', isOverInverseRegion && scrollProgress < .5);
+      header!.classList.remove('inverted');
       header!.classList.toggle('scrolled', scrollProgress >= .5);
     }
 
@@ -94,11 +90,11 @@ export function SiteLayout({ headerMarkup, mobileDrawerMarkup, footerMarkup, ini
   }, [navigate]);
 
   return (
-    <>
+    <FinloopAssistantProvider>
       <SiteHeader html={headerMarkup} />
       <MobileDrawer html={mobileDrawerMarkup} />
       <Outlet />
       <SiteFooter html={footerMarkup} />
-    </>
+    </FinloopAssistantProvider>
   );
 }

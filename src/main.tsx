@@ -58,7 +58,7 @@ const productGroups = [
     ],
   },
   {
-    title: '科技平台',
+    title: '金融平台',
     items: [
       ['FinOne', '账户、产品、交易与资产的财富核心'],
       ['FinEAM', 'EAM 与家办财富管理 SaaS'],
@@ -81,7 +81,7 @@ const productLinks: Record<string, string> = {
 };
 
 const mobileItemHref = (title: string, item: string, fallback: string) => {
-  if (title === '金融产品' || title === '科技平台') return productLinks[item] || fallback;
+  if (title === '金融产品' || title === '金融平台') return productLinks[item] || fallback;
   if (title === 'Finloop AI') return productLinks[item] || '/ai';
   if (title === '资源中心') return item === '技术平台' ? '/technology-platform' : '/resources';
   if (title === '关于星路') return item === '加入我们' ? '/careers' : item === '联系我们' ? '/contact' : '/about';
@@ -119,7 +119,7 @@ const footerGroups: Array<[string, string[]]> = [
 type MobileNavGroup = [string, string, string[]];
 const mobileNavGroups: MobileNavGroup[] = [
   ['金融产品', '/products', productGroups[0].items.map(i => i[0])],
-  ['科技平台', '/technology-platform', productGroups[1].items.map(i => i[0])],
+  ['金融平台', '/technology-platform', productGroups[1].items.map(i => i[0])],
   ['解决方案', '/solutions', [...businessGoalSolutionItems, ...customerTypeSolutionItems].map(i => i[1])],
   ['Finloop AI', '/ai', aiItems.map(i => i[0])],
   ['资源中心', '/resources', ['技术平台', '新闻资讯']],
@@ -136,7 +136,7 @@ const headerMarkup = `
       </a>
       <nav class="desktop-nav" aria-label="主导航">
         <button class="nav-link nav-trigger" data-menu="financial" aria-expanded="false">金融产品 <i data-lucide="chevron-down"></i></button>
-        <button class="nav-link nav-trigger" data-menu="technology" aria-expanded="false">科技平台 <i data-lucide="chevron-down"></i></button>
+        <button class="nav-link nav-trigger" data-menu="technology" aria-expanded="false">金融平台 <i data-lucide="chevron-down"></i></button>
         <button class="nav-link nav-trigger" data-menu="solutions" aria-expanded="false">解决方案 <i data-lucide="chevron-down"></i></button>
         <a class="nav-link" href="/ai">Finloop AI</a>
         <button class="nav-link nav-trigger" data-menu="resources" aria-expanded="false">资源中心 <i data-lucide="chevron-down"></i></button>
@@ -154,8 +154,8 @@ const headerMarkup = `
         <div class="mega-grid"><div><h3>金融产品</h3>${productGroups[0].items.map(([name, desc]) => `<a href="${productLinks[name]}"><span>${name}</span><small>${desc}</small><i data-lucide="arrow-right"></i></a>`).join('')}</div></div>
       </div>
       <div class="mega-panel" data-panel="technology">
-        <div class="mega-intro"><strong>财富科技平台</strong><p>从客户终端、业务工作台到财富核心与资产上链能力。</p><a href="/technology-platform">查看科技平台 <i data-lucide="arrow-right"></i></a></div>
-        <div class="mega-grid"><div><h3>科技平台</h3>${productGroups[1].items.map(([name, desc]) => `<a href="${productLinks[name]}"${name === 'FinTaaS' ? ' target="_blank" rel="noopener noreferrer"' : ''}><span>${name}</span><small>${desc}</small><i data-lucide="arrow-right"></i></a>`).join('')}</div></div>
+        <div class="mega-intro"><strong>财富科技平台</strong><p>从客户终端、业务工作台到财富核心与资产上链能力。</p><a href="/technology-platform">查看金融平台 <i data-lucide="arrow-right"></i></a></div>
+        <div class="mega-grid"><div><h3>金融平台</h3>${productGroups[1].items.map(([name, desc]) => `<a href="${productLinks[name]}"${name === 'FinTaaS' ? ' target="_blank" rel="noopener noreferrer"' : ''}><span>${name}</span><small>${desc}</small><i data-lucide="arrow-right"></i></a>`).join('')}</div></div>
       </div>
       <div class="mega-panel" data-panel="solutions">
         <div class="mega-intro"><strong>从业务目标或客户类型找方案</strong><p>两种视角，对应同一套可组合的财富科技底座。</p><a href="/solutions">查看解决方案 <i data-lucide="arrow-right"></i></a></div>
@@ -240,8 +240,8 @@ const mainMarkup = `
     </section>
 
     <section class="architecture section-pad" id="architecture">
-      <div class="architecture-top"><div><h2>选择适合业务场景的科技平台</h2></div><p>从财富核心、机构工作台和企业资金管理，到数字资产、AI 与交易基础设施，进入对应平台了解产品定位与能力范围。</p></div>
-      <div class="platform-directory" aria-label="Finloop 科技平台入口">
+      <div class="architecture-top"><div><h2>选择适合业务场景的金融平台</h2></div><p>从财富核心、机构工作台和企业资金管理，到数字资产、AI 与交易基础设施，进入对应平台了解产品定位与能力范围。</p></div>
+      <div class="platform-directory" aria-label="Finloop 金融平台入口">
         <a class="platform-card platform-featured" href="/products/finone"><i data-lucide="database"></i><div><h3>FinOne</h3><p>统一客户、账户、产品、交易、资产与运营的财富核心。</p></div><span>了解详情 <i data-lucide="arrow-right"></i></span></a>
         <a class="platform-card" href="/products/fineam"><i data-lucide="briefcase-business"></i><div><h3>FinEAM</h3><p>EAM 与家族办公室财富管理工作平台。</p></div><span>了解详情 <i data-lucide="arrow-right"></i></span></a>
         <a class="platform-card" href="/products/xingqitong"><i data-lucide="wallet-cards"></i><div><h3>星企通</h3><p>连接企业现金、投资与资产管理场景。</p></div><span>了解详情 <i data-lucide="arrow-right"></i></span></a>
