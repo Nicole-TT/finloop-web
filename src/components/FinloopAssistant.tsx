@@ -73,6 +73,7 @@ export function FinloopAssistantProvider({ children }: { children: ReactNode }) 
   const navigate = useNavigate();
   const [exchanges, setExchanges] = useState<AssistantExchange[]>([]);
   const [draft, setDraft] = useState('');
+  const [showFloatingLauncher, setShowFloatingLauncher] = useState(location.pathname !== '/');
   const nextId = useRef(1);
   const messagesRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -86,7 +87,7 @@ export function FinloopAssistantProvider({ children }: { children: ReactNode }) 
       { id: nextId.current++, question: nextQuestion, ...answer },
     ]);
     setDraft('');
-    setMode('modal');
+    setMode('sidebar');
   }
 
   function submitDraft(event: FormEvent) {
@@ -131,6 +132,26 @@ export function FinloopAssistantProvider({ children }: { children: ReactNode }) 
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [mode]);
 
+  useEffect(() => {
+    if (location.pathname !== '/') {
+      setShowFloatingLauncher(true);
+      return undefined;
+    }
+
+    function syncFloatingLauncher() {
+      const hero = document.querySelector<HTMLElement>('.hero');
+      setShowFloatingLauncher(!hero || hero.getBoundingClientRect().bottom <= 0);
+    }
+
+    syncFloatingLauncher();
+    window.addEventListener('scroll', syncFloatingLauncher, { passive: true });
+    window.addEventListener('resize', syncFloatingLauncher);
+    return () => {
+      window.removeEventListener('scroll', syncFloatingLauncher);
+      window.removeEventListener('resize', syncFloatingLauncher);
+    };
+  }, [location.pathname]);
+
   const hasConversation = exchanges.length > 0;
 
   return (
@@ -165,18 +186,17 @@ export function FinloopAssistantProvider({ children }: { children: ReactNode }) 
           submitDraft={submitDraft}
           messagesRef={messagesRef}
           inputRef={inputRef}
-          onExpand={() => setMode('modal')}
           onClose={() => setMode('hidden')}
           onDetailNavigate={navigateToDetail}
         />
       )}
 
-      {mode === 'hidden' && hasConversation && (
+      {mode === 'hidden' && showFloatingLauncher && (
         <button
           className="finloop-assistant-floating"
           type="button"
           aria-label={hasConversation ? '继续向 Finloop AI 提问' : '向 Finloop AI 提问'}
-          onClick={() => setMode('modal')}
+          onClick={() => setMode('sidebar')}
         >
           <span aria-hidden="true"><i />AI</span>
           <span className="finloop-assistant-floating-copy">
@@ -234,9 +254,9 @@ function AssistantPanel({
         <nav aria-label="对话窗口操作">
           {isModal ? (
             <button type="button" onClick={onMinimize} aria-label="收起至页面右侧边栏">收起至侧边栏</button>
-          ) : (
+          ) : onExpand ? (
             <button type="button" onClick={onExpand} aria-label="展开沉浸式对话">展开</button>
-          )}
+          ) : null}
           <button className="finloop-assistant-close" type="button" onClick={onClose} aria-label="关闭并收起对话">×</button>
         </nav>
       </header>

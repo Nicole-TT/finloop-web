@@ -1,5 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { motion, useReducedMotion, type Variants } from 'motion/react';
 import { useFinloopAssistant } from './FinloopAssistant';
+import { ArrowUp, RefreshCw, type IconNode } from 'lucide';
+
+function HeroIcon({ icon }: { icon: IconNode }) {
+  return <svg width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
+    {icon[2]?.map(([tag, attrs], index) => React.createElement(tag, { ...attrs, key: index }))}
+  </svg>;
+}
 
 const assetContent: Record<string, [string, string, string, string]> = {
   cash: ['企业流动性与现金管理', '连接多币种货币基金与机构运营流程，支持企业与金融机构进行现金配置、申赎和资产查看。', 'USD · HKD · CNH', '产品范围与规则以上线时核验信息为准'],
@@ -18,9 +26,104 @@ const assetTabs: Array<[string, string]> = [
   ['virtual', '虚拟资产'], ['rwa', 'RWA'],
 ];
 
+const heroSuggestionBatches = [
+  ['代币化平台 FinTaaS', '统一 AI API 网关 星智通', '企业如何管理闲置资金', '我想了解私募产品'],
+  ['如何上线数字财富业务', '金融机构如何应用 AI', '了解 RWA 解决方案', '企业现金管理方案'],
+];
+
+const heroEntrance: Variants = {
+  hidden: {},
+  visible: { transition: { delayChildren: .12, staggerChildren: .1 } },
+};
+
+const heroEntranceItem: Variants = {
+  hidden: { opacity: 0, y: 18 },
+  visible: { opacity: 1, y: 0, transition: { duration: .56, ease: [.22, 1, .36, 1] } },
+};
+
 export function HeroSection() {
+  const heroRef = useRef<HTMLElement>(null);
   const [question, setQuestion] = useState('');
-  const { ask, hasConversation } = useFinloopAssistant();
+  const [suggestionBatch, setSuggestionBatch] = useState(0);
+  const reduceMotion = useReducedMotion();
+  const { ask } = useFinloopAssistant();
+
+  useEffect(() => {
+    const hero = heroRef.current;
+    if (!hero) return;
+    const media = window.matchMedia('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)');
+    let frame = 0;
+    let x = 0;
+    let y = 0;
+    let targetX = 0;
+    let targetY = 0;
+    let active = false;
+    let lastTime = 0;
+    let lastTrailTime = 0;
+    let trail: Array<{ x: number; y: number; time: number }> = [];
+
+    const paint = (time: number) => {
+      const moving = Math.hypot(targetX - x, targetY - y) > 1;
+      if (moving && time - lastTrailTime > 50) {
+        trail.push({ x, y, time });
+        trail = trail.slice(-12);
+        lastTrailTime = time;
+      }
+      trail = trail.filter(point => time - point.time < 650);
+      hero.style.setProperty('--scan-trail', trail.length ? trail.map(point => {
+        const opacity = .2 * (1 - (time - point.time) / 650) ** 2;
+        return `radial-gradient(circle 360px at ${point.x}px ${point.y}px, rgba(0,0,0,${opacity}) 0%, rgba(0,0,0,${opacity * .65}) 28%, rgba(0,0,0,${opacity * .22}) 58%, transparent 100%)`;
+      }).join(', ') : 'linear-gradient(transparent, transparent)');
+      const blend = 1 - Math.exp(-Math.min(time - lastTime || 16, 64) / 65);
+      lastTime = time;
+      x += (targetX - x) * blend;
+      y += (targetY - y) * blend;
+      hero.style.setProperty('--scan-x', `${x}px`);
+      hero.style.setProperty('--scan-y', `${y}px`);
+      frame = active && (Math.hypot(targetX - x, targetY - y) > .2 || trail.length > 0)
+        ? requestAnimationFrame(paint) : 0;
+    };
+    const leave = () => {
+      active = false;
+      hero.classList.remove('is-scanning');
+      cancelAnimationFrame(frame);
+      frame = 0;
+      lastTime = 0;
+      trail = [];
+      lastTrailTime = 0;
+    };
+    const move = (event: PointerEvent) => {
+      if (!media.matches || event.pointerType === 'touch') return;
+      const bounds = hero.getBoundingClientRect();
+      targetX = event.clientX - bounds.left;
+      targetY = event.clientY - bounds.top;
+      if (!active) {
+        x = targetX;
+        y = targetY;
+        active = true;
+        hero.style.removeProperty('--scan-trail');
+        hero.style.setProperty('--scan-x', `${x}px`);
+        hero.style.setProperty('--scan-y', `${y}px`);
+        hero.classList.add('is-scanning');
+      }
+      if (!frame) frame = requestAnimationFrame(paint);
+    };
+    hero.addEventListener('pointermove', move);
+    hero.addEventListener('pointerleave', leave);
+    hero.addEventListener('pointercancel', leave);
+    window.addEventListener('blur', leave);
+    window.addEventListener('scroll', leave, { passive: true });
+    media.addEventListener('change', leave);
+    return () => {
+      leave();
+      hero.removeEventListener('pointermove', move);
+      hero.removeEventListener('pointerleave', leave);
+      hero.removeEventListener('pointercancel', leave);
+      window.removeEventListener('blur', leave);
+      window.removeEventListener('scroll', leave);
+      media.removeEventListener('change', leave);
+    };
+  }, []);
 
   function submitQuestion(value: string) {
     const nextQuestion = value.trim();
@@ -30,32 +133,26 @@ export function HeroSection() {
   }
 
   return (
-    <section className="hero" data-header-theme="inverse" aria-label="金融团队协作场景">
+    <section ref={heroRef} className="hero" data-header-theme="inverse" aria-label="香港城市与财富科技平台">
+      <div className="hero-digital-scan" aria-hidden="true">
+        <div className="hero-digital-field">{Array.from({ length: 240 }, (_, index) => {
+          const codes = index % 3 === 0 ? ['01', '10', '11', '00', '01'] : index % 3 === 1 ? ['10', '00', '01', '11', '10'] : ['001', '110', '010', '101', '001'];
+          return <span key={index}><b style={{ animationDelay: `${-(index % 11) * .27}s` }}>{codes.map((code, row) => <i key={row}>{code}</i>)}</b></span>;
+        })}</div>
+      </div>
       <div className="hero-grid">
-        <div className="hero-copy">
-          <p className="hero-kicker">WEB2 × WEB3 × AI</p>
-          <h1>AI 驱动的<br />全球一站式 Web5 财富科技平台</h1>
-          <p>连接传统金融、数字资产与 AI，为金融机构、数字平台及企业提供覆盖财富管理、交易、RWA 与智能化业务的科技能力。</p>
-          {hasConversation ? (
-            <div className="hero-actions">
-              <a className="button button-accent" href="#architecture">
-                探索产品与平台 <i data-lucide="arrow-right" />
-              </a>
-              <a className="text-link" href="#contact">
-                预约咨询 <i data-lucide="arrow-right" />
-              </a>
+        <motion.div className="hero-copy" variants={heroEntrance} initial={reduceMotion ? false : 'hidden'} animate="visible">
+          <motion.p className="hero-kicker" variants={heroEntranceItem}>WEB2 × WEB3 × AI</motion.p>
+          <motion.h1 variants={heroEntranceItem}>AI 驱动的 Web5 财富科技平台</motion.h1>
+          <motion.p variants={heroEntranceItem}>您想了解哪类财富科技能力？我可以帮您快速找到对应的产品与解决方案</motion.p>
+          <motion.div className="hero-ai-chat" aria-label="Finloop AI 业务助手" variants={heroEntranceItem}>
+            <form autoComplete="off" onSubmit={event => { event.preventDefault(); submitQuestion(question); }}><label className="sr-only" htmlFor="hero-ai-question">输入您的业务问题</label><input id="hero-ai-question" name="finloop-business-question" autoComplete="off" value={question} onChange={event => setQuestion(event.target.value)} placeholder="请输入您的角色或您的业务问题，我们为你快速解决" /><button type="submit" aria-label="发送问题" disabled={!question.trim()}><HeroIcon icon={ArrowUp} /></button></form>
+            <div className="hero-ai-chat-footer">
+              <div className="hero-ai-suggestions" aria-label="示例问题">{heroSuggestionBatches[suggestionBatch].map(item => <button type="button" key={item} onClick={() => submitQuestion(item)}>{item}</button>)}</div>
+              <button className="hero-ai-shuffle" type="button" onClick={() => setSuggestionBatch(current => (current + 1) % heroSuggestionBatches.length)}><HeroIcon icon={RefreshCw} />换一批</button>
             </div>
-          ) : (
-            <div className="hero-ai-chat" aria-label="Finloop AI 业务助手">
-              <div className="hero-ai-chat-head"><span><i aria-hidden="true" />Finloop AI</span><small>业务助手</small></div>
-              <div className="hero-ai-chat-body" aria-live="polite">
-                <p>您想了解哪类财富科技能力？我可以帮您快速找到对应的产品与解决方案。</p>
-              </div>
-              <div className="hero-ai-suggestions" aria-label="示例问题">{['如何上线数字财富业务？', '如何管理企业闲置资金？', 'AI 如何进入金融业务流程？'].map(item => <button type="button" key={item} onClick={() => submitQuestion(item)}>{item}</button>)}</div>
-              <form onSubmit={event => { event.preventDefault(); submitQuestion(question); }}><label className="sr-only" htmlFor="hero-ai-question">输入您的业务问题</label><input id="hero-ai-question" value={question} onChange={event => setQuestion(event.target.value)} placeholder="输入您的业务问题…" /><button type="submit" aria-label="发送问题" disabled={!question.trim()}>↑</button></form>
-            </div>
-          )}
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );

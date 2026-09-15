@@ -57,10 +57,15 @@ export function SiteLayout({ headerMarkup, mobileDrawerMarkup, footerMarkup, ini
     if (!header) return;
 
     function syncHeaderTheme() {
+      const inverseRegion = document.querySelector<HTMLElement>('[data-header-theme="inverse"]');
       const scrollProgress = Math.min(1, Math.max(0, window.scrollY / 100));
+      const isOverInverseRegion = Boolean(
+        inverseRegion
+        && inverseRegion.getBoundingClientRect().bottom > header!.offsetHeight,
+      );
 
       header!.style.setProperty('--header-scroll-progress', String(scrollProgress));
-      header!.classList.remove('inverted');
+      header!.classList.toggle('inverted', isOverInverseRegion && scrollProgress < .5);
       header!.classList.toggle('scrolled', scrollProgress >= .5);
     }
 

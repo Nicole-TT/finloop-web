@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { animate } from 'motion';
-import { createIcons, ArrowLeftRight, ArrowRight, ArrowUp, BadgeDollarSign, ChevronDown, ChevronRight, Database, FileChartColumn, Globe2, ListFilter, Menu, MoveRight, PackagePlus, PieChart, X, Building2, Landmark, Network, WalletCards, BriefcaseBusiness, Blocks, Bot, ShieldCheck, CircleCheck, CircleDollarSign, Gem, Orbit, Mail, MapPin } from 'lucide';
+import { createIcons, ArrowLeftRight, ArrowRight, ArrowUp, BadgeDollarSign, ChevronDown, ChevronRight, Database, FileChartColumn, Globe2, ListFilter, Menu, MoveRight, PackagePlus, PieChart, RefreshCw, X, Building2, Landmark, Network, WalletCards, BriefcaseBusiness, Blocks, Bot, ShieldCheck, CircleCheck, CircleDollarSign, Gem, Orbit, Mail, MapPin } from 'lucide';
 import { Markup } from './components/PageRegions';
 import { CoverageSection, HeroSection, SolutionsSection } from './components/BusinessSections';
 import { SiteLayout } from './layouts/SiteLayout';
@@ -151,11 +151,11 @@ const headerMarkup = `
     <div class="mega-shell" aria-hidden="true">
       <div class="mega-panel" data-panel="financial">
         <div class="mega-intro"><strong>连接多元金融产品</strong><p>覆盖传统财富、数字资产与 RWA 产品类别。</p><a href="/products">查看金融产品 <i data-lucide="arrow-right"></i></a></div>
-        <div class="mega-grid"><div><h3>金融产品</h3>${productGroups[0].items.map(([name, desc]) => `<a href="${productLinks[name]}"><span>${name}</span><small>${desc}</small><i data-lucide="arrow-right"></i></a>`).join('')}</div></div>
+        <div class="mega-grid mega-grid-unlabeled"><div>${productGroups[0].items.map(([name, desc]) => `<a href="${productLinks[name]}"><span>${name}</span><small>${desc}</small><i data-lucide="arrow-right"></i></a>`).join('')}</div></div>
       </div>
       <div class="mega-panel" data-panel="technology">
         <div class="mega-intro"><strong>财富科技平台</strong><p>从客户终端、业务工作台到财富核心与资产上链能力。</p><a href="/technology-platform">查看金融平台 <i data-lucide="arrow-right"></i></a></div>
-        <div class="mega-grid"><div><h3>金融平台</h3>${productGroups[1].items.map(([name, desc]) => `<a href="${productLinks[name]}"${name === 'FinTaaS' ? ' target="_blank" rel="noopener noreferrer"' : ''}><span>${name}</span><small>${desc}</small><i data-lucide="arrow-right"></i></a>`).join('')}</div></div>
+        <div class="mega-grid mega-grid-unlabeled"><div>${productGroups[1].items.map(([name, desc]) => `<a href="${productLinks[name]}"${name === 'FinTaaS' ? ' target="_blank" rel="noopener noreferrer"' : ''}><span>${name}</span><small>${desc}</small><i data-lucide="arrow-right"></i></a>`).join('')}</div></div>
       </div>
       <div class="mega-panel" data-panel="solutions">
         <div class="mega-intro"><strong>从业务目标或客户类型找方案</strong><p>两种视角，对应同一套可组合的财富科技底座。</p><a href="/solutions">查看解决方案 <i data-lucide="arrow-right"></i></a></div>
@@ -189,7 +189,7 @@ const mainMarkup = `
     <section class="hero">
       <div class="hero-grid">
         <div class="hero-copy">
-          <h1>AI 驱动的一站式<br /><span>Web5 财富科技平台</span></h1>
+          <h1>AI 驱动的<br /><span>Web5 财富科技平台</span></h1>
           <p>连接传统财富、数字资产与 AI，为金融机构、数字平台和企业提供财富管理、交易、RWA 与智能化能力。</p>
           <div class="hero-actions"><a class="button button-accent" href="#architecture">探索产品与平台 <i data-lucide="arrow-right"></i></a><a class="text-link" href="#contact">预约咨询 <i data-lucide="arrow-right"></i></a></div>
         </div>
@@ -420,8 +420,12 @@ function App() {
 
 createRoot(document.querySelector('#app')!).render(<App />);
 
+function refreshPageIcons() {
+  createIcons({ icons: { ArrowLeftRight, ArrowRight, ArrowUp, BadgeDollarSign, ChevronDown, ChevronRight, Database, FileChartColumn, Globe2, ListFilter, Menu, MoveRight, PackagePlus, PieChart, RefreshCw, X, Building2, Landmark, Network, WalletCards, BriefcaseBusiness, Blocks, Bot, ShieldCheck, CircleCheck, CircleDollarSign, Gem, Orbit, Mail, MapPin } });
+}
+
 function initializePage() {
-  createIcons({ icons: { ArrowLeftRight, ArrowRight, ArrowUp, BadgeDollarSign, ChevronDown, ChevronRight, Database, FileChartColumn, Globe2, ListFilter, Menu, MoveRight, PackagePlus, PieChart, X, Building2, Landmark, Network, WalletCards, BriefcaseBusiness, Blocks, Bot, ShieldCheck, CircleCheck, CircleDollarSign, Gem, Orbit, Mail, MapPin } });
+  refreshPageIcons();
 
   const header = document.querySelector('.site-header');
   const megaShell = document.querySelector('.mega-shell');
@@ -579,6 +583,7 @@ function initializePage() {
   }), { threshold: 0.12 });
 
   function observePageSections() {
+    refreshPageIcons();
     document.querySelectorAll('.section-pad:not(.in-view), .hero-system:not(.in-view)').forEach(el => observer.observe(el));
   }
 

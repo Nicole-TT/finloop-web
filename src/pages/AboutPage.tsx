@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const journey = [
@@ -10,7 +10,16 @@ const journey = [
   ['2026', 'AI 与机构数字化进一步深化', 'Finloop AI、金融 Agent 与 FDE-AI 等能力进一步进入机构真实业务流程。'],
 ];
 
+const leadershipProfiles = [
+  { id: '01', name: '蔡华', role: '首席执行官 CEO', bio: '负责公司整体战略与经营管理，推动财富科技、数字资产与人工智能能力协同发展，为机构客户构建长期、可靠的数字化服务体系。', image: '/assets/about-leadership-cai-hua.png' },
+  { id: '02', name: 'Amily', role: '职位待确认', bio: '聚焦财富科技产品与业务协同，持续连接客户需求、金融场景与技术能力，推动解决方案在机构业务中高效落地。', image: '/assets/about-leadership-amily.png' },
+  { id: '03', name: 'Johna', role: '职位待确认', bio: '关注机构客户需求与平台生态建设，致力于通过开放、专业的科技能力，连接全球金融资源与多元财富管理场景。', image: '/assets/about-leadership-johna.png' },
+];
+
 export function AboutPage() {
+  const [activeLeader, setActiveLeader] = useState(0);
+  const leader = leadershipProfiles[activeLeader];
+
   useEffect(() => {
     const previousTitle = document.title;
     const description = document.querySelector<HTMLMetaElement>('meta[name="description"]');
@@ -33,7 +42,9 @@ export function AboutPage() {
 
     <section className="about-ecosystem about-section"><img src="https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&w=2000&q=84" alt="香港城市及金融商业区天际线" /><div className="about-shell"><Heading light index="06" title="连接全球机构金融与财富生态" /><div className="ecosystem-flow"><div><small>产品与金融来源</small><p>全球银行</p><p>基金与资产管理机构</p><p>产品发行与数字资产生态</p></div><div className="ecosystem-core"><small>星路科技</small><strong>财富科技<br/>交易基础设施<br/>AI 与 RWA</strong><span>连接 8000+ 财富管理产品</span></div><div><small>机构客户</small><p>银行与券商</p><p>财富机构与数字平台</p><p>数字资产机构与企业</p></div></div></div></section>
 
-    <section className="about-trust about-section" id="qualifications"><div className="about-shell"><Heading light index="07" title="以金融资质与行业认可，支撑机构级业务" copy="Finloop 依托复星财富控股旗下持牌金融机构体系开展相关财富和金融科技业务，并持续获得香港政府、金融科技及专业投资行业的关注与认可。" /><div className="trust-grid"><article className="trust-license"><small>HONG KONG SFC</small><h3>持牌金融基础</h3><p>星路金融为香港证监会持牌法团。Finloop 依托复星财富控股旗下持牌金融机构体系，为机构财富、投资交易及相关金融服务提供合规基础设施支持。</p><div className="qualification-list"><div><b>Type 1</b><span>Dealing in Securities</span><small>证券交易</small></div><div><b>Type 4</b><span>Advising on Securities</span><small>就证券提供意见</small></div><div><b>Type 9</b><span>Asset Management</span><small>资产管理</small></div></div><p className="regulatory-footprint">Expanding Regulatory Footprint · 持续推进新加坡及东南亚市场的合规与牌照布局</p></article><div className="recognition-grid">{[['2025','OASES','香港特区政府引进重点企业办公室相关重点企业认可','https://images.unsplash.com/photo-1567427017947-545c5f8d16ad?auto=format&fit=crop&w=1000&q=82'],['2025','Hong Kong ICT Awards','FinTech Category 相关认可','https://images.unsplash.com/photo-1578269174936-2709b6aeb913?auto=format&fit=crop&w=1000&q=82'],['2026','I&M Professional Investment Awards','Best FinTech Company 相关认可','https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?auto=format&fit=crop&w=1000&q=82'],['2024','ET Net FinTech Awards','杰出一站式数智化财富管理平台','https://images.unsplash.com/photo-1598301257982-0cf014dabbcd?auto=format&fit=crop&w=1000&q=82']].map(x=><article key={x[1]}><img src={x[3]} alt="奖杯展示占位图"/><div><span>{x[0]}</span><strong>{x[1]}</strong><p>{x[2]}</p></div></article>)}</div></div></div></section>
+    <section className="about-leadership about-section"><div className="about-shell"><Heading index="07" title="匠心领航，聚力同行" /><div className="leadership-stage"><figure><img key={leader.id} src={leader.image} alt={`${leader.name}彩色人像`} /></figure><article id="leadership-panel" aria-live="polite"><div className="leadership-identity"><h3>{leader.name}</h3><p>{leader.role}</p></div><blockquote>{leader.bio}</blockquote><div className="leadership-card-footer"><nav className="leadership-controls" aria-label="切换管理层成员"><button type="button" aria-label="上一位管理层成员" onClick={()=>setActiveLeader(current=>(current-1+leadershipProfiles.length)%leadershipProfiles.length)}>←</button><span>{leader.id} / {String(leadershipProfiles.length).padStart(2,'0')}</span><button type="button" aria-label="下一位管理层成员" onClick={()=>setActiveLeader(current=>(current+1)%leadershipProfiles.length)}>→</button></nav></div></article></div></div></section>
+
+    <section className="about-trust about-section" id="qualifications"><div className="about-shell"><Heading light index="08" title="以金融资质与行业认可，支撑机构级业务" copy="Finloop 依托复星财富控股旗下持牌金融机构体系开展相关财富和金融科技业务，并持续获得香港政府、金融科技及专业投资行业的关注与认可。" /><div className="trust-grid"><article className="trust-license"><small>HONG KONG SFC</small><h3>持牌金融基础</h3><p>星路金融为香港证监会持牌法团。Finloop 依托复星财富控股旗下持牌金融机构体系，为机构财富、投资交易及相关金融服务提供合规基础设施支持。</p><div className="qualification-list"><div><b>Type 1</b><span>Dealing in Securities</span><small>证券交易</small></div><div><b>Type 4</b><span>Advising on Securities</span><small>就证券提供意见</small></div><div><b>Type 9</b><span>Asset Management</span><small>资产管理</small></div></div><p className="regulatory-footprint">Expanding Regulatory Footprint · 持续推进新加坡及东南亚市场的合规与牌照布局</p></article><div className="recognition-grid">{[['2025','OASES','香港特区政府引进重点企业办公室相关重点企业认可','https://images.unsplash.com/photo-1567427017947-545c5f8d16ad?auto=format&fit=crop&w=1000&q=82'],['2025','Hong Kong ICT Awards','FinTech Category 相关认可','https://images.unsplash.com/photo-1578269174936-2709b6aeb913?auto=format&fit=crop&w=1000&q=82'],['2026','I&M Professional Investment Awards','Best FinTech Company 相关认可','https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?auto=format&fit=crop&w=1000&q=82'],['2024','ET Net FinTech Awards','杰出一站式数智化财富管理平台','https://images.unsplash.com/photo-1598301257982-0cf014dabbcd?auto=format&fit=crop&w=1000&q=82']].map(x=><article key={x[1]}><img src={x[3]} alt="奖杯展示占位图"/><div><span>{x[0]}</span><strong>{x[1]}</strong><p>{x[2]}</p></div></article>)}</div></div></div></section>
 
     <section className="about-journey about-section"><div className="about-shell"><Heading index="09" title="Finloop 发展里程碑" copy="记录从财富业务基础、核心系统建设，到 Web5、RWA 与 AI 能力拓展的关键节点。" /><div className="about-journey-layout"><figure><img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1400&q=84" alt="登山者攀登高峰"/></figure><div className="journey-list">{[...journey].reverse().map((x,i)=><article key={x[0]}><span>{x[0]}</span><i>0{journey.length-i}</i><div><h3>{x[1]}</h3><p>{x[2]}</p></div></article>)}</div></div></div></section>
 
