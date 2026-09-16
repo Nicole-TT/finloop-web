@@ -7,59 +7,30 @@ import {
   useRef,
   useState,
 } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { readAssistantStream, readPartialAnswer } from '../data/finloopAssistantStream';
+import { Link, useLocation } from 'react-router-dom';
+import { assistantPages, buildAssistantSystemPrompt, parseAssistantReply } from '../data/finloopAssistantKnowledge';
 
 type AssistantMode = 'hidden' | 'modal' | 'sidebar';
 
-type AssistantAnswer = {
-  body: string;
-  detailHref: string;
-  detailLabel: string;
-};
-
-type AssistantExchange = AssistantAnswer & {
+type AssistantExchange = {
   id: number;
   question: string;
+  body: string;
+  links: string[];
+  status: 'pending' | 'complete' | 'error';
 };
 
 type FinloopAssistantContextValue = {
   ask: (question: string) => void;
   hasConversation: boolean;
+  openApiSettings: () => void;
+  isLoading: boolean;
 };
+
+const API_KEY_STORAGE = 'finloop-ai-api-key';
 
 const FinloopAssistantContext = createContext<FinloopAssistantContextValue | null>(null);
-
-const presetAnswers: Record<string, AssistantAnswer> = {
-  '如何上线数字财富业务？': {
-    body: 'Finloop 可将现实资产、Tokenization、链上部署、钱包与 KYT、产品运营和机构分销连接成一条完整链路。方案可根据资产方、产品需求方或分销方的角色，组合 FinRWA、FinTaaS、FinOne 与 FinMix 等能力，支持从产品设计、数字化发行到持续运营与访问分销。',
-    detailHref: '/solutions/rwa-web3',
-    detailLabel: '查看数字资产与代币化解决方案详情',
-  },
-  '如何管理企业闲置资金？': {
-    body: '星企通将企业开户、资金流转、投资交易和资产信息集中在一个平台。企业可根据流动性和风险需求，通过货币基金、固定票息票据、债券基金等路径配置闲置资金，并统一查看资产、交易记录和资金流水，提升资金使用效率。',
-    detailHref: '/products/xingqitong',
-    detailLabel: '查看星企通详情',
-  },
-  'AI 如何进入金融业务流程？': {
-    body: 'Finloop 从业务场景诊断开始，将企业资料、知识、权限、系统与高价值任务连接起来，再通过 FAI、星路通、AI PaaS、星智通 MaaS、Agent 与 Skills 构建可控工作流。由 FDE 团队推进设计、集成、部署和持续运营，让 AI 从问答工具进入产品研究、风险、运营、订单与对账等真实流程。',
-    detailHref: '/solutions/enterprise-ai',
-    detailLabel: '查看金融 AI 企业落地解决方案详情',
-  },
-};
-
-const defaultAnswer: AssistantAnswer = {
-  body: 'Finloop AI 可以根据您的业务目标，帮助定位金融产品、平台与解决方案。您可以从机构财富管理、企业资金管理、数字资产与代币化或企业 AI 落地等方向继续了解，也可以联系团队获取针对性建议。',
-  detailHref: '/solutions',
-  detailLabel: '查看全部解决方案',
-};
-
-function resolveAnswer(question: string) {
-  if (presetAnswers[question]) return presetAnswers[question];
-  if (/闲置资金|企业资金|现金管理/.test(question)) return presetAnswers['如何管理企业闲置资金？'];
-  if (/代币|RWA|数字资产|Web3/i.test(question)) return presetAnswers['如何上线数字财富业务？'];
-  if (/AI|人工智能|智能化/i.test(question)) return presetAnswers['AI 如何进入金融业务流程？'];
-  return defaultAnswer;
-}
 
 export function useFinloopAssistant() {
   const value = useContext(FinloopAssistantContext);
@@ -70,7 +41,53 @@ export function useFinloopAssistant() {
 export function FinloopAssistantProvider({ children }: { children: ReactNode }) {
   const [mode, setMode] = useState<AssistantMode>('hidden');
   const location = useLocation();
-  const navigate = useNavigate();
+  const [apiKey, setApiKey] = useState(() => {
+    try { return localStorage.getItem(API_KEY_STORAGE) || ''; } catch { return ''; }
+  });
+  const [storageError, setStorageError] = useState('');
+  const [keyDraft, setKeyDraft] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const keyDialogRef = useRef<HTMLDialogElement>(null);
+  const pendingQuestion = useRef('');
+  const requestRef = useRef<AbortController | null>(null);
+
+  function openApiSettings() {
+    setStorageError('');
+    setKeyDraft(apiKey);
+    keyDialogRef.current?.showModal();
+  }
+
+  function saveApiKey(event: FormEvent) {
+    event.preventDefault();
+    const key = keyDraft.trim();
+    if (!key) return;
+    try { localStorage.setItem(API_KEY_STORAGE, key); }
+    catch { setStorageError('浏览器未允许保存，请开启此站点的本地存储后重试。'); return; }
+    setApiKey(key);
+    setKeyDraft('');
+    keyDialogRef.current?.close();
+    const question = pendingQuestion.current;
+    pendingQuestion.current = '';
+    if (question) void ask(question, key);
+  }
+
+  function clearApiKey() {
+    try { localStorage.removeItem(API_KEY_STORAGE); }
+    catch { setStorageError('无法清除本地缓存，请检查浏览器存储设置。'); return; }
+    setApiKey('');
+    setKeyDraft('');
+    setStorageError('');
+  }
+
+  useEffect(() => {
+    function syncKey(event: StorageEvent) {
+      if (event.key === API_KEY_STORAGE || event.key === null) setApiKey(event.newValue || '');
+    }
+    window.addEventListener('storage', syncKey);
+    return () => window.removeEventListener('storage', syncKey);
+  }, []);
+
+  useEffect(() => () => requestRef.current?.abort(), []);
   const [exchanges, setExchanges] = useState<AssistantExchange[]>([]);
   const [draft, setDraft] = useState('');
   const [showFloatingLauncher, setShowFloatingLauncher] = useState(location.pathname !== '/');
@@ -78,30 +95,63 @@ export function FinloopAssistantProvider({ children }: { children: ReactNode }) 
   const messagesRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  function ask(question: string) {
+  async function ask(question: string, key = apiKey) {
     const nextQuestion = question.trim();
-    if (!nextQuestion) return;
-    const answer = resolveAnswer(nextQuestion);
-    setExchanges(current => [
-      ...current,
-      { id: nextId.current++, question: nextQuestion, ...answer },
-    ]);
+    if (!nextQuestion || requestRef.current) return;
+    if (!key) {
+      pendingQuestion.current = nextQuestion;
+      openApiSettings();
+      return;
+    }
+    const id = nextId.current++;
+    const controller = new AbortController();
+    requestRef.current = controller;
+    setIsLoading(true);
+    const messages = [{ role: 'system', content: buildAssistantSystemPrompt(location.pathname + location.hash) }, ...exchanges.filter(item => item.status === 'complete').flatMap(item => [
+      { role: 'user', content: item.question },
+      { role: 'assistant', content: JSON.stringify({ answer: item.body, links: item.links }) },
+    ])];
+    messages.push({ role: 'user', content: nextQuestion });
+    setExchanges(current => [...current, { id, question: nextQuestion, body: '', links: [], status: 'pending' }]);
     setDraft('');
     setMode('sidebar');
+    const timeout = window.setTimeout(() => controller.abort(), 90000);
+    try {
+      const response = await fetch('https://aigw.finloopai.ai/v1/chat/completions', {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ model: 'gpt-5.5', messages, stream: true }),
+        signal: controller.signal,
+      });
+      if (!response.ok) {
+        throw new Error(response.status === 401 || response.status === 403
+          ? 'API Key 无效或没有访问权限，请检查设置后重试。'
+          : response.status === 429 ? '请求过于频繁或额度不足，请稍后重试。'
+          : `请求失败（HTTP ${response.status}），请稍后重试。`);
+      }
+      const content = await readAssistantStream(response, partial => {
+        const body = readPartialAnswer(partial);
+        setExchanges(current => current.map(item => item.id === id ? { ...item, body } : item));
+      });
+      if (typeof content !== 'string' || !content.trim()) throw new Error('接口未返回有效的回答，请重试。');
+      const reply = parseAssistantReply(content);
+      setExchanges(current => current.map(item => item.id === id ? { ...item, body: reply.answer, links: reply.links, status: 'complete' } : item));
+    } catch (error) {
+      const message = controller.signal.aborted ? '请求超时，请稍后重试。'
+        : error instanceof TypeError ? '无法连接 AI 服务，请检查网络及接口跨域访问配置后重试。'
+        : error instanceof SyntaxError ? '接口响应格式异常，请稍后重试。'
+        : error instanceof Error ? error.message : '请求失败，请稍后重试。';
+      setExchanges(current => current.map(item => item.id === id ? { ...item, body: item.body ? `${item.body}\n\n${message}` : message, status: 'error' } : item));
+    } finally {
+      window.clearTimeout(timeout);
+      requestRef.current = null;
+      setIsLoading(false);
+    }
   }
 
   function submitDraft(event: FormEvent) {
     event.preventDefault();
     ask(draft);
-  }
-
-  function navigateToDetail(href: string) {
-    setMode('sidebar');
-    if (location.pathname === href) {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      return;
-    }
-    navigate(href);
   }
 
   useEffect(() => {
@@ -118,15 +168,19 @@ export function FinloopAssistantProvider({ children }: { children: ReactNode }) 
     if (mode === 'hidden') return undefined;
     const frame = window.requestAnimationFrame(() => {
       messagesRef.current?.scrollTo({ top: messagesRef.current.scrollHeight, behavior: 'smooth' });
-      inputRef.current?.focus();
+
     });
     return () => window.cancelAnimationFrame(frame);
   }, [exchanges, mode]);
 
   useEffect(() => {
+    if (mode !== 'hidden' && !keyDialogRef.current?.open) inputRef.current?.focus();
+  }, [mode]);
+
+  useEffect(() => {
     if (mode === 'hidden') return undefined;
     function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === 'Escape') setMode('hidden');
+      if (event.key === 'Escape' && !keyDialogRef.current?.open) setMode('hidden');
     }
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
@@ -155,8 +209,21 @@ export function FinloopAssistantProvider({ children }: { children: ReactNode }) 
   const hasConversation = exchanges.length > 0;
 
   return (
-    <FinloopAssistantContext.Provider value={{ ask, hasConversation }}>
+    <FinloopAssistantContext.Provider value={{ ask, hasConversation, openApiSettings, isLoading }}>
       {children}
+      <dialog className="finloop-api-dialog" ref={keyDialogRef} aria-labelledby="finloop-api-title"
+        onClose={() => { setKeyDraft(''); pendingQuestion.current = ''; }}
+        onClick={event => { if (event.target === event.currentTarget) keyDialogRef.current?.close(); }}>
+        <form onSubmit={saveApiKey}>
+          <header><h2 id="finloop-api-title">设置 API Key</h2><button type="button" aria-label="关闭 API Key 设置" onClick={() => keyDialogRef.current?.close()}>×</button></header>
+          <p>连接 Finloop AI · gpt-5.5</p>
+          <label htmlFor="finloop-api-key">API Key</label>
+          <input id="finloop-api-key" type="password" autoComplete="off" autoFocus required value={keyDraft} onChange={event => setKeyDraft(event.target.value)} placeholder="请输入 API Key" />
+          <small>保存在当前浏览器的本站缓存中，刷新与跨页面均可使用。仅用于向 Finloop AI 接口发送请求。</small>
+          <div role="alert">{storageError}</div>
+          <footer>{apiKey && <button type="button" onClick={clearApiKey}>清除 Key</button>}<button type="button" onClick={() => keyDialogRef.current?.close()}>取消</button><button className="button button-accent" type="submit" disabled={!keyDraft.trim()}>保存</button></footer>
+        </form>
+      </dialog>
 
       {mode === 'modal' && (
         <div className="finloop-assistant-overlay" onMouseDown={event => {
@@ -172,7 +239,9 @@ export function FinloopAssistantProvider({ children }: { children: ReactNode }) 
             inputRef={inputRef}
             onMinimize={() => setMode('sidebar')}
             onClose={() => setMode('hidden')}
-            onDetailNavigate={navigateToDetail}
+            isLoading={isLoading}
+            onSettings={openApiSettings}
+            onRetry={question => void ask(question)}
           />
         </div>
       )}
@@ -187,7 +256,9 @@ export function FinloopAssistantProvider({ children }: { children: ReactNode }) 
           messagesRef={messagesRef}
           inputRef={inputRef}
           onClose={() => setMode('hidden')}
-          onDetailNavigate={navigateToDetail}
+          isLoading={isLoading}
+            onSettings={openApiSettings}
+            onRetry={question => void ask(question)}
         />
       )}
 
@@ -219,7 +290,9 @@ type AssistantPanelProps = {
   messagesRef: React.RefObject<HTMLDivElement>;
   inputRef: React.RefObject<HTMLInputElement>;
   onClose: () => void;
-  onDetailNavigate: (href: string) => void;
+  isLoading: boolean;
+  onSettings: () => void;
+  onRetry: (question: string) => void;
   onMinimize?: () => void;
   onExpand?: () => void;
 };
@@ -233,7 +306,9 @@ function AssistantPanel({
   messagesRef,
   inputRef,
   onClose,
-  onDetailNavigate,
+  isLoading,
+  onSettings,
+  onRetry,
   onMinimize,
   onExpand,
 }: AssistantPanelProps) {
@@ -252,6 +327,7 @@ function AssistantPanel({
           <small>业务助手</small>
         </div>
         <nav aria-label="对话窗口操作">
+          <button className="finloop-api-entry" type="button" aria-label="API Key 设置" onClick={onSettings}>API Key</button>
           {isModal ? (
             <button type="button" onClick={onMinimize} aria-label="收起至页面右侧边栏">收起至侧边栏</button>
           ) : onExpand ? (
@@ -276,31 +352,37 @@ function AssistantPanel({
             <div className="finloop-assistant-message is-user"><p>{exchange.question}</p></div>
             <div className="finloop-assistant-message is-assistant">
               <b>Finloop AI</b>
-              <p>{exchange.body}</p>
-              <button
-                className="finloop-assistant-detail"
-                type="button"
-                aria-label={exchange.detailLabel}
-                onClick={() => onDetailNavigate(exchange.detailHref)}
-              >
-                查看详情 <span aria-hidden="true">›</span>
-              </button>
+              <p role={exchange.status === 'error' ? 'alert' : undefined}>{exchange.body || (exchange.status === 'pending' ? '正在思考…' : '')}</p>
+              {exchange.status === 'pending' && exchange.body && <small className="finloop-assistant-streaming">正在回答…</small>}
+              {exchange.status === 'complete' && exchange.links.length > 0 && <nav className="finloop-assistant-links" aria-label="相关官网页面">
+                {exchange.links.map(href => {
+                  const page = assistantPages.find(item => item.href === href)!;
+                  return href.startsWith('https://')
+                    ? <a key={href} href={href} target="_blank" rel="noopener noreferrer">{page.title} <span aria-hidden="true">↗</span><span className="sr-only">（新窗口打开）</span></a>
+                    : <Link key={href} to={href}>{page.title} <span aria-hidden="true">→</span></Link>;
+                })}
+              </nav>}
+              {exchange.status === 'error' && <button className="finloop-assistant-detail" type="button" disabled={isLoading} onClick={() => onRetry(exchange.question)}>重试</button>}
             </div>
           </div>
         ))}
         </div>
       </div>
 
-      <form className="finloop-assistant-form" onSubmit={submitDraft}>
+      <form className="finloop-assistant-form" autoComplete="off" onSubmit={submitDraft}>
         <label className="sr-only" htmlFor={`finloop-assistant-input-${mode}`}>继续输入您的业务问题</label>
         <input
           ref={inputRef}
+          autoComplete="off"
+          autoCorrect="off"
+          autoCapitalize="off"
+          spellCheck={false}
           id={`finloop-assistant-input-${mode}`}
           value={draft}
           onChange={event => setDraft(event.target.value)}
           placeholder="继续输入您的业务问题…"
         />
-        <button type="submit" aria-label="发送问题" disabled={!draft.trim()}>↑</button>
+        <button type="submit" aria-label="发送问题" disabled={isLoading || !draft.trim()}>↑</button>
       </form>
     </section>
   );

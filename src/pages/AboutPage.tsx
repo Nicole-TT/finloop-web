@@ -32,7 +32,7 @@ export function AboutPage() {
   return <main className="about-page" id="main">
     <section className="about-hero" data-header-theme="inverse">
       <img className="about-hero-image" src="https://images.unsplash.com/photo-1449157291145-7efd050a4d0e?auto=format&fit=crop&w=2200&q=86" alt="现代城市建筑群俯瞰景观" /><div className="about-hero-wash" />
-      <div className="about-shell about-hero-grid"><div className="about-hero-copy"><p className="about-kicker">Web2 <i /> Web3 <i /> AI</p><h1>连接财富、数字资产与 AI 的机构金融科技平台</h1><p>Finloop 星路科技总部位于香港，为金融机构、数字平台和企业提供财富产品连接、数字化平台、投资交易、RWA 与 AI 解决方案。</p><div className="about-actions"><Link className="button button-accent" to="/solutions">了解我们的业务</Link><Link to="/contact">联系 Finloop <span>↗</span></Link></div></div>
+      <div className="about-shell about-hero-grid"><div className="about-hero-copy"><p className="about-kicker">Web2 <i /> Web3 <i /> AI</p><h1>连接财富、数字资产与 AI 的机构金融科技平台</h1><p>Finloop 星路科技总部位于香港，为金融机构、数字平台和企业提供财富产品连接、数字化平台、投资交易、RWA 与 AI 解决方案。</p><div className="about-actions"><Link to="/contact">联系 Finloop <span>↗</span></Link></div></div>
       </div>
     </section>
 

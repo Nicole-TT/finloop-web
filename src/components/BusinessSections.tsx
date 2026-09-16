@@ -46,7 +46,7 @@ export function HeroSection() {
   const [question, setQuestion] = useState('');
   const [suggestionBatch, setSuggestionBatch] = useState(0);
   const reduceMotion = useReducedMotion();
-  const { ask } = useFinloopAssistant();
+  const { ask, openApiSettings, isLoading } = useFinloopAssistant();
 
   useEffect(() => {
     const hero = heroRef.current;
@@ -146,10 +146,11 @@ export function HeroSection() {
           <motion.h1 variants={heroEntranceItem}>AI 驱动的 Web5 财富科技平台</motion.h1>
           <motion.p variants={heroEntranceItem}>您想了解哪类财富科技能力？我可以帮您快速找到对应的产品与解决方案</motion.p>
           <motion.div className="hero-ai-chat" aria-label="Finloop AI 业务助手" variants={heroEntranceItem}>
-            <form autoComplete="off" onSubmit={event => { event.preventDefault(); submitQuestion(question); }}><label className="sr-only" htmlFor="hero-ai-question">输入您的业务问题</label><input id="hero-ai-question" name="finloop-business-question" autoComplete="off" value={question} onChange={event => setQuestion(event.target.value)} placeholder="请输入您的角色或您的业务问题，我们为你快速解决" /><button type="submit" aria-label="发送问题" disabled={!question.trim()}><HeroIcon icon={ArrowUp} /></button></form>
+            <form autoComplete="off" onSubmit={event => { event.preventDefault(); submitQuestion(question); }}><label className="sr-only" htmlFor="hero-ai-question">输入您的业务问题</label><input id="hero-ai-question" name="finloop-business-question" autoComplete="off" autoCorrect="off" autoCapitalize="off" spellCheck={false} value={question} onChange={event => setQuestion(event.target.value)} placeholder="请输入您的角色或您的业务问题，我们为你快速解决" /><button type="submit" aria-label="发送问题" disabled={isLoading || !question.trim()}><HeroIcon icon={ArrowUp} /></button></form>
             <div className="hero-ai-chat-footer">
               <div className="hero-ai-suggestions" aria-label="示例问题">{heroSuggestionBatches[suggestionBatch].map(item => <button type="button" key={item} onClick={() => submitQuestion(item)}>{item}</button>)}</div>
-              <button className="hero-ai-shuffle" type="button" onClick={() => setSuggestionBatch(current => (current + 1) % heroSuggestionBatches.length)}><HeroIcon icon={RefreshCw} />换一批</button>
+              <div className="hero-ai-tools"><button className="hero-ai-shuffle finloop-api-entry" type="button" aria-label="API Key 设置" onClick={openApiSettings}>API Key</button>
+              <button className="hero-ai-shuffle" type="button" onClick={() => setSuggestionBatch(current => (current + 1) % heroSuggestionBatches.length)}><HeroIcon icon={RefreshCw} />换一批</button></div>
             </div>
           </motion.div>
         </motion.div>

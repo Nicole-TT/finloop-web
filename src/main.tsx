@@ -30,7 +30,6 @@ import { SupportPage } from './pages/SupportPage';
 import { TechnologyPlatformPage } from './pages/TechnologyPlatformPage';
 import { CareersPage } from './pages/CareersPage';
 import { WhiteLabelAppPage } from './pages/WhiteLabelAppPage';
-import { SolutionsPage } from './pages/SolutionsPage';
 import { GoalSolutionPage } from './pages/GoalSolutionPage';
 import { InstitutionalWealthSolutionPage } from './pages/InstitutionalWealthSolutionPage';
 import { ProfessionalWealthSolutionPage } from './pages/ProfessionalWealthSolutionPage';
@@ -120,7 +119,7 @@ type MobileNavGroup = [string, string, string[]];
 const mobileNavGroups: MobileNavGroup[] = [
   ['金融产品', '/products', productGroups[0].items.map(i => i[0])],
   ['金融平台', '/technology-platform', productGroups[1].items.map(i => i[0])],
-  ['解决方案', '/solutions', [...businessGoalSolutionItems, ...customerTypeSolutionItems].map(i => i[1])],
+  ['解决方案', '', [...businessGoalSolutionItems, ...customerTypeSolutionItems].map(i => i[1])],
   ['Finloop AI', '/ai', aiItems.map(i => i[0])],
   ['资源中心', '/resources', ['技术平台', '新闻资讯']],
   ['关于星路', '/about', ['公司介绍', '加入我们', '联系我们']],
@@ -150,23 +149,23 @@ const headerMarkup = `
     </div>
     <div class="mega-shell" aria-hidden="true">
       <div class="mega-panel" data-panel="financial">
-        <div class="mega-intro"><strong>连接多元金融产品</strong><p>覆盖传统财富、数字资产与 RWA 产品类别。</p><a href="/products">查看金融产品 <i data-lucide="arrow-right"></i></a></div>
+        <div class="mega-intro"><strong>连接多元金融产品</strong><p>覆盖传统财富、数字资产与 RWA 产品类别。</p></div>
         <div class="mega-grid mega-grid-unlabeled"><div>${productGroups[0].items.map(([name, desc]) => `<a href="${productLinks[name]}"><span>${name}</span><small>${desc}</small><i data-lucide="arrow-right"></i></a>`).join('')}</div></div>
       </div>
       <div class="mega-panel" data-panel="technology">
-        <div class="mega-intro"><strong>财富科技平台</strong><p>从客户终端、业务工作台到财富核心与资产上链能力。</p><a href="/technology-platform">查看金融平台 <i data-lucide="arrow-right"></i></a></div>
+        <div class="mega-intro"><strong>财富科技平台</strong><p>从客户终端、业务工作台到财富核心与资产上链能力。</p></div>
         <div class="mega-grid mega-grid-unlabeled"><div>${productGroups[1].items.map(([name, desc]) => `<a href="${productLinks[name]}"${name === 'FinTaaS' ? ' target="_blank" rel="noopener noreferrer"' : ''}><span>${name}</span><small>${desc}</small><i data-lucide="arrow-right"></i></a>`).join('')}</div></div>
       </div>
       <div class="mega-panel" data-panel="solutions">
-        <div class="mega-intro"><strong>从业务目标或客户类型找方案</strong><p>两种视角，对应同一套可组合的财富科技底座。</p><a href="/solutions">查看解决方案 <i data-lucide="arrow-right"></i></a></div>
+        <div class="mega-intro"><strong>从业务目标或客户类型找方案</strong><p>两种视角，对应同一套可组合的财富科技底座。</p></div>
         <div class="mega-grid mega-solution-grid">${solutionGroups.map(group => `<div><h3>${group.label}</h3>${group.items.map(([id, name, desc]) => `<a href="/solutions/${id}"><span>${name}</span><small>${desc}</small><i data-lucide="arrow-right"></i></a>`).join('')}</div>`).join('')}</div>
       </div>
       <div class="mega-panel compact-panel" data-panel="resources">
-        <div class="mega-intro"><strong>资源中心</strong><p>查看技术平台与 Finloop 最新内容。</p><a href="/resources">进入资源中心 <i data-lucide="arrow-right"></i></a></div>
+        <div class="mega-intro"><strong>资源中心</strong><p>查看技术平台与 Finloop 最新内容。</p></div>
         <div class="mega-list"><a href="/technology-platform"><span>技术平台</span><small>财富核心、交易基础设施与开放连接</small><i data-lucide="arrow-right"></i></a><a href="/resources"><span>新闻资讯</span><small>行业洞察与公司动态</small><i data-lucide="arrow-right"></i></a></div>
       </div>
       <div class="mega-panel compact-panel" data-panel="about">
-        <div class="mega-intro"><strong>关于星路</strong><p>总部位于香港的机构财富科技平台。</p><a href="/about">认识 Finloop <i data-lucide="arrow-right"></i></a></div>
+        <div class="mega-intro"><strong>关于星路</strong><p>总部位于香港的机构财富科技平台。</p></div>
         <div class="mega-list"><a href="/about"><span>公司介绍</span><small>公司定位、发展与市场认可、资质与牌照</small><i data-lucide="arrow-right"></i></a><a href="/careers"><span>加入我们</span><small>与星路一起连接财富科技的未来</small><i data-lucide="arrow-right"></i></a><a href="/contact"><span>联系我们</span><small>香港、上海与业务咨询</small><i data-lucide="arrow-right"></i></a></div>
       </div>
     </div>
@@ -178,7 +177,7 @@ const mobileDrawerMarkup = `
   <div class="mobile-drawer" aria-hidden="true">
     <div class="drawer-top"><a href="/" aria-label="Finloop 星路科技首页"><img src="/assets/finloop-logo-transparent.png" alt="Finloop 星路科技" /></a><button class="drawer-close" aria-label="关闭菜单"><i data-lucide="x"></i></button></div>
     <nav class="mobile-nav" aria-label="移动端导航">
-      ${mobileNavGroups.map(([title, path, items]) => `<div class="mobile-group"><button aria-expanded="false">${title}<i data-lucide="chevron-down"></i></button><div><a href="${path}">查看全部</a>${title === '解决方案' ? mobileSolutionLinks : items.map(item => `<a href="${mobileItemHref(title, item, path)}"${item === 'FinTaaS' ? ' target="_blank" rel="noopener noreferrer"' : ''}>${item}</a>`).join('')}</div></div>`).join('')}
+      ${mobileNavGroups.map(([title, path, items]) => `<div class="mobile-group"><button aria-expanded="false">${title}<i data-lucide="chevron-down"></i></button><div>${path ? `<a href="${path}">查看全部</a>` : ''}${title === '解决方案' ? mobileSolutionLinks : items.map(item => `<a href="${mobileItemHref(title, item, path)}"${item === 'FinTaaS' ? ' target="_blank" rel="noopener noreferrer"' : ''}>${item}</a>`).join('')}</div></div>`).join('')}
     </nav>
     <div class="drawer-bottom"><button class="language-button"><i data-lucide="globe-2"></i> 简体中文</button><a class="button button-accent" href="/contact">预约咨询 <i data-lucide="arrow-right"></i></a></div>
   </div>
@@ -387,7 +386,6 @@ function App() {
           <Route path="products/web-portal" element={<WebPortalPage />} />
           <Route path="products/white-label-app" element={<WhiteLabelAppPage />} />
           <Route path="ai/xinglutong" element={<XingLuTongPage />} />
-          <Route path="solutions" element={<SolutionsPage groups={solutionGroups} />} />
           <Route path="solutions/digital-wealth-management" element={<InstitutionalWealthSolutionPage />} />
           <Route path="solutions/embedded-wealth" element={<WhiteLabelEmbeddedSolutionPage />} />
           <Route path="solutions/corporate-treasury" element={<CorporateTreasurySolutionPage />} />

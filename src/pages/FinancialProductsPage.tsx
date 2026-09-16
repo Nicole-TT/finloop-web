@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { Link } from 'react-router-dom';
-import { Blocks, Building2, ChevronRight, CircleDollarSign, createIcons, Gem, Landmark, Orbit, ShieldCheck, WalletCards } from 'lucide';
+import { Blocks, Building2, ChevronLeft, ChevronRight, CircleDollarSign, createIcons, Gem, Landmark, Orbit, ShieldCheck, WalletCards } from 'lucide';
 
 type FinancialProduct = { id: string; number: string; name: string; en: string; line: string; detail: string; tags: string[]; icon: string; audience?: string };
 
@@ -59,6 +59,120 @@ const productSellingPoints: Record<string, { title: string; copy: string }[]> = 
   ],
 };
 
+// Illustrative catalog only; these are not verified offerings or live quotes.
+const showcaseProducts: Record<string, Array<[string, string, string]>> = {
+  cash: [
+    ['美元货币基金', '短期流动性管理', 'USD'], ['港元货币基金', '港元现金配置', 'HKD'],
+    ['离岸人民币货币基金', '人民币现金配置', 'CNH'], ['美元短久期基金', '短久期资产配置', 'USD'],
+    ['港元短久期基金', '短久期资产配置', 'HKD'], ['多币种现金管理组合', '多币种流动性安排', '多币种'],
+  ],
+  public: [
+    ['全球股票基金', '全球股票策略', '多币种'], ['亚洲股票基金', '亚洲市场策略', '多币种'],
+    ['全球债券基金', '全球固定收益策略', '多币种'], ['投资级债券基金', '投资级信用策略', 'USD'],
+    ['多资产配置基金', '跨资产配置策略', '多币种'], ['全球科技主题基金', '科技主题策略', 'USD'],
+  ],
+  private: [
+    ['私募股权基金', '企业股权投资策略', 'USD'], ['私募信贷基金', '非公开信贷策略', 'USD'],
+    ['基础设施基金', '基础设施资产策略', '多币种'], ['房地产私募基金', '不动产投资策略', '多币种'],
+    ['多策略对冲基金', '多策略配置', 'USD'], ['私募二级市场基金', '私募份额投资策略', 'USD'],
+  ],
+  bonds: [
+    ['美元国债', '主权债券', 'USD'], ['港元政府债券', '政府债券', 'HKD'],
+    ['美元投资级企业债', '企业信用债券', 'USD'], ['离岸人民币债券', '离岸人民币债券', 'CNH'],
+    ['美元金融机构债券', '金融机构债券', 'USD'], ['绿色主题债券', '绿色融资主题', '多币种'],
+  ],
+  structured: [
+    ['FCN 固定票息票据', 'FCN', 'USD'], ['Sharkfin 鲨鱼鳍结构', 'Sharkfin', 'USD'],
+    ['Step-down SCN 票据', 'Step-down SCN', 'USD'], ['BEN 结构票据', 'BEN', 'USD'],
+    ['ELN 股票挂钩票据', 'ELN', 'HKD'], ['DCN 双币票据', 'DCN', '多币种'],
+  ],
+  insurance: [
+    ['终身寿险计划', '寿险保障', '待确认'], ['定期寿险计划', '寿险保障', '待确认'],
+    ['储蓄保险计划', '长期规划', '待确认'], ['年金保险计划', '退休规划', '待确认'],
+    ['重大疾病保障计划', '健康保障', '待确认'], ['医疗保险计划', '医疗保障', '待确认'],
+  ],
+  virtual: [
+    ['比特币现货 ETF · 美元份额', '虚拟资产 ETF', 'USD'], ['比特币现货 ETF · 港元份额', '虚拟资产 ETF', 'HKD'],
+    ['以太坊现货 ETF · 美元份额', '虚拟资产 ETF', 'USD'], ['以太坊现货 ETF · 港元份额', '虚拟资产 ETF', 'HKD'],
+    ['比特币期货 ETF', '虚拟资产期货 ETF', '待确认'], ['以太坊期货 ETF', '虚拟资产期货 ETF', '待确认'],
+  ],
+  rwa: [
+    ['代币化货币基金', 'Tokenized Fund', '待确认'], ['代币化债券基金', 'Tokenized Fund', '待确认'],
+    ['代币化私募基金', 'Tokenized Fund', '待确认'], ['债券相关 Token', 'Tokenized Security', '待确认'],
+    ['房地产支持型 RWA', 'Asset-backed RWA', '待确认'], ['应收账款支持型 RWA', 'Asset-backed RWA', '待确认'],
+  ],
+};
+
+// Fictional percentages for demo presentation; not actual performance or forecasts.
+const showcaseDemoReturns: Record<string, string[]> = {
+  cash: ['4.28', '3.65', '2.16', '4.52', '3.82', '3.96'],
+  public: ['12.86', '8.42', '5.73', '4.91', '7.68', '18.35'],
+  private: ['11.25', '8.60', '9.32', '7.85', '13.48', '10.76'],
+  bonds: ['4.36', '3.28', '5.12', '2.85', '5.64', '4.78'],
+  structured: ['10.50', '8.25', '12.80', '9.60', '11.35', '7.90'],
+  insurance: ['3.20', '2.85', '4.15', '3.65', '2.60', '2.35'],
+  virtual: ['24.68', '23.95', '16.42', '15.87', '28.36', '19.72'],
+  rwa: ['4.62', '5.38', '9.15', '6.24', '7.86', '8.32'],
+};
+
+function ProductShowcase({ product }: { product: FinancialProduct }) {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [position, setPosition] = useState({ start: 0, end: 3, atStart: true, atEnd: false });
+  const reducedMotion = useReducedMotion();
+  const items = showcaseProducts[product.id];
+  const masked = product.id === 'private' || product.id === 'structured';
+
+  useEffect(() => {
+    createIcons({ icons: { ChevronLeft, ChevronRight } });
+    const track = trackRef.current;
+    if (!track) return;
+    function syncPosition() {
+      if (!track) return;
+      const card = track.firstElementChild as HTMLElement | null;
+      if (!card) return;
+      const step = card.getBoundingClientRect().width + 20;
+      const start = Math.round(track.scrollLeft / step);
+      const visible = Math.max(1, Math.floor((track.clientWidth + 20) / step));
+      setPosition({ start, end: Math.min(items.length, start + visible), atStart: track.scrollLeft <= 2, atEnd: track.scrollLeft + track.clientWidth >= track.scrollWidth - 2 });
+    }
+    const observer = new ResizeObserver(syncPosition);
+    observer.observe(track);
+    track.addEventListener('scroll', syncPosition, { passive: true });
+    syncPosition();
+    return () => { observer.disconnect(); track.removeEventListener('scroll', syncPosition); };
+  }, [items]);
+
+  function move(direction: number) {
+    const track = trackRef.current;
+    const card = track?.firstElementChild as HTMLElement | null;
+    if (!track || !card) return;
+    track.scrollBy({ left: direction * (card.getBoundingClientRect().width + 20), behavior: reducedMotion ? 'auto' : 'smooth' });
+  }
+
+  return <section className="product-showcase" aria-labelledby="product-showcase-title">
+    <header className="product-showcase-head">
+      <div><h3 id="product-showcase-title">{product.name}产品展示</h3><p>以下产品、币种及收益率均为虚拟 Demo 数据，仅用于界面演示，不代表实际在售产品、历史表现或收益承诺。</p></div>
+      <Link className="product-showcase-more" to="/contact?type=product">更多产品 <span aria-hidden="true">↗</span></Link>
+    </header>
+    <div className="product-showcase-track" id={`showcase-${product.id}`} ref={trackRef} role="region" aria-label={`${product.name}示例产品，可横向滚动`} tabIndex={0}
+      onKeyDown={event => { if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') { event.preventDefault(); move(event.key === 'ArrowLeft' ? -1 : 1); } }}>
+      {items.map(([name, strategy, currency], index) => <article className="product-showcase-card" key={name}>
+        <div className="product-showcase-card-top"><span>{product.name}</span><small>示例 {String(index + 1).padStart(2, '0')}</small></div>
+        <h4>{name}</h4><p>{strategy}</p>
+        <div className="product-showcase-metric"><span>示例收益率</span>
+          {masked && index % 2 === 1 ? <strong aria-label="虚拟收益率，数值已隐藏"><span className="product-showcase-masked"><span aria-hidden="true">••.••</span></span>%</strong> : <strong>{showcaseDemoReturns[product.id][index]}%</strong>}
+          <small>虚拟数据 · 仅供 Demo 展示</small>
+        </div>
+        <dl><div><dt>示例币种</dt><dd>{currency}</dd></div><div><dt>{masked ? '认购起点' : '产品资料'}</dt><dd>{masked ? <span className="product-showcase-masked" aria-label="金额已隐藏"><span aria-hidden="true">•••,•••</span></span> : '待提供'}</dd></div></dl>
+      </article>)}
+    </div>
+    <footer className="product-showcase-footer"><span aria-live="polite">{position.start + 1}–{position.end} / {items.length}</span><div>
+      <button type="button" aria-label="上一款产品" aria-controls={`showcase-${product.id}`} disabled={position.atStart} onClick={() => move(-1)}><i data-lucide="chevron-left" aria-hidden="true" /></button>
+      <button type="button" aria-label="下一款产品" aria-controls={`showcase-${product.id}`} disabled={position.atEnd} onClick={() => move(1)}><i data-lucide="chevron-right" aria-hidden="true" /></button>
+    </div></footer>
+  </section>;
+}
+
 const productBackgrounds: Record<string, string> = {
   cash: 'url(https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1800&q=82)',
   public: 'url(https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1800&q=82)',
@@ -103,7 +217,7 @@ export function FinancialProductsPage() {
   const reduceMotion = useReducedMotion();
 
   useEffect(() => {
-    createIcons({ icons: { Blocks, Building2, ChevronRight, CircleDollarSign, Gem, Landmark, Orbit, ShieldCheck, WalletCards } });
+    createIcons({ icons: { Blocks, Building2, ChevronLeft, ChevronRight, CircleDollarSign, Gem, Landmark, Orbit, ShieldCheck, WalletCards } });
   }, [active]);
 
   useEffect(() => {
@@ -166,6 +280,7 @@ export function FinancialProductsPage() {
               </div>
             </motion.article>
           </AnimatePresence>
+          <ProductShowcase key={active.id} product={active} />
         </div>
       </section>
 
@@ -196,7 +311,7 @@ export function FinancialProductsPage() {
       <section className="product-cta">
         <div className="product-cta-inner">
           <div><h2>构建适合您客户的财富产品货架</h2><p>无论您希望拓展传统财富产品、另类投资还是数字资产，Finloop 可以根据机构业务模式连接产品供给与财富科技能力。</p></div>
-          <div className="product-cta-actions"><Link className="button button-light" to="/contact">预约咨询 <i data-lucide="arrow-right" /></Link><Link className="product-hero-link" to="/solutions">查看解决方案 <i data-lucide="arrow-right" /></Link></div>
+          <div className="product-cta-actions"><Link className="button button-light" to="/contact">预约咨询 <i data-lucide="arrow-right" /></Link></div>
         </div>
       </section>
     </main>
