@@ -1,4 +1,4 @@
-import { buildAssistantSystemPrompt } from '../src/data/finloopAssistantKnowledge';
+import { buildAssistantSystemPrompt } from '../src/data/finloopAssistantKnowledge.js';
 
 export const maxDuration = 120;
 
