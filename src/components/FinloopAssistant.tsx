@@ -9,7 +9,7 @@ import {
 } from 'react';
 import { readAssistantStream, readPartialAnswer } from '../data/finloopAssistantStream';
 import { Link, useLocation } from 'react-router-dom';
-import { assistantPages, buildAssistantSystemPrompt, parseAssistantReply } from '../data/finloopAssistantKnowledge';
+import { assistantPages, parseAssistantReply } from '../data/finloopAssistantKnowledge';
 
 type AssistantMode = 'hidden' | 'modal' | 'sidebar';
 
@@ -24,11 +24,8 @@ type AssistantExchange = {
 type FinloopAssistantContextValue = {
   ask: (question: string) => void;
   hasConversation: boolean;
-  openApiSettings: () => void;
   isLoading: boolean;
 };
-
-const API_KEY_STORAGE = 'finloop-ai-api-key';
 
 const FinloopAssistantContext = createContext<FinloopAssistantContextValue | null>(null);
 
@@ -41,50 +38,12 @@ export function useFinloopAssistant() {
 export function FinloopAssistantProvider({ children }: { children: ReactNode }) {
   const [mode, setMode] = useState<AssistantMode>('hidden');
   const location = useLocation();
-  const [apiKey, setApiKey] = useState(() => {
-    try { return localStorage.getItem(API_KEY_STORAGE) || ''; } catch { return ''; }
-  });
-  const [storageError, setStorageError] = useState('');
-  const [keyDraft, setKeyDraft] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const keyDialogRef = useRef<HTMLDialogElement>(null);
-  const pendingQuestion = useRef('');
   const requestRef = useRef<AbortController | null>(null);
 
-  function openApiSettings() {
-    setStorageError('');
-    setKeyDraft(apiKey);
-    keyDialogRef.current?.showModal();
-  }
-
-  function saveApiKey(event: FormEvent) {
-    event.preventDefault();
-    const key = keyDraft.trim();
-    if (!key) return;
-    try { localStorage.setItem(API_KEY_STORAGE, key); }
-    catch { setStorageError('浏览器未允许保存，请开启此站点的本地存储后重试。'); return; }
-    setApiKey(key);
-    setKeyDraft('');
-    keyDialogRef.current?.close();
-    const question = pendingQuestion.current;
-    pendingQuestion.current = '';
-    if (question) void ask(question, key);
-  }
-
-  function clearApiKey() {
-    try { localStorage.removeItem(API_KEY_STORAGE); }
-    catch { setStorageError('无法清除本地缓存，请检查浏览器存储设置。'); return; }
-    setApiKey('');
-    setKeyDraft('');
-    setStorageError('');
-  }
-
   useEffect(() => {
-    function syncKey(event: StorageEvent) {
-      if (event.key === API_KEY_STORAGE || event.key === null) setApiKey(event.newValue || '');
-    }
-    window.addEventListener('storage', syncKey);
-    return () => window.removeEventListener('storage', syncKey);
+    // Remove credentials left by the former browser-direct implementation.
+    try { localStorage.removeItem('finloop-ai-api-key'); } catch { /* Storage may be disabled. */ }
   }, []);
 
   useEffect(() => () => requestRef.current?.abort(), []);
@@ -95,39 +54,32 @@ export function FinloopAssistantProvider({ children }: { children: ReactNode }) 
   const messagesRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  async function ask(question: string, key = apiKey) {
+  async function ask(question: string) {
     const nextQuestion = question.trim();
     if (!nextQuestion || requestRef.current) return;
-    if (!key) {
-      pendingQuestion.current = nextQuestion;
-      openApiSettings();
-      return;
-    }
     const id = nextId.current++;
     const controller = new AbortController();
     requestRef.current = controller;
     setIsLoading(true);
-    const messages = [{ role: 'system', content: buildAssistantSystemPrompt(location.pathname + location.hash) }, ...exchanges.filter(item => item.status === 'complete').flatMap(item => [
+    const messages = exchanges.filter(item => item.status === 'complete').slice(-10).flatMap(item => [
       { role: 'user', content: item.question },
       { role: 'assistant', content: JSON.stringify({ answer: item.body, links: item.links }) },
-    ])];
+    ]);
     messages.push({ role: 'user', content: nextQuestion });
     setExchanges(current => [...current, { id, question: nextQuestion, body: '', links: [], status: 'pending' }]);
     setDraft('');
     setMode('sidebar');
     const timeout = window.setTimeout(() => controller.abort(), 90000);
     try {
-      const response = await fetch('https://aigw.finloopai.ai/v1/chat/completions', {
+      const response = await fetch('/api/chat', {
         method: 'POST',
-        headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ model: 'gpt-5.5', messages, stream: true }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages, currentPath: location.pathname + location.hash }),
         signal: controller.signal,
       });
       if (!response.ok) {
-        throw new Error(response.status === 401 || response.status === 403
-          ? 'API Key 无效或没有访问权限，请检查设置后重试。'
-          : response.status === 429 ? '请求过于频繁或额度不足，请稍后重试。'
-          : `请求失败（HTTP ${response.status}），请稍后重试。`);
+        const failure = await response.json().catch(() => null);
+        throw new Error(typeof failure?.error === 'string' ? failure.error : `请求失败（HTTP ${response.status}），请稍后重试。`);
       }
       const content = await readAssistantStream(response, partial => {
         const body = readPartialAnswer(partial);
@@ -138,7 +90,7 @@ export function FinloopAssistantProvider({ children }: { children: ReactNode }) 
       setExchanges(current => current.map(item => item.id === id ? { ...item, body: reply.answer, links: reply.links, status: 'complete' } : item));
     } catch (error) {
       const message = controller.signal.aborted ? '请求超时，请稍后重试。'
-        : error instanceof TypeError ? '无法连接 AI 服务，请检查网络及接口跨域访问配置后重试。'
+        : error instanceof TypeError ? '无法连接 AI 服务，请检查网络或服务端接口后重试。'
         : error instanceof SyntaxError ? '接口响应格式异常，请稍后重试。'
         : error instanceof Error ? error.message : '请求失败，请稍后重试。';
       setExchanges(current => current.map(item => item.id === id ? { ...item, body: item.body ? `${item.body}\n\n${message}` : message, status: 'error' } : item));
@@ -174,13 +126,13 @@ export function FinloopAssistantProvider({ children }: { children: ReactNode }) 
   }, [exchanges, mode]);
 
   useEffect(() => {
-    if (mode !== 'hidden' && !keyDialogRef.current?.open) inputRef.current?.focus();
+    if (mode !== 'hidden') inputRef.current?.focus();
   }, [mode]);
 
   useEffect(() => {
     if (mode === 'hidden') return undefined;
     function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === 'Escape' && !keyDialogRef.current?.open) setMode('hidden');
+      if (event.key === 'Escape') setMode('hidden');
     }
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
@@ -209,22 +161,8 @@ export function FinloopAssistantProvider({ children }: { children: ReactNode }) 
   const hasConversation = exchanges.length > 0;
 
   return (
-    <FinloopAssistantContext.Provider value={{ ask, hasConversation, openApiSettings, isLoading }}>
+    <FinloopAssistantContext.Provider value={{ ask, hasConversation, isLoading }}>
       {children}
-      <dialog className="finloop-api-dialog" ref={keyDialogRef} aria-labelledby="finloop-api-title"
-        onClose={() => { setKeyDraft(''); pendingQuestion.current = ''; }}
-        onClick={event => { if (event.target === event.currentTarget) keyDialogRef.current?.close(); }}>
-        <form onSubmit={saveApiKey}>
-          <header><h2 id="finloop-api-title">设置 API Key</h2><button type="button" aria-label="关闭 API Key 设置" onClick={() => keyDialogRef.current?.close()}>×</button></header>
-          <p>连接 Finloop AI · gpt-5.5</p>
-          <label htmlFor="finloop-api-key">API Key</label>
-          <input id="finloop-api-key" type="password" autoComplete="off" autoFocus required value={keyDraft} onChange={event => setKeyDraft(event.target.value)} placeholder="请输入 API Key" />
-          <small>保存在当前浏览器的本站缓存中，刷新与跨页面均可使用。仅用于向 Finloop AI 接口发送请求。</small>
-          <div role="alert">{storageError}</div>
-          <footer>{apiKey && <button type="button" onClick={clearApiKey}>清除 Key</button>}<button type="button" onClick={() => keyDialogRef.current?.close()}>取消</button><button className="button button-accent" type="submit" disabled={!keyDraft.trim()}>保存</button></footer>
-        </form>
-      </dialog>
-
       {mode === 'modal' && (
         <div className="finloop-assistant-overlay" onMouseDown={event => {
           if (event.target === event.currentTarget) setMode('hidden');
@@ -240,7 +178,6 @@ export function FinloopAssistantProvider({ children }: { children: ReactNode }) 
             onMinimize={() => setMode('sidebar')}
             onClose={() => setMode('hidden')}
             isLoading={isLoading}
-            onSettings={openApiSettings}
             onRetry={question => void ask(question)}
           />
         </div>
@@ -257,7 +194,6 @@ export function FinloopAssistantProvider({ children }: { children: ReactNode }) 
           inputRef={inputRef}
           onClose={() => setMode('hidden')}
           isLoading={isLoading}
-            onSettings={openApiSettings}
             onRetry={question => void ask(question)}
         />
       )}
@@ -291,7 +227,6 @@ type AssistantPanelProps = {
   inputRef: React.RefObject<HTMLInputElement>;
   onClose: () => void;
   isLoading: boolean;
-  onSettings: () => void;
   onRetry: (question: string) => void;
   onMinimize?: () => void;
   onExpand?: () => void;
@@ -307,7 +242,6 @@ function AssistantPanel({
   inputRef,
   onClose,
   isLoading,
-  onSettings,
   onRetry,
   onMinimize,
   onExpand,
@@ -327,7 +261,6 @@ function AssistantPanel({
           <small>业务助手</small>
         </div>
         <nav aria-label="对话窗口操作">
-          <button className="finloop-api-entry" type="button" aria-label="API Key 设置" onClick={onSettings}>API Key</button>
           {isModal ? (
             <button type="button" onClick={onMinimize} aria-label="收起至页面右侧边栏">收起至侧边栏</button>
           ) : onExpand ? (

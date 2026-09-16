@@ -5348,7 +5348,7 @@ body:has(.fai-page) .site-header:not(.scrolled):not(.menu-open){background:#0714
   background: rgba(18, 38, 55, .66);
   color: rgba(255, 255, 255, .9);
   font: inherit;
-  font-size: 10px;
+  font-size: 12px;
   cursor: pointer;
 }
 
