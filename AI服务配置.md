@@ -3,9 +3,9 @@
 ## 本地开发
 
 1. 在项目根目录 `.env.local` 填入 `FINLOOP_AI_API_KEY=你的Key`（不要加 VITE_ 前缀）。
-2. 运行 `npx vercel dev`，首次按提示登录并关联当前 Vercel 项目。
-3. 使用终端显示的本地地址访问网站。普通 `npm run dev` 仅启动前端，不能处理 `/api/chat`。
-4. 环境变量修改后重启开发服务。若所用 Vercel CLI 版本没有加载本地文件，可在终端执行 `set -a; source .env.local; set +a` 后再运行 `npx vercel dev`，勿把 Key 写进命令参数。
+2. 运行 `npm run dev -- --port 3001`。Vite 本地中间件会加载 `.env.local` 并复用 `api/chat.ts`。
+3. 使用终端显示的本地地址访问网站。`npm run dev` 现在也能处理 `/api/chat`，无需 Vercel CLI。
+4. 环境变量修改后重启开发服务。Key 仅由开发服务器读取，不注入浏览器。
 
 ## Vercel
 
