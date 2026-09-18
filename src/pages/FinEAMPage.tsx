@@ -1,12 +1,15 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ProductHeroContent } from '../components/ProductHeroContent';
 
-const workflow = ['客户开户', '准入与合规', '产品研究', '投资判断', '订单与执行', '持仓与组合', '报告与结单', '持续服务'];
+const workflow = [
+  ['客户开户','building-2'],['准入与合规','shield-check'],['产品研究','list-filter'],['投资判断','pie-chart'],
+  ['订单与执行','arrow-left-right'],['持仓与组合','wallet-cards'],['报告与结单','file-chart-column'],['持续服务','circle-check'],
+];
 const coreValues = [
-  ['客户关系更完整', '客户资料、账户、投资状态与服务记录围绕同一客户持续积累', '一个客户视图'],
-  ['团队协作更顺畅', '研究、客户经理、交易与运营人员在同一工作空间协同推进业务', '减少信息断点'],
-  ['服务响应更高效', '从产品判断、订单执行到持仓与报告，关键状态可以持续追踪', '缩短业务路径'],
-  ['专业服务可持续扩展', '复用统一流程和数据基础，支持更多客户、产品与财富服务场景', '能力持续复用'],
+  ['统一客户视图', '集中管理客户、账户、投资状态与服务记录。','database'],
+  ['贯通业务流程', '从产品研究、投资判断到交易、持仓和报告持续衔接。','arrow-left-right'],
+  ['提升团队协作', '让客户经理、投资、交易和运营人员共享业务状态。','briefcase-business'],
 ];
 
 function SectionHead({ title, copy }: { title: string; copy?: string }) {
@@ -20,6 +23,18 @@ function GreyUI({ title, compact = false }: { title: string; compact?: boolean }
   </div>;
 }
 
+function ClientCaseSection() {
+  const cases = [{ name: '挖财', mark: '挖' }, { name: 'Z*合', mark: 'Z' }];
+  const [activeCase, setActiveCase] = useState<(typeof cases)[number] | null>(null);
+  useEffect(() => {
+    if (!activeCase) return;
+    const close = (event: KeyboardEvent) => event.key === 'Escape' && setActiveCase(null);
+    window.addEventListener('keydown', close);
+    return () => window.removeEventListener('keydown', close);
+  }, [activeCase]);
+  return <section className="eam-cases f1-proof eam-section"><div className="eam-shell"><SectionHead title="客户案例" copy="了解专业财富管理机构如何通过 FinEAM 连接客户运营、投资管理与持续服务。" /><div className="f1-case-entries">{cases.map(item => <button type="button" key={item.name} onClick={() => setActiveCase(item)} aria-haspopup="dialog"><div className="eam-case-mark" aria-hidden="true">{item.mark}</div><h3>{item.name}</h3><small>专业财富管理机构</small><p>通过统一财富工作空间，连接客户、账户、投资与服务流程。</p></button>)}</div></div>{activeCase && <div className="f1-case-modal" role="presentation" onMouseDown={event => { if (event.target === event.currentTarget) setActiveCase(null); }}><article role="dialog" aria-modal="true" aria-labelledby="eam-case-title"><button className="f1-case-close" type="button" onClick={() => setActiveCase(null)} aria-label="关闭案例详情">×</button><header><div className="eam-case-mark" aria-hidden="true">{activeCase.mark}</div><div><small>专业财富管理机构</small><h2 id="eam-case-title">{activeCase.name}</h2></div></header><section className="f1-case-background"><h3>客户案例说明</h3><p>当前仅展示已确认的客户名称与 FinEAM 产品场景。具体合作范围、实施过程、业务成果与客户评价将在获得公开授权后补充。</p></section><div className="f1-case-detail-grid"><section><h3>连接客户信息</h3><p>围绕客户与账户建立统一的财富业务视图。</p></section><section><h3>支持投资工作</h3><p>在同一工作空间衔接产品研究与投资管理。</p></section><section><h3>延伸持续服务</h3><p>将资产信息与后续客户服务保持连接。</p></section></div><p className="f1-case-note">页面内容采用保守表述，不代表未经客户确认的项目范围或实施成果。</p></article></div>}</section>;
+}
+
 export function FinEAMPage() {
   return <main className="eam-page" id="main">
     <section className="eam-hero product-hero-standard" data-header-theme="inverse"><div className="eam-shell eam-hero-grid">
@@ -27,21 +42,21 @@ export function FinEAMPage() {
       <div className="eam-hero-visual"><GreyUI title="财富业务工作空间" /><div className="eam-float-card a" /><div className="eam-float-card b" /></div>
     </div></section>
 
-    <section className="eam-reality eam-section"><div className="eam-shell"><SectionHead title="一个工作空间，连接 EAM 核心业务" copy="FinEAM 将分散在不同工具和流程中的客户关系、投资工作与资产服务连接起来，让团队围绕同一客户协作，并持续扩展专业财富服务。" /><div className="eam-value-stage"><div className="eam-value-hub"><span>FIN EAM</span><strong>一个客户</strong><p>一个财富工作空间</p><div className="eam-value-orbit" aria-hidden="true"><i>客户关系</i><i>投资工作</i><i>资产服务</i><i>团队协作</i></div></div><div className="eam-value-grid">{coreValues.map(([title,copy,result],i)=><article key={title}><span>0{i+1}</span><h3>{title}</h3><p>{copy}</p><strong>{result}</strong></article>)}</div></div></div></section>
+    <section className="eam-reality eam-section"><div className="eam-shell"><SectionHead title="一个工作空间，运营完整财富业务" copy="将分散在不同系统、表格和沟通流程中的财富业务集中到统一平台，让团队围绕同一客户持续协作。" /><div className="eam-value-stage"><div className="eam-value-grid">{coreValues.map(([title,copy,icon])=><article key={title}><i data-lucide={icon} aria-hidden="true"/><h3>{title}</h3><p>{copy}</p></article>)}</div></div></div></section>
 
-    <section className="eam-flow eam-section" id="workflow"><div className="eam-shell"><SectionHead title="从客户准入，到持续财富服务" copy="一笔财富业务在 FinEAM 中沿着连续流程向前推进，每个环节都回到同一客户关系和资产视图。" /><div className="eam-flow-rail">{workflow.map((x, i) => <article key={x}><span>{String(i + 1).padStart(2, '0')}</span><strong>{x}</strong></article>)}</div></div></section>
+    <section className="eam-flow eam-section" id="workflow"><div className="eam-shell eam-flow-layout"><div className="eam-flow-visual" aria-label="FinEAM 财富业务流程">{workflow.map(([title,icon],i)=><article key={title}><span>{String(i+1).padStart(2,'0')}</span><i data-lucide={icon} aria-hidden="true"/><strong>{title}</strong></article>)}</div><div className="eam-flow-copy"><SectionHead title="从客户准入，到持续财富服务" copy="一笔财富业务在 FinEAM 中沿着连续流程向前推进，每个环节都回到同一客户关系和资产视图。"/></div></div></section>
 
-    <section className="eam-capability eam-section"><div className="eam-shell"><SectionHead title="围绕客户，统一管理财富服务关系" copy="将客户资料、账户和财富业务关系组织在同一平台，从客户准入开始建立持续可管理的数字财富档案。" /><div className="eam-split"><div className="eam-feature-list">{[['客户集中视图', '围绕客户聚合账户和财富业务信息。'], ['账户运营', '从开户进入后续投资与资产流程。'], ['机构与团队管理', '管理 EAM 自身组织和业务人员。'], ['连接投资者端', '将机构侧操作延伸到投资者数字体验。']].map(([t, p]) => <article key={t}><h3>{t}</h3><p>{p}</p></article>)}</div><GreyUI title="客户与账户" /></div></div></section>
+    <section className="eam-core-intro"><div className="eam-shell"><SectionHead title="看清每一位客户，推进每一项财富业务" copy="FinEAM 将客户、账户、投资与服务信息连接在一个工作空间，帮助团队更快理解客户财富、形成投资判断并持续提供服务。" /></div></section>
 
-    <section className="eam-invest eam-section"><div className="eam-shell"><SectionHead title="从海量产品和资讯中，更快形成投资判断" copy="将财富产品、市场资讯与 AI 决策辅助连接起来，减少业务人员在产品库、资讯网站和人工表格之间来回切换。" /><div className="eam-invest-grid"><GreyUI title="产品研究与筛选" /><div><h3>不只是找到产品，<br />更快理解什么值得关注</h3><div className="eam-products">{['公募基金', '结构化票据', '债券', '代币化产品'].map(x => <span key={x}>{x}</span>)}</div><ol><li>AI 资讯服务</li><li>产品比较与筛选</li><li>多维度产品排名</li><li>资产配置辅助</li></ol></div></div></div></section>
+    <section className="eam-capability eam-section"><div className="eam-shell eam-split"><div><SectionHead title="统一客户与资产视图" copy="将客户资料、账户和财富业务关系组织在同一平台，从客户准入开始建立持续可管理的数字财富档案。" /></div><GreyUI title="客户与账户" /></div></section>
 
-    <section className="eam-execution eam-section"><div className="eam-shell"><SectionHead title="从投资判断，直接进入交易和资产管理" copy="产品选择、订单、持仓和报告连接在同一流程中，使投资判断可以持续向下执行，并重新回到客户服务。" /><div className="eam-outcomes">{[['Execute', '将投资决策转化为订单', '支持单产品和投资组合交易场景。'], ['Monitor', '持续查看客户资产状态', '了解客户持仓和投资组合变化。'], ['Report', '将投资结果带回客户服务', '通过持仓、报告和结单持续提供资产信息。']].map(([e, t, p]) => <article key={e}><small>{e}</small><h3>{t}</h3><p>{p}</p></article>)}</div><GreyUI title="交易、持仓与报告" compact /></div></section>
+    <section className="eam-invest eam-section"><div className="eam-shell"><div className="eam-invest-grid"><GreyUI title="产品研究与筛选" /><div><SectionHead title="更快形成投资判断" copy="将财富产品、市场资讯与 AI 决策辅助连接起来，减少业务人员在产品库、资讯网站和人工表格之间来回切换。" /></div></div></div></section>
 
-    <section className="eam-investor eam-section"><div className="eam-shell"><SectionHead title="把日常财富服务，放进投资者的手机" copy="最终投资者可以通过 App 完成账户开通，并持续查看资产配置、持仓、结单及费用等关键信息，让常用财富服务不再依赖线下沟通。" /><div className="eam-investor-focus"><div className="eam-investor-copy"><small>INVESTOR EXPERIENCE</small><h3>客户随时掌握自己的<br />账户与资产</h3><p>机构端完成的客户、账户和投资操作，将转化为投资者可持续访问的数字服务体验。</p><div>{[['线上开户', '在线提交开户资料并开通证券账户'], ['资产配置', '查看投资组合与资产配置情况'], ['持仓与结单', '持续查阅持仓明细及账户结单'], ['费用信息', '清晰查看账户相关费用信息']].map(([t, p]) => <article key={t}><strong>{t}</strong><span>{p}</span></article>)}</div></div><div className="eam-app-stage"><div className="eam-app-note"><span>机构工作台</span><i>同步客户与资产信息</i></div><div><small>INVESTOR APP</small><div className="eam-phone"><span /><span /><figure /><i /><i /><i /></div></div></div></div></div></section>
+    <section className="eam-execution eam-section"><div className="eam-shell eam-execution-grid"><div><SectionHead title="从判断直接走向行动" copy="产品选择、订单、持仓和报告连接在同一流程中，使投资判断可以持续向下执行，并重新回到客户服务。" /></div><GreyUI title="交易、持仓与报告" compact /></div></section>
 
-    <section className="eam-ai eam-section"><div className="eam-shell"><SectionHead title="让 AI 帮助业务人员更快发现、比较和行动" copy="AI 用于提升信息处理和投资决策支持效率，并在业务人员的工作流中形成从资讯发现到资产配置的连续辅助。" /><div className="eam-ai-rail">{[['Discover', 'AI 资讯'], ['Understand', '产品分析'], ['Compare', '产品排名'], ['Select', '产品选择'], ['Allocate', '资产配置']].map(([e, c], i) => <article key={e}><span>0{i + 1}</span><small>{e}</small><strong>{c}</strong></article>)}</div></div></section>
+    <section className="eam-investor eam-section"><div className="eam-shell"><div className="eam-investor-focus"><div className="eam-investor-copy"><h3>客户随时掌握账户与资产</h3><p>最终投资者可以通过 App 完成账户开通，并持续查看资产配置、持仓、结单及费用等关键信息，让常用财富服务不再依赖线下沟通。</p><div>{[['线上开户', '在线提交开户资料并开通证券账户'], ['资产配置', '查看投资组合与资产配置情况'], ['持仓与结单', '持续查阅持仓明细及账户结单'], ['费用信息', '清晰查看账户相关费用信息']].map(([t, p]) => <article key={t}><strong>{t}</strong><span>{p}</span></article>)}</div></div><div className="eam-app-stage"><div className="eam-app-note"><span>机构工作台</span><i>同步客户与资产信息</i></div><div><small>INVESTOR APP</small><div className="eam-phone"><span /><span /><figure /><i /><i /><i /></div></div></div></div></div></section>
 
-    <section className="eam-stack eam-section"><div className="eam-shell"><SectionHead title="一个 EAM 工作平台，连接完整财富技术栈" copy="FinEAM 建立在星路财富核心与交易运营基础设施之上，让机构无需重复建设完整底层系统。" /><div className="eam-foundation"><div className="eam-foundation-lead"><small>BUILT ON FINLOOP</small><strong>FinEAM</strong><h3>专注经营财富业务，<br />底层能力交给完整平台</h3><p>机构工作台与 Investor App 围绕同一个客户持续协作，并连接产品、交易及后续运营。</p><div><span>机构工作台</span><span>Investor App</span></div></div><div className="eam-foundation-points">{[['01', '专注业务体验', 'FinEAM 承载 EAM 团队的日常工作与最终投资者服务。'], ['02', '复用财富核心', '通过 FinOne 连接账户、产品、资产和通用财富运营能力。'], ['03', '连接交易执行', '通过 FinMix 衔接底层交易、运营及相关金融机构生态。']].map(([n, t, p]) => <article key={n}><span>{n}</span><h3>{t}</h3><p>{p}</p></article>)}</div></div></div></section>
+    <ClientCaseSection />
 
     <section className="eam-cta"><div className="eam-shell"><h2>把完整财富业务，<br />带回一个平台</h2><p>了解 FinEAM 如何连接机构运营与投资者财富体验。</p><Link className="button button-light" to="/contact">预约 FinEAM 演示 →</Link></div></section>
   </main>;
