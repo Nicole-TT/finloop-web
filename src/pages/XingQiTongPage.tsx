@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { ProductHeroContent } from '../components/ProductHeroContent';
 
 const journey = ['企业开户', '账户与资金', '产品选择', '申购 / 赎回', '资产持仓', '交易与资金记录'];
 const automation = ['资金进入账户', '识别可用资金', '选择适配产品', '完成交易', '资产与收益持续更新', '赎回 / 出金'];
@@ -19,7 +20,7 @@ function GreyUI({ title, hero = false }: { title: string; hero?: boolean }) {
 
 export function XingQiTongPage() {
   return <main className="xqp-page" id="main">
-    <section className="xqp-hero" data-header-theme="inverse"><div className="xqp-shell xqp-hero-grid"><div className="xqp-hero-copy"><p className="xqp-name">星企通</p><h1>企业一站式<br/>现金管理服务</h1><p>面向企业客户的一站式资金管理平台，覆盖企业开户、资金管理、投资交易与账户资产管理，让企业能够更高效地管理日常资金，并持续提升资金使用效率。</p><strong className="xqp-value">精细化资金配置，让企业资金更高效地运转。</strong><div className="xqp-tags"><span>全线上开户</span><span>资金管理</span><span>基金交易</span><span>资产与流水</span></div></div><div className="xqp-hero-product"><GreyUI title="企业资产总览" hero/><div className="xqp-float xqp-float-a"><small>可用资金</small><i/><i/></div><div className="xqp-float xqp-float-b"><span/>资金状态已更新</div></div></div></section>
+    <section className="xqp-hero product-hero-standard" data-header-theme="inverse"><div className="xqp-shell xqp-hero-grid"><ProductHeroContent className="xqp-hero-copy" category="星企通 · 企业现金与财富管理平台" title="让企业资金配置、投资与资产管理更高效" description="连接企业开户、资金管理、投资交易与资产查看，帮助企业在统一平台中持续掌握资金状态并提升资金使用效率。" ctaLabel="预约产品演示"/><div className="xqp-hero-product"><GreyUI title="企业资产总览" hero/><div className="xqp-float xqp-float-a"><small>可用资金</small><i/><i/></div><div className="xqp-float xqp-float-b"><span/>资金状态已更新</div></div></div></section>
 
     <section className="xqp-section xqp-overview"><div className="xqp-shell"><Head label="HOW IT WORKS" title="从开户到投资，企业资金管理一站完成" copy="将企业账户、资金流转、投资交易与资产信息集中在一个平台，让资金管理从分散操作走向统一、透明与高效。"/><div className="xqp-journey">{journey.map((x,i)=><article key={x}><span>{String(i+1).padStart(2,'0')}</span><strong>{x}</strong></article>)}</div></div></section>
 

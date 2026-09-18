@@ -131,7 +131,7 @@ const headerMarkup = `
   <header class="site-header" id="top">
     <div class="header-inner">
       <a class="brand" href="/" aria-label="Finloop 星路科技首页">
-        <img src="/assets/finloop-logo-transparent.png" alt="Finloop 星路科技" />
+        <img src="/assets/finloop-logo.svg" alt="Finloop 星路科技" />
       </a>
       <nav class="desktop-nav" aria-label="主导航">
         <button class="nav-link nav-trigger" data-menu="financial" aria-expanded="false">金融产品 <i data-lucide="chevron-down"></i></button>
@@ -175,7 +175,7 @@ const headerMarkup = `
 
 const mobileDrawerMarkup = `
   <div class="mobile-drawer" aria-hidden="true">
-    <div class="drawer-top"><a href="/" aria-label="Finloop 星路科技首页"><img src="/assets/finloop-logo-transparent.png" alt="Finloop 星路科技" /></a><button class="drawer-close" aria-label="关闭菜单"><i data-lucide="x"></i></button></div>
+    <div class="drawer-top"><a href="/" aria-label="Finloop 星路科技首页"><img src="/assets/finloop-logo.svg" alt="Finloop 星路科技" /></a><button class="drawer-close" aria-label="关闭菜单"><i data-lucide="x"></i></button></div>
     <nav class="mobile-nav" aria-label="移动端导航">
       ${mobileNavGroups.map(([title, path, items]) => `<div class="mobile-group"><button aria-expanded="false">${title}<i data-lucide="chevron-down"></i></button><div>${path ? `<a href="${path}">查看全部</a>` : ''}${title === '解决方案' ? mobileSolutionLinks : items.map(item => `<a href="${mobileItemHref(title, item, path)}"${item === 'FinTaaS' ? ' target="_blank" rel="noopener noreferrer"' : ''}>${item}</a>`).join('')}</div></div>`).join('')}
     </nav>
@@ -258,7 +258,6 @@ const mainMarkup = `
           <a href="/ai/xinglutong"><span>01</span><small>FINANCIAL AI WORKSPACE</small><h3>星路通</h3><p>KYP、GAP 分析、风险预警与竞品洞察。</p><strong>了解产品 <i data-lucide="arrow-right"></i></strong></a>
           <a href="/ai/fai"><span>02</span><small>ENTERPRISE INTELLIGENCE</small><h3>FAI</h3><p>连接资讯、资料、任务、AI 员工与 Skills。</p><strong>了解产品 <i data-lucide="arrow-right"></i></strong></a>
           <a href="/ai/xingzhitong"><span>03</span><small>AI INFRASTRUCTURE</small><h3>星智通</h3><p>统一 AI API 网关、智能路由与企业安全。</p><strong>了解产品 <i data-lucide="arrow-right"></i></strong></a>
-          <a href="/ai/marketplace"><span>04</span><small>AGENT MARKETPLACE</small><h3>Agent &amp; Skills</h3><p>进入具体岗位与金融工作流。</p><strong>查看 Agent <i data-lucide="arrow-right"></i></strong></a>
         </div>
       </div>
     </section>
@@ -314,7 +313,7 @@ const mainMarkup = `
 
 const footerMarkup = `
   <footer class="site-footer" id="footer">
-    <div class="footer-top"><div class="footer-brand"><img src="/assets/finloop-logo-transparent.png" alt="Finloop 星路科技" /><p>连接传统财富、数字资产与 AI 的机构财富科技平台。</p></div><a class="back-top" href="#top" aria-label="返回顶部"><i data-lucide="arrow-up"></i></a></div>
+    <div class="footer-top"><div class="footer-brand"><img src="/assets/finloop-logo.svg" alt="Finloop 星路科技" /><p>连接传统财富、数字资产与 AI 的机构财富科技平台。</p></div><a class="back-top" href="#top" aria-label="返回顶部"><i data-lucide="arrow-up"></i></a></div>
     <div class="footer-directory">${footerGroups.map(([title, items]) => `<div><h3>${title}</h3>${items.map(item => `<a href="${item === 'FinTaaS' ? 'https://finlooprwa.com/fintaas/' : title === '资源中心' && item === '行业洞察' ? '/resources/insights' : title === '资源中心' && item === '公司动态' ? '/resources/company' : title === '关于星路' && item === '加入我们' ? '/careers' : title === '关于星路' && item === '联系我们' ? '/contact' : title === '关于星路' ? '/about' : '#top'}"${item === 'FinTaaS' ? ' target="_blank" rel="noopener noreferrer"' : ''}>${item}</a>`).join('')}</div>`).join('')}</div>
     <div class="footer-contact"><div><i data-lucide="map-pin"></i><span>香港总部：香港中环花园道 3 号冠君大厦 21 楼 2101-2105 室</span></div><div><i data-lucide="map-pin"></i><span>香港数码港：香港数码港道 100 号数码港三期 12 楼 1208A 室</span></div><div><i data-lucide="map-pin"></i><span>上海：上海市黄浦区中山东二路 600 号外滩金融中心 S1 栋 15 楼</span></div><div><i data-lucide="mail"></i><a href="mailto:CS@finloop.hk">CS@finloop.hk</a></div><div><a href="tel:+85230088996">(852) 3008 8996</a></div></div>
     <div class="footer-legal"><span>© 2026 Finloop Finance Technology Holding Limited</span><nav aria-label="法律信息"><a href="#footer">隐私政策</a><a href="#footer">使用条款</a><a href="#footer">Cookie Policy</a><a href="#footer">金融免责声明</a><a href="#footer">监管声明</a></nav></div>

@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { ProductHeroContent } from '../components/ProductHeroContent';
 
 const shifts = [['MORE MODELS', '模型选择不断增加'], ['MORE APPLICATIONS', 'AI 从实验进入真实业务'], ['MORE GOVERNANCE', '成本、权限与稳定性成为企业问题']];
 const fragments = [['01', '供应商分散', '多个模型供应商需要分别注册和接入。'], ['02', '接口分散', '协议、接口与开发方式各不相同。'], ['03', '成本分散', '价格、币种和账单难以统一查看。'], ['04', '治理分散', 'API Key、权限与日志散落在团队中。']];
@@ -19,7 +20,7 @@ function ProductUI({ title, variant = 'table' }: { title: string; variant?: 'tab
 
 export function XingZhiTongPage() {
   return <main className="xzt-page" id="main">
-    <section className="xzt-hero" data-header-theme="inverse"><div className="xzt-shell xzt-hero-grid"><div className="xzt-hero-copy"><p className="xzt-kicker">星智通 <span>AI INFRASTRUCTURE</span></p><h1>一个入口，连接企业所需的 AI 模型</h1><p>通过统一 API 连接国内外主流 AI 模型，并集中管理模型路由、使用量、成本和访问权限，让企业更简单地构建和扩展 AI 应用。</p><div className="xzt-actions"><Link className="button button-accent" to="/contact">预约演示</Link></div></div><div className="xzt-routing" aria-label="统一入口连接多模型服务示意"><div className="xzt-request">APPLICATION <i/></div><strong><small>ONE API</small>星智通</strong><div className="xzt-models">{['TEXT','REASONING','IMAGE','VIDEO'].map(x=><span key={x}>{x}</span>)}</div></div></div></section>
+    <section className="xzt-hero product-hero-standard" data-header-theme="inverse"><div className="xzt-shell xzt-hero-grid"><ProductHeroContent className="xzt-hero-copy" category="星智通 · 企业多模型服务平台" title="用一个 API，连接和管理企业所需的 AI 模型" description="通过统一接口连接不同 AI 模型，集中管理模型路由、使用量、成本与访问权限，为企业 AI 应用提供稳定的模型服务层。" ctaLabel="开始接入"/><div className="xzt-routing" aria-label="统一入口连接多模型服务示意"><div className="xzt-request">APPLICATION <i/></div><strong><small>ONE API</small>星智通</strong><div className="xzt-models">{['TEXT','REASONING','IMAGE','VIDEO'].map(x=><span key={x}>{x}</span>)}</div></div></div></section>
     <section className="xzt-section xzt-shift"><div className="xzt-shell"><Head label="THE MULTI-MODEL SHIFT" title="企业已经不再只使用一个 AI 模型" copy="不同模型在文本、推理、多模态和特定业务场景中各有所长。企业 AI 正从绑定单一模型，进入按任务选择和组合模型的新阶段。"/><div className="xzt-shift-grid">{shifts.map(([a,b],i)=><article key={a}><span>0{i+1}</span><small>{a}</small><h3>{b}</h3></article>)}</div></div></section>
     <section className="xzt-section xzt-fragment"><div className="xzt-shell"><Head label="AI INFRASTRUCTURE FRAGMENTATION" title="每增加一个模型，不应该再增加一套接入和管理成本"/><div className="xzt-fragment-grid">{fragments.map(([n,t,p])=><article key={n}><span>{n}</span><h3>{t}</h3><p>{p}</p></article>)}</div></div></section>
     <section className="xzt-section xzt-platform" id="platform"><div className="xzt-shell"><Head label="ONE AI ACCESS LAYER" title="把多模型复杂度留在平台，把统一接口留给应用" copy="星智通将模型接入、路由、计费和治理集中到一个 AI 服务层，使上层应用无需分别管理多个模型供应商。"/><div className="xzt-capabilities">{capabilities.map(([a,b],i)=><article key={a}><span>0{i+1}</span><small>{a}</small><strong>{b}</strong></article>)}</div></div></section>

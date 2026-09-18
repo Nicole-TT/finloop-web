@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { ProductHeroContent } from '../components/ProductHeroContent';
 
 const journey = [
   ['01', '开户注册', '开户注册 · KYC / AML · PI · 风险评估'],
@@ -36,8 +37,8 @@ function AppScreen({ type }: { type: 'home' | 'products' | 'stocks' | 'assets' }
 
 export function WhiteLabelAppPage() {
   return <main className="wl-page" id="main">
-    <section className="wl-hero" data-header-theme="inverse"><div className="wl-shell wl-hero-grid">
-      <div className="wl-hero-copy"><h1>快速构建数字财富与投资 App</h1><p>基于成熟的财富科技基础设施，为金融机构提供可配置的白标财富 / 股票投资终端，连接客户、产品、交易与资产服务。</p><div className="wl-actions"><Link className="button button-accent" to="/contact">预约演示</Link></div><div className="wl-hero-line"><span>灵活组合不同客户端</span><i /><span>一个财富核心</span></div></div>
+    <section className="wl-hero product-hero-standard" data-header-theme="inverse"><div className="wl-shell wl-hero-grid">
+      <ProductHeroContent className="wl-hero-copy" category="白标 APP · 品牌化财富与投资终端" title="用您的品牌，更快上线数字财富服务" description="基于成熟的财富科技基础设施，为金融机构构建自有品牌投资终端，连接开户、产品、交易、持仓与资产服务。" ctaLabel="咨询白标方案"><div className="wl-hero-line"><span>灵活组合不同客户端</span><i /><span>一个财富核心</span></div></ProductHeroContent>
       <div className="wl-phone-stage wl-phone-stage-v2"><div><Phone brand="WEALTH" tone="blue" /><small>白标财富 App</small></div><b>+</b><div><Phone brand="WEALTH + STOCK" tone="green" stock /><small>白标股票 App</small></div><div className="wl-stage-label">POWERED BY FINLOOP WEALTH INFRASTRUCTURE</div></div>
     </div></section>
 

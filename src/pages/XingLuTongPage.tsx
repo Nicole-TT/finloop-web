@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { ProductHeroContent } from '../components/ProductHeroContent';
 
 const frictions = [
   ['产品资料繁杂', '尽调和 KYP 往往需要阅读大量金融产品资料。'],
@@ -26,7 +27,7 @@ function Capability({ id, number, title, copy, type, points }: { id: string; num
 
 export function XingLuTongPage() {
   return <main className="xlt-page" id="main">
-    <section className="xlt-hero" data-header-theme="inverse"><div className="xlt-shell xlt-hero-grid"><div className="xlt-hero-copy"><p className="xlt-product">星路通 <span>FINANCIAL AI WORKSPACE</span></p><h1>星路通 让 AI 进入金融专业工作流程</h1><p>将金融产品资料、客户需求、市场信息与风险数据连接到专业 AI 工作流，辅助金融人员更高效地完成产品尽调、分析、配置和风险识别。</p><div className="xlt-actions"><Link className="button button-accent" to="/contact">预约演示</Link></div></div><div className="xlt-hero-stage"><WorkspaceUI title="金融任务工作台" /><div className="xlt-inputs"><span>产品资料</span><span>客户需求</span><span>风险数据</span></div><div className="xlt-outputs"><span>报告</span><span>洞察</span><span>提醒</span></div></div></div></section>
+    <section className="xlt-hero product-hero-standard" data-header-theme="inverse"><div className="xlt-shell xlt-hero-grid"><ProductHeroContent className="xlt-hero-copy" category="星路通 · 金融专业 AI 工作台" title="让 AI 进入金融专业人员的真实工作流程" description="连接金融产品资料、客户需求、市场信息与风险数据，辅助专业人员完成产品尽调、比较分析、配置判断和风险识别。" ctaLabel="预约产品演示"/><div className="xlt-hero-stage"><WorkspaceUI title="金融任务工作台" /><div className="xlt-inputs"><span>产品资料</span><span>客户需求</span><span>风险数据</span></div><div className="xlt-outputs"><span>报告</span><span>洞察</span><span>提醒</span></div></div></div></section>
 
     <section className="xlt-section xlt-reality" id="overview"><div className="xlt-shell"><Heading title="专业判断之前，往往先要花大量时间找资料和整理信息" copy="金融专业工作中的信息分散在文档、表格、资讯和不同业务系统中。星路通把重复的信息处理带进统一任务环境，让专业人员把时间重新投入判断与行动。" /><div className="xlt-frictions">{frictions.map(([title, copy], i) => <article key={title}><span>0{i + 1}</span><div><h3>{title}</h3><p>{copy}</p></div></article>)}</div></div></section>
 

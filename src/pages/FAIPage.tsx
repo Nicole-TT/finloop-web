@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { ProductHeroContent } from '../components/ProductHeroContent';
 
 const problems = [
   ['01', 'AI 能力分散', '不同团队分别使用不同模型、Agent 和工具，能力难以统一沉淀。'],
@@ -39,8 +40,8 @@ function CapabilityVisual({ index }: { index: number }) {
 
 export function FAIPage() {
   return <main className="fai-page" id="main">
-    <section className="fai-hero" data-header-theme="inverse"><div className="fai-shell fai-hero-grid">
-      <div className="fai-hero-copy"><p className="fai-kicker">FAI · ENTERPRISE AI PLATFORM</p><h1>FAI 让 AI 成为企业真正的数字员工</h1><p className="fai-lead">将企业知识、数据、任务、AI 员工与 Skills 连接到统一平台，让 AI 从单次问答进入可执行、可协作、可管理的企业工作流。</p><div className="fai-actions"><Link className="button button-accent" to="/contact">预约演示</Link></div></div>
+    <section className="fai-hero product-hero-standard" data-header-theme="inverse"><div className="fai-shell fai-hero-grid">
+      <ProductHeroContent className="fai-hero-copy" category="FAI · 企业 AI 工作平台" title="让 AI 员工协同完成企业任务" description="连接企业知识、数据、业务系统与专业 Skills，统一创建、编排和管理 AI 员工，让不同智能能力进入可执行、可追踪的业务流程。" ctaLabel="预约产品演示"/>
       <div className="fai-org" aria-label="FAI 组织企业 AI 能力示意图"><div className="fai-org-inputs"><span>企业知识</span><span>业务数据</span><span>企业系统</span></div><i aria-hidden="true"/><strong>FAI<small>ENTERPRISE AI PLATFORM</small></strong><i aria-hidden="true"/><div className="fai-org-resources"><span>AI Employees</span><span>Skills</span><span>Workflow</span></div><footer><span>研究</span><span>分析</span><span>运营</span><span>客服</span><span>营销</span></footer></div>
     </div></section>
 
