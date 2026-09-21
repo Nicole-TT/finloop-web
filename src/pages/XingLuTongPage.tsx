@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { ProductHeroContent } from '../components/ProductHeroContent';
+import { PlatformCasesSection } from '../components/PlatformProofSections';
 
 const frictions = [
   ['产品资料繁杂', '尽调和 KYP 往往需要阅读大量金融产品资料。'],
@@ -29,7 +30,7 @@ export function XingLuTongPage() {
   return <main className="xlt-page" id="main">
     <section className="xlt-hero product-hero-standard" data-header-theme="inverse"><div className="xlt-shell xlt-hero-grid"><ProductHeroContent className="xlt-hero-copy" category="星路通 · 金融专业 AI 工作台" title="让 AI 进入金融专业人员的真实工作流程" description="连接金融产品资料、客户需求、市场信息与风险数据，辅助专业人员完成产品尽调、比较分析、配置判断和风险识别。" ctaLabel="预约产品演示"/><div className="xlt-hero-stage"><WorkspaceUI title="金融任务工作台" /><div className="xlt-inputs"><span>产品资料</span><span>客户需求</span><span>风险数据</span></div><div className="xlt-outputs"><span>报告</span><span>洞察</span><span>提醒</span></div></div></div></section>
 
-    <section className="xlt-section xlt-reality" id="overview"><div className="xlt-shell"><Heading title="专业判断之前，往往先要花大量时间找资料和整理信息" copy="金融专业工作中的信息分散在文档、表格、资讯和不同业务系统中。星路通把重复的信息处理带进统一任务环境，让专业人员把时间重新投入判断与行动。" /><div className="xlt-frictions">{frictions.map(([title, copy], i) => <article key={title}><span>0{i + 1}</span><div><h3>{title}</h3><p>{copy}</p></div></article>)}</div></div></section>
+    <section className="xlt-section xlt-reality" id="overview"><div className="xlt-shell"><Heading title="专业判断，常被信息整理拖慢" copy="金融专业工作中的信息分散在文档、表格、资讯和不同业务系统中。星路通把重复的信息处理带进统一任务环境，让专业人员把时间重新投入判断与行动。" /><div className="xlt-frictions">{frictions.map(([title, copy], i) => <article key={title}><span>0{i + 1}</span><div><h3>{title}</h3><p>{copy}</p></div></article>)}</div></div></section>
 
     <section className="xlt-section xlt-workspace"><div className="xlt-shell"><Heading title="把金融资料、分析与任务带回一个工作环境" copy="围绕具体金融任务，处理资料、识别信息、形成分析，并把经过确认的结果带入下一步业务行动。" /><div className="xlt-domain"><div>{[['Understand', '理解产品'], ['Compare', '比较需求与产品'], ['Monitor', '监控风险'], ['Discover', '发现市场信息']].map(([en, cn], i) => <article key={en}><span>0{i + 1}</span><small>{en}</small><strong>{cn}</strong></article>)}</div><div className="xlt-domain-core"><small>ONE FINANCIAL AI WORKSPACE</small><strong>星路通</strong><p>不是多一个对话框，<br />而是让 AI 进入金融任务。</p></div></div></div></section>
 
@@ -44,7 +45,7 @@ export function XingLuTongPage() {
 
     <section className="xlt-section xlt-human"><div className="xlt-shell"><Heading title="AI 加速信息处理，专业人员保留最终判断" copy="星路通减少重复的信息查找、整理和初步分析工作，让专业人员把更多时间投入评估、沟通与决策。" /><div className="xlt-human-grid"><article><small>AI</small><h3>提取 · 整理 · 比较 · 提示</h3><p>处理高重复、耗时的信息工作。</p></article><article className="active"><small>HUMAN REVIEW</small><h3>审核 · 判断 · 解释 · 决定</h3><p>专业人员确认结果并承担最终判断。</p></article><article><small>WORKFLOW</small><h3>保留任务和结果上下文</h3><p>让分析结果持续进入下一步工作。</p></article></div></div></section>
 
-    <section className="xlt-section xlt-stack"><div className="xlt-shell"><Heading title="专业金融应用背后，是完整企业 AI 技术栈" copy="星路通建立在可持续扩展的 Agent、工作流、数据与模型基础设施之上，不直接绑定单一模型。" /><div className="xlt-stack-map">{[['FINANCIAL APPLICATION', '星路通', 'KYP · GAP · Risk · Market Intelligence'], ['FINANCIAL AGENTS', '专业 Agent / Skills', '资料读取 · 分析 · 取数'], ['AI OPERATIONS PLATFORM', 'AI 运营平台 PaaS', 'Workflow · Knowledge · Data · Permissions'], ['MODEL SERVICES', '星智通 MaaS', '多模型服务与统一能力']].map(([label, title, copy], i) => <article className={i === 0 ? 'primary' : ''} key={label}><small>{label}</small><strong>{title}</strong><span>{copy}</span></article>)}</div></div></section>
+    <PlatformCasesSection sectionClass="xlt-section" shellClass="xlt-shell" title="他们如何用星路通完成专业金融任务" copy="了解金融专业人员如何将资料读取、分析判断和持续关注带入同一个 AI 工作环境。" cases={[{mark:'AI',name:'典型金融专业任务场景',type:'场景示例 · 非特定客户案例',copy:'围绕产品资料、客户需求与市场风险信息，连接资料整理、比较分析和专业人员复核。',details:[['原有方式','资料、表格和外部信息分散，需要人工反复查找与整理。'],['星路通应用','辅助读取资料、提取关键信息、比较差异并提示值得关注的变化。'],['工作变化','减少重复的信息处理，让专业人员把更多时间投入审核、判断与行动。']]},{mark:'+',name:'真实客户案例',type:'待客户授权',copy:'待补充客户名称、应用任务、上线范围、工作流程变化与已确认的业务结果。',pending:true}]} />
 
     <section className="xlt-cta"><div className="xlt-shell"><h2>把更多时间留给真正需要专业判断的工作</h2><p>从产品尽调和 GAP 分析，到风险与市场洞察，星路通帮助金融专业人员在统一工作台中持续完成专业任务。</p><div><Link className="button button-light" to="/contact">预约星路通演示 →</Link><a href="mailto:CS@finloop.hk">联系 AI 团队</a></div></div></section>
   </main>;

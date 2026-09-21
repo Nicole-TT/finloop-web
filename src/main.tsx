@@ -13,6 +13,7 @@ import { FinancialProductsPage } from './pages/FinancialProductsPage';
 import { FinOnePage } from './pages/FinOnePage';
 import { FinEAMPage } from './pages/FinEAMPage';
 import { XingQiTongPage } from './pages/XingQiTongPage';
+import { XingQiTongNewPage } from './pages/XingQiTongNewPage';
 import { FinRWAPage } from './pages/FinRWAPage';
 import { WebPortalPage } from './pages/WebPortalPage';
 import { XingLuTongPage } from './pages/XingLuTongPage';
@@ -381,6 +382,7 @@ function App() {
           <Route path="products/finone" element={<FinOnePage />} />
           <Route path="products/fineam" element={<FinEAMPage />} />
           <Route path="products/xingqitong" element={<XingQiTongPage />} />
+          <Route path="products/xingqitong-new" element={<XingQiTongNewPage />} />
           <Route path="products/finrwa" element={<FinRWAPage />} />
           <Route path="products/web-portal" element={<WebPortalPage />} />
           <Route path="products/white-label-app" element={<WhiteLabelAppPage />} />

@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { PlatformCasesSection, PlatformTrustSection } from '../components/PlatformProofSections';
 
 const opportunity = [
   ['01', '资产进入数字化持份', '资产权益能够通过 Token 等形式映射，并进入可持续管理的数字化体系。'],
@@ -62,13 +63,8 @@ export function FinRWAPage() {
 
     <section className="rwa-universe rwa-section"><div className="rwa-shell"><SectionHead label="RWA PRODUCT UNIVERSE" title="连接不同类型的 Tokenized Assets" /><div className="rwa-universe-grid">{[['Tokenized Funds','代币化基金','Tokenized Money Market Fund 等场景'],['Tokenized Securities','证券相关 Token','包括港股表现挂钩 Token 技术方案'],['Real Asset-backed RWA','真实资产支持型 RWA','包括 Bitcoin Mining RWA 等资产场景']].map(([e,t,p],i)=><article key={e}><span>0{i+1}</span><small>{e}</small><h3>{t}</h3><p>{p}</p></article>)}</div></div></section>
 
-    <section className="rwa-cases rwa-section" id="cases"><div className="rwa-shell"><SectionHead label="REAL-WORLD CASES" title="从不同资产出发，建立对应的数字化路径" copy="项目状态依据现有公开资料保守呈现；具体合作范围及上线状态以正式披露为准。" /><div className="rwa-case-list">{[
-      ['01','Hong Kong Stock-linked Token','香港上市证券相关资产','产品与 Token 结构 → 多链技术 → 生命周期基础设施','TECHNICAL SOLUTION'],
-      ['02','Tokenized Money Market Fund','货币市场基金','传统基金 → Tokenized Share Class → 数字资产基础设施','PROJECT CASE'],
-      ['03','FUFUS1 · BitFuFu Stable Mining 01','Bitcoin Mining 相关真实资产','真实资产 → 数字化结构 → RWA 产品场景','FEATURED ASSET'],
-    ].map(([n,t,a,s,status])=><article key={n}><span>{n}</span><div><small>{a}</small><h3>{t}</h3><p>{s}</p></div><b>{status}</b></article>)}</div></div></section>
-
-    <section className="rwa-trust rwa-section"><div className="rwa-shell"><SectionHead label="BUILT FOR INSTITUTIONAL RWA" title="不只需要 Web3 技术，更需要金融业务基础" copy="FinRWA 连接星路相关金融业务与持牌金融基础设施，为 RWA 产品的相关金融服务及分销场景提供支持。" /><div className="rwa-trust-grid">{[['Financial Infrastructure','金融业务与财富平台基础'],['Compliance','AML / KYT、Wallet 及相关合规流程'],['Technology','Tokenization、多链及资产技术能力'],['Distribution','连接财富与数字资产产品分销体系']].map(([e,c],i)=><article key={e}><span>0{i+1}</span><small>{e}</small><h3>{c}</h3></article>)}</div></div></section>
+    <PlatformTrustSection sectionClass="rwa-section" shellClass="rwa-shell" />
+    <PlatformCasesSection sectionClass="rwa-section" shellClass="rwa-shell" title="从不同资产出发，建立对应的数字化路径" copy="项目状态依据现有公开资料保守呈现；具体合作范围及上线状态以正式披露为准。" cases={[{mark:'01',name:'Hong Kong Stock-linked Token',type:'香港上市证券相关资产',copy:'产品与 Token 结构 → 多链技术 → 生命周期基础设施',details:[['资产与产品结构','围绕香港上市证券相关资产设计数字化产品结构。'],['技术路径','连接 Token 结构、多链技术与生命周期基础设施。'],['公开边界','具体合作范围及上线状态以正式披露为准。']]},{mark:'02',name:'Tokenized Money Market Fund',type:'货币市场基金',copy:'传统基金 → Tokenized Share Class → 数字资产基础设施',details:[['资产基础','以传统货币市场基金为基础。'],['数字化路径','连接 Tokenized Share Class 与数字资产基础设施。'],['公开边界','具体项目状态与合作范围以正式披露为准。']]},{mark:'03',name:'FUFUS1 · BitFuFu Stable Mining 01',type:'Bitcoin Mining 相关真实资产',copy:'真实资产 → 数字化结构 → RWA 产品场景',details:[['真实资产','围绕 Bitcoin Mining 相关真实资产场景。'],['数字化路径','从资产基础连接数字化结构与 RWA 产品表达。'],['公开边界','具体合作范围及上线状态以正式披露为准。']]}]} />
 
     <section className="rwa-cta"><div className="rwa-shell"><h2>探索适合您资产的<br />RWA 路径</h2><p>无论是基金、证券相关产品还是其他真实资产，Finloop RWA 团队可以与您共同评估产品结构、技术、合规及分销需求。</p><div><Link className="rwa-button dark" to="/contact">咨询 RWA 方案 <span>↗</span></Link><a href="mailto:CS@finloop.hk">联系 RWA 团队</a></div></div></section>
   </main>;

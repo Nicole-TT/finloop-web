@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ProductHeroContent } from '../components/ProductHeroContent';
+import { PlatformTrustSection } from '../components/PlatformProofSections';
 
 const workflow = [
   ['客户开户','building-2'],['准入与合规','shield-check'],['产品研究','list-filter'],['投资判断','pie-chart'],
@@ -32,7 +33,7 @@ function ClientCaseSection() {
     window.addEventListener('keydown', close);
     return () => window.removeEventListener('keydown', close);
   }, [activeCase]);
-  return <section className="eam-cases f1-proof eam-section"><div className="eam-shell"><SectionHead title="客户案例" copy="了解专业财富管理机构如何通过 FinEAM 连接客户运营、投资管理与持续服务。" /><div className="f1-case-entries">{cases.map(item => <button type="button" key={item.name} onClick={() => setActiveCase(item)} aria-haspopup="dialog"><div className="eam-case-mark" aria-hidden="true">{item.mark}</div><h3>{item.name}</h3><small>专业财富管理机构</small><p>通过统一财富工作空间，连接客户、账户、投资与服务流程。</p></button>)}</div></div>{activeCase && <div className="f1-case-modal" role="presentation" onMouseDown={event => { if (event.target === event.currentTarget) setActiveCase(null); }}><article role="dialog" aria-modal="true" aria-labelledby="eam-case-title"><button className="f1-case-close" type="button" onClick={() => setActiveCase(null)} aria-label="关闭案例详情">×</button><header><div className="eam-case-mark" aria-hidden="true">{activeCase.mark}</div><div><small>专业财富管理机构</small><h2 id="eam-case-title">{activeCase.name}</h2></div></header><section className="f1-case-background"><h3>客户案例说明</h3><p>当前仅展示已确认的客户名称与 FinEAM 产品场景。具体合作范围、实施过程、业务成果与客户评价将在获得公开授权后补充。</p></section><div className="f1-case-detail-grid"><section><h3>连接客户信息</h3><p>围绕客户与账户建立统一的财富业务视图。</p></section><section><h3>支持投资工作</h3><p>在同一工作空间衔接产品研究与投资管理。</p></section><section><h3>延伸持续服务</h3><p>将资产信息与后续客户服务保持连接。</p></section></div><p className="f1-case-note">页面内容采用保守表述，不代表未经客户确认的项目范围或实施成果。</p></article></div>}</section>;
+  return <section className="eam-cases f1-proof platform-cases eam-section"><div className="eam-shell"><SectionHead title="客户案例" copy="了解专业财富管理机构如何通过 FinEAM 连接客户运营、投资管理与持续服务。" /><div className="f1-case-entries">{cases.map(item => <button type="button" key={item.name} onClick={() => setActiveCase(item)} aria-haspopup="dialog"><div className="eam-case-mark" aria-hidden="true">{item.mark}</div><h3>{item.name}</h3><small>专业财富管理机构</small><p>通过统一财富工作空间，连接客户、账户、投资与服务流程。</p></button>)}</div></div>{activeCase && <div className="f1-case-modal" role="presentation" onMouseDown={event => { if (event.target === event.currentTarget) setActiveCase(null); }}><article role="dialog" aria-modal="true" aria-labelledby="eam-case-title"><button className="f1-case-close" type="button" onClick={() => setActiveCase(null)} aria-label="关闭案例详情">×</button><header><div className="eam-case-mark" aria-hidden="true">{activeCase.mark}</div><div><small>专业财富管理机构</small><h2 id="eam-case-title">{activeCase.name}</h2></div></header><section className="f1-case-background"><h3>客户案例说明</h3><p>当前仅展示已确认的客户名称与 FinEAM 产品场景。具体合作范围、实施过程、业务成果与客户评价将在获得公开授权后补充。</p></section><div className="f1-case-detail-grid"><section><h3>连接客户信息</h3><p>围绕客户与账户建立统一的财富业务视图。</p></section><section><h3>支持投资工作</h3><p>在同一工作空间衔接产品研究与投资管理。</p></section><section><h3>延伸持续服务</h3><p>将资产信息与后续客户服务保持连接。</p></section></div><p className="f1-case-note">页面内容采用保守表述，不代表未经客户确认的项目范围或实施成果。</p></article></div>}</section>;
 }
 
 export function FinEAMPage() {
@@ -56,6 +57,7 @@ export function FinEAMPage() {
 
     <section className="eam-investor eam-section"><div className="eam-shell"><div className="eam-investor-focus"><div className="eam-investor-copy"><h3>客户随时掌握账户与资产</h3><p>最终投资者可以通过 App 完成账户开通，并持续查看资产配置、持仓、结单及费用等关键信息，让常用财富服务不再依赖线下沟通。</p><div>{[['线上开户', '在线提交开户资料并开通证券账户'], ['资产配置', '查看投资组合与资产配置情况'], ['持仓与结单', '持续查阅持仓明细及账户结单'], ['费用信息', '清晰查看账户相关费用信息']].map(([t, p]) => <article key={t}><strong>{t}</strong><span>{p}</span></article>)}</div></div><div className="eam-app-stage"><div className="eam-app-note"><span>机构工作台</span><i>同步客户与资产信息</i></div><div><small>INVESTOR APP</small><div className="eam-phone"><span /><span /><figure /><i /><i /><i /></div></div></div></div></div></section>
 
+    <PlatformTrustSection sectionClass="eam-section" shellClass="eam-shell" />
     <ClientCaseSection />
 
     <section className="eam-cta"><div className="eam-shell"><h2>把完整财富业务，<br />带回一个平台</h2><p>了解 FinEAM 如何连接机构运营与投资者财富体验。</p><Link className="button button-light" to="/contact">预约 FinEAM 演示 →</Link></div></section>
