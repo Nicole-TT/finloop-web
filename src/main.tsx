@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { animate } from 'motion';
-import { createIcons, ArrowLeftRight, ArrowRight, ArrowUp, BadgeDollarSign, ChevronDown, ChevronRight, Database, FileChartColumn, Globe2, ListFilter, Menu, MoveRight, PackagePlus, PieChart, RefreshCw, X, Building2, Landmark, Network, WalletCards, BriefcaseBusiness, Blocks, Bot, ShieldCheck, CircleCheck, CircleDollarSign, Gem, Orbit, Mail, MapPin } from 'lucide';
+import { createIcons, ArrowLeftRight, ArrowRight, ArrowUp, BadgeDollarSign, ChevronDown, ChevronRight, Database, FileChartColumn, Globe2, ListFilter, Menu, MoveRight, PackagePlus, PieChart, RefreshCw, X, Building2, Landmark, Network, WalletCards, BriefcaseBusiness, Blocks, Bot, ShieldCheck, CircleCheck, CircleDollarSign, Gauge, Users, Gem, Orbit, Mail, MapPin } from 'lucide';
 import { Markup } from './components/PageRegions';
 import { CoverageSection, HeroSection, SolutionsSection } from './components/BusinessSections';
 import { SiteLayout } from './layouts/SiteLayout';
@@ -420,7 +420,7 @@ function App() {
 createRoot(document.querySelector('#app')!).render(<App />);
 
 function refreshPageIcons() {
-  createIcons({ icons: { ArrowLeftRight, ArrowRight, ArrowUp, BadgeDollarSign, ChevronDown, ChevronRight, Database, FileChartColumn, Globe2, ListFilter, Menu, MoveRight, PackagePlus, PieChart, RefreshCw, X, Building2, Landmark, Network, WalletCards, BriefcaseBusiness, Blocks, Bot, ShieldCheck, CircleCheck, CircleDollarSign, Gem, Orbit, Mail, MapPin } });
+  createIcons({ icons: { ArrowLeftRight, ArrowRight, ArrowUp, BadgeDollarSign, ChevronDown, ChevronRight, Database, FileChartColumn, Globe2, ListFilter, Menu, MoveRight, PackagePlus, PieChart, RefreshCw, X, Building2, Landmark, Network, WalletCards, BriefcaseBusiness, Blocks, Bot, ShieldCheck, CircleCheck, CircleDollarSign, Gauge, Users, Gem, Orbit, Mail, MapPin } });
 }
 
 function initializePage() {
