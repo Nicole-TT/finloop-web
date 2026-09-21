@@ -79,12 +79,13 @@ const productLinks: Record<string, string> = {
   'FinTaaS': 'https://finlooprwa.com/fintaas/', '白标 App': '/products/white-label-app',
   '星路通': '/ai/xinglutong', 'FAI平台': '/ai/fai', '星智通': '/ai/xingzhitong',
 };
+const recruitmentUrl = 'https://app.mokahr.com/social-recruitment/fosunwealth/146702?locale=zh-CN&previewKey=f4650087c2b0473194aa497d7ebfa3bda864a12453be4a14841444ede6673ada#/jobs?department%5B0%5D=3635833&page=1&anchorName=jobsList';
 
 const mobileItemHref = (title: string, item: string, fallback: string) => {
   if (title === '金融产品' || title === '金融平台') return productLinks[item] || fallback;
   if (title === 'Finloop AI') return productLinks[item] || '/ai';
   if (title === '资源中心') return item === '技术平台' ? '/technology-platform' : '/resources';
-  if (title === '关于星路') return item === '加入我们' ? '/careers' : item === '联系我们' ? '/contact' : '/about';
+  if (title === '关于星路') return item === '加入我们' ? recruitmentUrl : item === '联系我们' ? '/contact' : '/about';
   return fallback;
 };
 
@@ -167,7 +168,7 @@ const headerMarkup = `
       </div>
       <div class="mega-panel compact-panel" data-panel="about">
         <div class="mega-intro"><strong>关于星路</strong><p>总部位于香港的机构财富科技平台。</p></div>
-        <div class="mega-list"><a href="/about"><span>公司介绍</span><small>公司定位、发展与市场认可、资质与牌照</small><i data-lucide="arrow-right"></i></a><a href="/careers"><span>加入我们</span><small>与星路一起连接财富科技的未来</small><i data-lucide="arrow-right"></i></a><a href="/contact"><span>联系我们</span><small>香港、上海与业务咨询</small><i data-lucide="arrow-right"></i></a></div>
+        <div class="mega-list"><a href="/about"><span>公司介绍</span><small>公司定位、发展与市场认可、资质与牌照</small><i data-lucide="arrow-right"></i></a><a href="${recruitmentUrl}" target="_blank" rel="noopener noreferrer"><span>加入我们</span><small>与星路一起连接财富科技的未来</small><i data-lucide="arrow-right"></i></a><a href="/contact"><span>联系我们</span><small>香港、上海与业务咨询</small><i data-lucide="arrow-right"></i></a></div>
       </div>
     </div>
   </header>
@@ -178,7 +179,7 @@ const mobileDrawerMarkup = `
   <div class="mobile-drawer" aria-hidden="true">
     <div class="drawer-top"><a href="/" aria-label="Finloop 星路科技首页"><img src="/assets/finloop-logo.svg" alt="Finloop 星路科技" /></a><button class="drawer-close" aria-label="关闭菜单"><i data-lucide="x"></i></button></div>
     <nav class="mobile-nav" aria-label="移动端导航">
-      ${mobileNavGroups.map(([title, path, items]) => `<div class="mobile-group"><button aria-expanded="false">${title}<i data-lucide="chevron-down"></i></button><div>${path ? `<a href="${path}">查看全部</a>` : ''}${title === '解决方案' ? mobileSolutionLinks : items.map(item => `<a href="${mobileItemHref(title, item, path)}"${item === 'FinTaaS' ? ' target="_blank" rel="noopener noreferrer"' : ''}>${item}</a>`).join('')}</div></div>`).join('')}
+      ${mobileNavGroups.map(([title, path, items]) => `<div class="mobile-group"><button aria-expanded="false">${title}<i data-lucide="chevron-down"></i></button><div>${path ? `<a href="${path}">查看全部</a>` : ''}${title === '解决方案' ? mobileSolutionLinks : items.map(item => `<a href="${mobileItemHref(title, item, path)}"${item === 'FinTaaS' || item === '加入我们' ? ' target="_blank" rel="noopener noreferrer"' : ''}>${item}</a>`).join('')}</div></div>`).join('')}
     </nav>
     <div class="drawer-bottom"><button class="language-button"><i data-lucide="globe-2"></i> 简体中文</button><a class="button button-accent" href="/contact">预约咨询 <i data-lucide="arrow-right"></i></a></div>
   </div>
@@ -315,7 +316,7 @@ const mainMarkup = `
 const footerMarkup = `
   <footer class="site-footer" id="footer">
     <div class="footer-top"><div class="footer-brand"><img src="/assets/finloop-logo.svg" alt="Finloop 星路科技" /><p>连接传统财富、数字资产与 AI 的机构财富科技平台。</p></div><a class="back-top" href="#top" aria-label="返回顶部"><i data-lucide="arrow-up"></i></a></div>
-    <div class="footer-directory">${footerGroups.map(([title, items]) => `<div><h3>${title}</h3>${items.map(item => `<a href="${item === 'FinTaaS' ? 'https://finlooprwa.com/fintaas/' : title === '资源中心' && item === '行业洞察' ? '/resources/insights' : title === '资源中心' && item === '公司动态' ? '/resources/company' : title === '关于星路' && item === '加入我们' ? '/careers' : title === '关于星路' && item === '联系我们' ? '/contact' : title === '关于星路' ? '/about' : '#top'}"${item === 'FinTaaS' ? ' target="_blank" rel="noopener noreferrer"' : ''}>${item}</a>`).join('')}</div>`).join('')}</div>
+    <div class="footer-directory">${footerGroups.map(([title, items]) => `<div><h3>${title}</h3>${items.map(item => `<a href="${item === 'FinTaaS' ? 'https://finlooprwa.com/fintaas/' : title === '资源中心' && item === '行业洞察' ? '/resources/insights' : title === '资源中心' && item === '公司动态' ? '/resources/company' : title === '关于星路' && item === '加入我们' ? recruitmentUrl : title === '关于星路' && item === '联系我们' ? '/contact' : title === '关于星路' ? '/about' : '#top'}"${item === 'FinTaaS' || item === '加入我们' ? ' target="_blank" rel="noopener noreferrer"' : ''}>${item}</a>`).join('')}</div>`).join('')}</div>
     <div class="footer-contact"><div><i data-lucide="map-pin"></i><span>香港总部：香港中环花园道 3 号冠君大厦 21 楼 2101-2105 室</span></div><div><i data-lucide="map-pin"></i><span>香港数码港：香港数码港道 100 号数码港三期 12 楼 1208A 室</span></div><div><i data-lucide="map-pin"></i><span>上海：上海市黄浦区中山东二路 600 号外滩金融中心 S1 栋 15 楼</span></div><div><i data-lucide="mail"></i><a href="mailto:CS@finloop.hk">CS@finloop.hk</a></div><div><a href="tel:+85230088996">(852) 3008 8996</a></div></div>
     <div class="footer-legal"><span>© 2026 Finloop Finance Technology Holding Limited</span><nav aria-label="法律信息"><a href="#footer">隐私政策</a><a href="#footer">使用条款</a><a href="#footer">Cookie Policy</a><a href="#footer">金融免责声明</a><a href="#footer">监管声明</a></nav></div>
   </footer>
