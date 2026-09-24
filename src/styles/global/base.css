@@ -1,0 +1,64 @@
+:root {
+  --navy-950: #061523;
+  --navy-900: #071a2e;
+  --navy-800: #0b2944;
+  --blue-700: #0D7DF1;
+  --aqua-500: #0D7DF1;
+  --aqua-300: #70baff;
+  --yellow-400: #f3c84b;
+  --paper: #f7f8f5;
+  --white: #ffffff;
+  --ink: #080a0b;
+  --muted: #626967;
+  --line: #d9ddda;
+  --max: 1600px;
+  --edge: clamp(20px, 4.5vw, 64px);
+  --section-title-size: clamp(36px, 3.4vw, 48px);
+  --section-title-line: 1.16;
+  --section-copy-size: 16px;
+  --section-copy-line: 1.7;
+  --section-copy-width: 720px;
+  --card-radius: 16px;
+  --media-radius: 20px;
+  --control-radius: 10px;
+  /* Temporary web photography. Replace these four URLs to update imagery site-wide. */
+  --image-team: url('https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1800&q=82');
+  --image-building: url('https://images.unsplash.com/photo-1671590733598-6dde3ba88d82?auto=format&fit=crop&w=1800&q=82');
+  --image-ai: url('https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1800&q=82');
+  --image-hong-kong: url('https://images.unsplash.com/photo-1591719945186-73b666519516?auto=format&fit=crop&w=1800&q=82');
+  --radius-sm: 6px;
+  --radius-md: 6px;
+  --ease: cubic-bezier(.2, .8, .2, 1);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Keep typography features global, including elements with font shorthand rules. */
+*, *::before, *::after {
+  font-feature-settings: "case" on !important;
+  font-variant-ligatures: none !important;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: clip;
+}
+
+html.route-changing {
+  scroll-behavior: auto;
+}
+
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+
+body.drawer-open {
+  overflow: hidden;
+}

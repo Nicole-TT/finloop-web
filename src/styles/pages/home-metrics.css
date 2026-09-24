@@ -1,0 +1,18 @@
+/* The metrics share the hero's final composition, without a second data section. */
+.hero-metrics.metric-grid {
+  position: absolute;
+  top: 53%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(var(--max), calc(100% - var(--edge) * 2));
+  pointer-events: none;
+  color: #121212;
+}
+.hero-metrics.metric-grid strong { color: #121212; font-weight: 600; }
+.hero-metrics.metric-grid article { padding: 28px 12px; }
+@media (max-width: 760px) {
+  .hero-metrics.metric-grid { grid-template-columns: repeat(2, 1fr); top: 43%; }
+  .hero-metrics.metric-grid article { padding: 22px 8px; }
+  .hero-metrics.metric-grid strong { font-size: clamp(30px, 7vw, 48px); }
+  .hero-metrics.metric-grid h3 { margin: 14px 0 8px; font-size: 15px; }
+}

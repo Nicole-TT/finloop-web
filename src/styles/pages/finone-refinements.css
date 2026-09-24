@@ -1,0 +1,53 @@
+/* FinOne product page */
+.finone-page { background: #f3f6f8; color: #071423; }
+.finone-shell { width: min(var(--max), calc(100% - var(--edge) * 2)); margin-inline: auto; }
+.finone-section { padding: clamp(80px, 9vw, 120px) 0; }
+.finone-section h2 { max-width: 920px; margin: 0; font-size: var(--section-title-size); line-height: 1.16; letter-spacing: -.035em; font-weight: 500; }
+.finone-section-copy { max-width: 720px; margin: 22px 0 0; color: #5d707d; font-size: 16px; line-height: 1.75; }
+.finone-hero { overflow: hidden; padding: 174px 0 86px; background: #071423; color: #fff; }
+.finone-hero-copy { text-align: center; }
+.finone-kicker { margin: 0 0 28px; color: #70baff; font: 500 14px/1.4 var(--font-sans); }
+.finone-hero h1 { max-width: 1120px; margin: 0 auto; font-size: clamp(54px, 7.4vw, 104px); line-height: .98; letter-spacing: -.058em; font-weight: 500; }
+.finone-lead { max-width: 790px; margin: 34px auto 0; color: rgba(255,255,255,.7); font-size: clamp(16px, 1.45vw, 19px); line-height: 1.75; }
+.finone-actions { display: flex; align-items: center; justify-content: center; gap: 28px; margin-top: 34px; }
+.finone-actions > a:last-child { min-height: 46px; display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; }
+.finone-hero-stage { margin-top: 76px; }
+.finone-hero-stage > p { margin: 14px 4px 0; color: rgba(255,255,255,.45); font-size: 12px; }
+.finone-ui { display: grid; grid-template-columns: 150px 1fr; min-height: 560px; overflow: hidden; border: 1px solid rgba(255,255,255,.15); border-radius: 24px; background: #fff; color: #071423; box-shadow: 0 34px 90px rgba(0,0,0,.34); text-align: left; }
+.finone-ui-sidebar { display: flex; flex-direction: column; gap: 8px; padding: 24px 16px; background: #eaf0f4; border-right: 1px solid #d6dee4; }
+.finone-ui-mark { display: grid; place-items: center; width: 38px; height: 38px; margin: 0 8px 28px; border-radius: 10px; background: #0d7df1; color: #fff; font: 600 14px/1 var(--font-sans); }
+.finone-ui-sidebar span { padding: 12px 14px; border-radius: 8px; color: #6a7a85; font-size: 13px; }
+.finone-ui-sidebar .is-active { background: #d8e9fb; color: #0d7df1; font-weight: 600; }
+.finone-ui-main { padding: 34px; }
+.finone-ui-top { display: flex; justify-content: space-between; align-items: center; padding-bottom: 28px; border-bottom: 1px solid #d6dee4; font-weight: 600; }
+.finone-ui-top i { color: #7c8b94; font: 400 12px/1 var(--font-sans); }
+.finone-ui-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-top: 24px; }
+.finone-ui-stats > div { min-height: 118px; padding: 20px; border: 1px solid #d6dee4; border-radius: 16px; }
+.finone-ui-stats small, .finone-ui-stats strong, .finone-ui-stats em { display: block; }
+.finone-ui-stats small { color: #6c7d87; font-size: 12px; }.finone-ui-stats strong { margin-top: 14px; font: 500 clamp(18px,2vw,27px)/1.1 var(--font-sans); }.finone-ui-stats em { margin-top: 8px; color: #0d7df1; font: 500 11px/1 var(--font-sans); }
+.finone-ui-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 14px; margin-top: 14px; }
+.finone-chart, .finone-allocation { min-height: 245px; padding: 22px; border: 1px solid #d6dee4; border-radius: 16px; font-size: 13px; font-weight: 600; }
+.finone-line { height: 165px; margin-top: 22px; background: linear-gradient(180deg, rgba(13,125,241,.17), transparent 72%), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 180'%3E%3Cpath d='M0 145 C65 150 75 95 135 112 S230 150 290 76 S390 115 450 42 S535 78 600 18' fill='none' stroke='%230d7df1' stroke-width='4'/%3E%3C/svg%3E") center/100% 100% no-repeat; border-bottom: 1px solid #d6dee4; }
+.finone-allocation p { position: relative; margin: 20px 0 0; color: #71818b; font-size: 11px; font-weight: 400; }.finone-allocation p i { display: block; height: 5px; margin-bottom: 7px; border-radius: 5px; background: #0d7df1; }
+.finone-intro { background: #fff; }
+.finone-pillars { display: grid; grid-template-columns: repeat(3,1fr); margin-top: 64px; border-top: 1px solid #071423; }
+.finone-pillars article { min-height: 310px; padding: 28px 34px 36px 0; border-bottom: 1px solid #d6dee4; }.finone-pillars article + article { padding-left: 34px; border-left: 1px solid #d6dee4; }
+.finone-pillars span, .finone-fit-grid span { color: #0d7df1; font: 500 13px/1 var(--font-sans); }.finone-pillars h3 { margin: 90px 0 18px; font-size: 28px; font-weight: 500; }.finone-pillars p { max-width: 320px; margin: 0; color: #5d707d; line-height: 1.75; }
+.finone-assets { background: #eaf0f4; }
+.finone-asset-layout { display: grid; grid-template-columns: .72fr 1.28fr; gap: 52px; margin-top: 58px; align-items: start; }
+.finone-asset-list { border-top: 1px solid #071423; }.finone-asset-list > div { display: grid; grid-template-columns: 42px 1fr auto; align-items: center; min-height: 72px; border-bottom: 1px solid #c7d1d8; }.finone-asset-list span { color: #7b8992; font: 400 12px/1 var(--font-sans); }.finone-asset-list strong { font-size: 17px; font-weight: 500; }.finone-asset-list i { font-style: normal; color: #0d7df1; }
+.finone-asset-visual { position: relative; padding-bottom: 62px; }.finone-ui-compact { grid-template-columns: 104px 1fr; min-height: 430px; border-color: #d6dee4; box-shadow: none; }.finone-ui-compact .finone-ui-sidebar { padding: 18px 10px; }.finone-ui-compact .finone-ui-main { padding: 24px; }.finone-ui-compact .finone-ui-grid { grid-template-columns: 1fr; }.finone-ui-compact .finone-allocation { display: none; }.finone-ui-compact .finone-chart { min-height: 180px; }.finone-ui-compact .finone-line { height: 110px; }.finone-ui-compact .finone-ui-stats > div { min-height: 90px; padding: 14px; }
+.finone-blue-note { position: absolute; right: 24px; bottom: 0; width: min(360px,75%); padding: 25px; border-radius: 16px; background: #0d7df1; color: #fff; box-shadow: 0 18px 44px rgba(13,125,241,.2); }.finone-blue-note strong { font-size: 17px; }.finone-blue-note p { margin: 10px 0 0; color: rgba(255,255,255,.74); font-size: 13px; line-height: 1.6; }
+.finone-workflow { background: #fff; }.finone-flow { display: grid; grid-template-columns: repeat(4,1fr); margin-top: 64px; border-top: 1px solid #071423; }.finone-flow article { position: relative; min-height: 330px; padding: 28px 28px 38px 0; border-bottom: 1px solid #d6dee4; }.finone-flow article + article { padding-left: 28px; border-left: 1px solid #d6dee4; }.finone-flow span { font: 500 13px/1 var(--font-sans); color: #0d7df1; }.finone-flow article:not(:last-child)::after { content: '\2192'; position: absolute; right: -12px; top: 26px; z-index: 1; display: grid; place-items: center; width: 24px; height: 24px; background: #fff; color: #0d7df1; }.finone-flow h3 { margin: 92px 0 18px; font-size: 23px; font-weight: 500; }.finone-flow p { margin: 0; color: #5d707d; font-size: 14px; line-height: 1.75; }
+.finone-ai { background: #071423; color: #fff; }.finone-ai-grid { display: grid; grid-template-columns: .85fr 1.15fr; gap: clamp(48px,7vw,100px); }.finone-ai .finone-section-copy { color: rgba(255,255,255,.58); }.finone-ai-cards { display: grid; grid-template-columns: repeat(2,1fr); gap: 14px; }.finone-ai-cards article { display: flex; flex-direction: column; min-height: 230px; padding: 24px; border: 1px solid rgba(255,255,255,.16); border-radius: 16px; background: rgba(255,255,255,.055); }.finone-ai-cards span { color: #70baff; font: 500 12px/1 var(--font-sans); }.finone-ai-cards h3 { margin: 42px 0 auto; font-size: 20px; line-height: 1.4; font-weight: 500; }.finone-ai-status { display: flex; align-items: center; gap: 8px; margin-top: 28px; color: rgba(255,255,255,.48); font-size: 11px; }.finone-ai-status i { width: 7px; height: 7px; border-radius: 50%; background: #70baff; }
+.finone-fit { background: #f3f6f8; }.finone-fit-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 14px; margin-top: 58px; }.finone-fit-grid article { min-height: 250px; padding: 28px; border: 1px solid #d6dee4; border-radius: 16px; background: #fff; }.finone-fit-grid h3 { margin: 74px 0 14px; font-size: 26px; font-weight: 500; }.finone-fit-grid p { max-width: 430px; margin: 0; color: #5d707d; line-height: 1.7; }
+.finone-cta { padding: clamp(80px,9vw,120px) 0; background: #0d7df1; color: #fff; text-align: center; }.finone-cta h2 { margin: 0; font-size: clamp(42px,5.6vw,76px); line-height: 1.05; letter-spacing: -.05em; font-weight: 500; }.finone-cta p { margin: 24px auto 32px; color: rgba(255,255,255,.75); }.finone-cta .button-light { border-radius: 10px; }
+
+@media (hover:hover) and (pointer:fine) { .finone-fit-grid article { transition: transform .18s ease, border-color .18s ease; }.finone-fit-grid article:hover { transform: translateY(-3px); border-color: #9ecbf7; } }
+@media (max-width: 800px) {
+  .finone-section { padding: 74px 0; }.finone-hero { padding: 128px 0 62px; }.finone-hero h1 { font-size: clamp(46px,14vw,66px); }.finone-lead { margin-top: 26px; }.finone-actions { flex-direction: column; gap: 12px; }.finone-hero-stage { margin-top: 54px; }
+  .finone-ui { grid-template-columns: 1fr; min-height: 420px; border-radius: 18px; }.finone-ui-sidebar { display: none; }.finone-ui-main { padding: 18px; }.finone-ui-stats { gap: 8px; }.finone-ui-stats > div { min-height: 94px; padding: 13px; }.finone-ui-stats strong { font-size: 16px; }.finone-ui-stats em { display: none; }.finone-ui-grid { grid-template-columns: 1fr; gap: 8px; }.finone-chart { min-height: 180px; padding: 16px; }.finone-line { height: 105px; }.finone-allocation { display: none; }
+  .finone-pillars, .finone-flow { grid-template-columns: 1fr; margin-top: 42px; }.finone-pillars article, .finone-pillars article + article, .finone-flow article, .finone-flow article + article { min-height: 0; padding: 24px 0 30px; border-left: 0; }.finone-pillars h3, .finone-flow h3 { margin: 42px 0 14px; }.finone-flow article:not(:last-child)::after { content: '\2193'; top: auto; right: 0; bottom: -12px; }
+  .finone-asset-layout, .finone-ai-grid { grid-template-columns: 1fr; gap: 42px; }.finone-asset-list > div { min-height: 64px; }.finone-ui-compact { grid-template-columns: 1fr; }.finone-blue-note { right: 12px; width: calc(100% - 24px); }
+  .finone-ai-cards, .finone-fit-grid { grid-template-columns: 1fr; }.finone-ai-cards article, .finone-fit-grid article { min-height: 210px; }.finone-fit-grid h3 { margin-top: 54px; }
+}

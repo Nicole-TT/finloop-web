@@ -1,7 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { motion, useReducedMotion, type Variants } from 'motion/react';
+import { t, localizedHref } from '../i18n';
+import React, { useEffect, useId, useRef, useState } from 'react';
+import logoSource from '../../public/assets/finloop-logo.svg?raw';
+import createGlobe from 'cobe';
+import { animate, motion, useMotionValue, useReducedMotion, useScroll, useTransform, type MotionValue, type Variants } from 'motion/react';
 import { useFinloopAssistant } from './FinloopAssistant';
-import { ArrowUp, RefreshCw, type IconNode } from 'lucide';
+import { RefreshCw, type IconNode } from 'lucide';
 
 function HeroIcon({ icon }: { icon: IconNode }) {
   return <svg width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
@@ -41,12 +44,314 @@ const heroEntranceItem: Variants = {
   visible: { opacity: 1, y: 0, transition: { duration: .56, ease: [.22, 1, .36, 1] } },
 };
 
+const heroPhaseEase = (progress: number) => progress * progress * (3 - 2 * progress);
+const heroLogoPath = logoSource.match(/<path d="([^"]+)"/)![1];
+
+const heroMetrics = [
+  ['8,000+', '', '财富产品', '覆盖多元财富产品体系'],
+  ['250+', '', '机构客户', '服务多类型专业机构'],
+  ['50B+', '', '2025 年交易规模', '承载真实机构财富业务'],
+  ['8', '', '金融品类', '覆盖传统金融与 Web3'],
+];
+
+const productGlobeMarkers = [
+  [42, -105, 27, 42], [58, -110, 14, 25], [-14, -60, 30, 22],
+  [50, 18, 18, 28], [8, 21, 34, 25], [38, 82, 31, 58],
+  [55, 56, 17, 30], [-25, 134, 14, 21], [35, 138, 8, 8],
+].flatMap(([centerLat, centerLng, radiusLat, radiusLng]) => {
+  const points: Array<{ location: [number, number]; size: number }> = [];
+  for (let lat = centerLat - radiusLat; lat <= centerLat + radiusLat; lat += 3.4) {
+    for (let lng = centerLng - radiusLng; lng <= centerLng + radiusLng; lng += 3.4) {
+      const distance = ((lat - centerLat) / radiusLat) ** 2 + ((lng - centerLng) / radiusLng) ** 2;
+      if (distance <= 1) points.push({ location: [lat, lng], size: .006 });
+    }
+  }
+  return points;
+});
+
+function HeroMetric({ item, index, progress, reduced }: { item: string[]; index: number; progress: MotionValue<number>; reduced: boolean }) {
+  const start = 1.28 + index * .12;
+  const opacity = useTransform(progress, [start, start + .4], [0, 1], { ease: heroPhaseEase });
+  const y = useTransform(progress, [start, start + .4], [100, 0], { ease: value => 1 - (1 - value) ** 3 });
+  const target = Number(item[0].replace(/[^\d]/g, ''));
+  const suffix = item[0].replace(/[\d,]/g, '');
+  const count = useTransform(progress, [start, 2.1], [0, target], { ease: value => 1 - (1 - value) ** 3 });
+  const formattedCount = useTransform(count, value => `${Math.round(value).toLocaleString('en-US')}${suffix}`);
+  return <motion.article style={reduced ? undefined : { opacity, y }}>
+    <strong aria-label={`${item[0]} ${item[1]}`.trim()}><motion.span aria-hidden="true" style={{ fontVariantNumeric: 'tabular-nums' }}>{reduced ? item[0] : formattedCount}</motion.span> {item[1] && <small aria-hidden="true">{item[1]}</small>}</strong>
+    <h3>{t(item[2])}</h3><p>{t(item[3])}</p>
+  </motion.article>;
+}
+
+function MetricsVideoReveal({ reduced }: { reduced: boolean }) {
+  const sceneRef = useRef<HTMLElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sceneRef,
+    offset: ['start end', 'center center'],
+  });
+  const opacity = useTransform(scrollYProgress, [0, .32], [0, 1], { ease: heroPhaseEase });
+  const y = useTransform(scrollYProgress, [0, 1], [72, 0], { ease: value => 1 - (1 - value) ** 3 });
+  const scale = useTransform(scrollYProgress, [0, 1], [.72, 1], { ease: heroPhaseEase });
+
+  useEffect(() => {
+    const scene = sceneRef.current;
+    const video = videoRef.current;
+    if (!scene || !video) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) void video.play().catch(() => {});
+      else video.pause();
+    }, { threshold: .05 });
+    observer.observe(scene);
+    return () => { observer.disconnect(); video.pause(); };
+  }, []);
+
+  return <section ref={sceneRef} className={`hero-video-reveal${reduced ? ' is-reduced' : ''}`} aria-label={t('首页品牌影片')}>
+    <div className="hero-video-sticky">
+      <motion.div className="hero-video-frame" style={reduced ? undefined : { opacity, y, scale }}>
+        <video ref={videoRef} src="/assets/home-metrics-video.mp4" muted loop playsInline autoPlay preload="metadata" aria-label={t('Finloop 品牌影片')} />
+      </motion.div>
+    </div>
+  </section>;
+}
+
+function ProductGlobe() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const reduceMotion = useReducedMotion();
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    let phi = -.35;
+    let width = canvas.parentElement?.clientWidth ?? 820;
+    const globeOptions: Parameters<typeof createGlobe>[1] = {
+      devicePixelRatio: Math.min(window.devicePixelRatio, 2),
+      width: width * 2,
+      height: width * 2,
+      phi,
+      theta: .12,
+      dark: 0,
+      diffuse: 1.05,
+      mapSamples: 12000,
+      mapBrightness: .35,
+      mapBaseBrightness: 0,
+      baseColor: [.68, .71, .74],
+      markerColor: [.42, .46, .5],
+      glowColor: [.95, .97, 1],
+      markers: productGlobeMarkers,
+      opacity: .82,
+      onRender: state => {
+        if (!reduceMotion) phi += .003;
+        state.phi = phi;
+        state.width = width * 2;
+        state.height = width * 2;
+      },
+    };
+    const globe = createGlobe(canvas, globeOptions);
+    const observer = new ResizeObserver(entries => {
+      width = entries[0]?.contentRect.width ?? width;
+    });
+    if (canvas.parentElement) observer.observe(canvas.parentElement);
+    return () => { observer.disconnect(); globe.destroy(); };
+  }, [reduceMotion]);
+
+  return <div className="product-globe" aria-hidden="true"><canvas ref={canvasRef} /></div>;
+}
+
 export function HeroSection() {
   const heroRef = useRef<HTMLElement>(null);
+  const logoClipId = useId();
+  const logoGradientId = useId();
+  const dotVideoRef = useRef<HTMLVideoElement>(null);
+  const suggestionsRef = useRef<HTMLDivElement>(null);
+  const logoPathRef = useRef<SVGPathElement>(null);
+  const logoImageRef = useRef<SVGGElement>(null);
+  const [entranceVisible, setEntranceVisible] = useState(false);
   const [question, setQuestion] = useState('');
   const [suggestionBatch, setSuggestionBatch] = useState(0);
   const reduceMotion = useReducedMotion();
   const { ask, isLoading } = useFinloopAssistant();
+  const reveal = useMotionValue(0);
+  const largeLogoHeight = useMotionValue(600);
+  const finalLogoHeight = useMotionValue(120);
+  const stageWidth = useMotionValue(0);
+  const stageHeight = useMotionValue(0);
+  const contentOpacity = useTransform(reveal, [0, .24], [1, 0], { ease: heroPhaseEase });
+  const maskProgress = useTransform(reveal, [.24, 1], [0, 1], { ease: progress => 1 - (1 - progress) ** 3 });
+  const backgroundBlur = useTransform(maskProgress, value => `blur(${value * 20}px)`);
+  const logoLift = useTransform(reveal, [1, 1.6], [0, 1], { ease: heroPhaseEase });
+  const gradientOpacity = useTransform(reveal, [.7, .8], [0, 1], { ease: heroPhaseEase });
+  const blackOpacity = useTransform(reveal, [.82, .98], [0, 1], { ease: heroPhaseEase });
+  const gradientWidth = useTransform(() => {
+    const start = largeLogoHeight.get();
+    return start * (finalLogoHeight.get() / start) ** maskProgress.get() * 147 / 32;
+  });
+  const gradientX = useTransform(() => {
+    const anchorX = 80.0407 + (73.5 - 80.0407) * maskProgress.get();
+    return stageWidth.get() / 2 - anchorX * gradientWidth.get() / 147;
+  });
+  useEffect(() => {
+    const video = dotVideoRef.current;
+    if (!video || reduceMotion) return;
+    let playing = false;
+    const sync = (value: number) => {
+      const shouldPlay = value > 1;
+      if (shouldPlay === playing) return;
+      playing = shouldPlay;
+      if (shouldPlay) {
+        video.currentTime = 0;
+        void video.play().catch(() => { playing = false; });
+      } else video.pause();
+    };
+    sync(reveal.get());
+    const unsubscribe = reveal.on('change', sync);
+    return () => { unsubscribe(); video.pause(); };
+  }, [reveal, reduceMotion]);
+  const logoTransform = useTransform(() => {
+    const progress = maskProgress.get();
+    const start = largeLogoHeight.get();
+    const scale = start * (finalLogoHeight.get() / start) ** progress / 32;
+    // Start inside the n's right stem, then settle on the complete wordmark's centre.
+    const anchorX = 80.0407 + (73.5 - 80.0407) * progress;
+    const anchorY = 19.24555 + (16 - 19.24555) * progress;
+    const liftDistance = stageWidth.get() <= 760 ? .21 : .14;
+    return `translate(${stageWidth.get() / 2 - anchorX * scale} ${stageHeight.get() * (.5 - liftDistance * logoLift.get()) - anchorY * scale}) scale(${scale})`;
+  });
+  useEffect(() => {
+    const update = () => {
+      logoPathRef.current?.setAttribute('transform', logoTransform.get());
+      if (!reduceMotion && reveal.get() > .24) logoImageRef.current?.setAttribute('clip-path', `url(#${logoClipId})`);
+      else logoImageRef.current?.removeAttribute('clip-path');
+    };
+    update();
+    const stopTransform = logoTransform.on('change', update);
+    const stopReveal = reveal.on('change', update);
+    return () => { stopTransform(); stopReveal(); };
+  }, [logoTransform, reveal, reduceMotion, logoClipId]);
+
+  useEffect(() => {
+    const hero = heroRef.current;
+    if (!hero || reduceMotion) { reveal.set(0); return; }
+    const content = hero.querySelector<HTMLElement>('.hero-grid');
+    let phase: 'idle' | 'running' | 'complete' = 'idle';
+    let animation: ReturnType<typeof animate> | undefined;
+    let restoreScroll: (() => void) | undefined;
+    let touchY = 0;
+    let target = 2.1;
+    let backgroundReady = false;
+    let disposed = false;
+    const headerInner = document.querySelector<HTMLElement>('.site-header .header-inner');
+    const backgroundElement = hero.querySelector<SVGElement>('.hero-logo-background');
+    let entranceAnimation: ReturnType<typeof animate> | undefined;
+    let headerAnimation: ReturnType<typeof animate> | undefined;
+    let entranceTimer: ReturnType<typeof setTimeout> | undefined;
+    setEntranceVisible(false);
+    hero.dataset.entering = 'true';
+    const playEntrance = async () => {
+      if (disposed || !backgroundElement) return;
+      entranceAnimation = animate(backgroundElement, { opacity: [0, 1] }, { duration: .4, ease: 'easeOut' });
+      await entranceAnimation;
+      if (disposed) return;
+      setEntranceVisible(true);
+      if (headerInner) headerAnimation = animate(headerInner, { opacity: [0, 1], y: [-30, 0] }, { duration: .65, ease: [.22, 1, .36, 1] });
+      entranceTimer = setTimeout(() => {
+        backgroundReady = true;
+        delete hero.dataset.entering;
+      }, 1000);
+    };
+    const background = new Image();
+    background.src = '/assets/home-hero-hong-kong-new.png';
+    background.decode().then(playEntrance, playEntrance);
+    reveal.set(0);
+    hero.dataset.headerProgress = '0';
+    const resize = () => {
+      stageWidth.set(hero.clientWidth);
+      stageHeight.set(hero.clientHeight);
+      largeLogoHeight.set(Math.max(hero.clientWidth / 3.294, hero.clientHeight / 9.0059) * 32 * 1.06);
+      finalLogoHeight.set(Math.min(120, (hero.clientWidth - 40) * 32 / 147));
+    };
+    const finish = () => {
+      phase = target === 0 ? 'idle' : 'complete';
+      content?.toggleAttribute('inert', target !== 0);
+      hero.classList.toggle('hero-collapsed', target !== 0);
+      restoreScroll?.();
+      restoreScroll = undefined;
+    };
+    const start = (forward: boolean) => {
+      target = forward ? 2.1 : 0;
+      phase = 'running';
+      if (content?.contains(document.activeElement)) (document.activeElement as HTMLElement).blur();
+      content?.setAttribute('inert', '');
+      if (!forward) hero.classList.remove('hero-collapsed');
+      const root = document.documentElement;
+      const overflow = root.style.overflow;
+      const gutter = root.style.scrollbarGutter;
+      root.style.scrollbarGutter = 'stable';
+      root.style.overflow = 'hidden';
+      restoreScroll = () => { root.style.overflow = overflow; root.style.scrollbarGutter = gutter; };
+      if (forward) {
+        animation = animate(reveal, target, { duration: 3.045, ease: 'linear', onComplete: finish });
+        return;
+      }
+      animation = animate(reveal, 0, {
+        duration: 2,
+        ease: [.4, 0, .2, 1],
+        onComplete: finish,
+      });
+    };
+    const consume = (event: Event, down: boolean) => {
+      if (phase === 'running') { event.preventDefault(); return; }
+      if (window.scrollY > 1 || (phase === 'idle' ? !down : down)) return;
+      if (event.target instanceof Element && event.target.closest('input, textarea, select, [contenteditable="true"], [role="dialog"], .site-header')) return;
+      event.preventDefault();
+      if (!backgroundReady) return;
+      start(down);
+    };
+    const wheel = (event: WheelEvent) => { if (!event.ctrlKey && event.deltaY !== 0) consume(event, event.deltaY > 0); };
+    const touchStart = (event: TouchEvent) => { touchY = event.touches[0]?.clientY ?? 0; };
+    const touchMove = (event: TouchEvent) => {
+      if (event.touches.length !== 1) return;
+      const nextY = event.touches[0].clientY;
+      if (Math.abs(touchY - nextY) > 2) consume(event, touchY > nextY);
+      touchY = nextY;
+    };
+    const key = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && phase === 'running') { animation?.stop(); reveal.set(target); finish(); return; }
+      if (event.key === ' ') consume(event, !event.shiftKey);
+      else if (['ArrowDown', 'PageDown', 'End'].includes(event.key)) consume(event, true);
+      else if (['ArrowUp', 'PageUp', 'Home'].includes(event.key)) consume(event, false);
+    };
+    const unsubscribe = reveal.on('change', value => {
+      hero.dataset.headerProgress = String(heroPhaseEase(Math.max(0, Math.min(1, (value - .24) / .2))));
+      window.dispatchEvent(new Event('finloop:hero-theme'));
+    });
+    const observer = new ResizeObserver(resize);
+    observer.observe(hero);
+    resize();
+    window.addEventListener('wheel', wheel, { passive: false });
+    window.addEventListener('touchstart', touchStart, { passive: true });
+    window.addEventListener('touchmove', touchMove, { passive: false });
+    window.addEventListener('keydown', key);
+    return () => {
+      disposed = true;
+      entranceAnimation?.stop();
+      headerAnimation?.stop();
+      animation?.stop();
+      restoreScroll?.();
+      clearTimeout(entranceTimer);
+      delete hero.dataset.entering;
+      if (headerInner) { headerInner.style.removeProperty('opacity'); headerInner.style.removeProperty('transform'); }
+      unsubscribe();
+      observer.disconnect();
+      window.removeEventListener('wheel', wheel);
+      window.removeEventListener('touchstart', touchStart);
+      window.removeEventListener('touchmove', touchMove);
+      window.removeEventListener('keydown', key);
+      content?.removeAttribute('inert');
+      hero.classList.remove('hero-collapsed');
+      delete hero.dataset.headerProgress;
+    };
+  }, [reduceMotion, reveal, largeLogoHeight, finalLogoHeight, stageWidth, stageHeight]);
 
   useEffect(() => {
     const hero = heroRef.current;
@@ -93,7 +398,7 @@ export function HeroSection() {
       lastTrailTime = 0;
     };
     const move = (event: PointerEvent) => {
-      if (!media.matches || event.pointerType === 'touch') return;
+      if (!media.matches || event.pointerType === 'touch' || hero.classList.contains('hero-collapsed')) return;
       const bounds = hero.getBoundingClientRect();
       targetX = event.clientX - bounds.left;
       targetY = event.clientY - bounds.top;
@@ -132,30 +437,67 @@ export function HeroSection() {
     setQuestion('');
   }
 
+  useEffect(() => {
+    const rail = suggestionsRef.current;
+    if (!rail) return;
+    const scrollSuggestions = (event: WheelEvent) => {
+      const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
+      event.preventDefault();
+      event.stopPropagation();
+      event.stopImmediatePropagation();
+      rail.scrollLeft += delta;
+    };
+    rail.addEventListener('wheel', scrollSuggestions, { capture: true, passive: false });
+    return () => rail.removeEventListener('wheel', scrollSuggestions, { capture: true });
+  }, []);
+
   return (
-    <section ref={heroRef} className="hero" data-header-theme="inverse" aria-label="香港城市与财富科技平台">
+    <div className={`hero-scroll-scene${reduceMotion ? ' hero-scroll-static' : ''}`}>
+    <section ref={heroRef} className="hero hero-scroll-stage" data-entrance-visible={reduceMotion || entranceVisible ? 'true' : 'false'} data-header-theme="inverse" aria-label={t('香港城市与财富科技平台')}>
+      {!reduceMotion && <motion.video ref={dotVideoRef} className="hero-dot-background" src="/assets/home-dot-animation.webm" muted loop playsInline preload="auto" aria-hidden="true" style={{ opacity: logoLift }} />}
+      <svg className="hero-logo-background" aria-hidden="true" width="100%" height="100%">
+        <defs>
+          <clipPath id={logoClipId} clipPathUnits="userSpaceOnUse"><path ref={logoPathRef} d={heroLogoPath} /></clipPath>
+          <linearGradient id={logoGradientId} x1="100%" y1="0%" x2="0%" y2="0%">
+            <stop offset="0%" stopColor="#52ABFF" />
+            <stop offset="32.87%" stopColor="#2269F6" />
+            <stop offset="53.85%" stopColor="#121212" />
+          </linearGradient>
+        </defs>
+        <g ref={logoImageRef}>
+          <motion.image href="/assets/home-hero-hong-kong-new.png" width="100%" height="100%" preserveAspectRatio="xMidYMax slice" style={{ filter: backgroundBlur }} />
+          <motion.rect x={gradientX} width={gradientWidth} height="100%" fill={`url(#${logoGradientId})`} style={{ opacity: gradientOpacity }} />
+          <motion.rect width="100%" height="100%" fill="#121212" style={{ opacity: blackOpacity }} />
+        </g>
+      </svg>
       <div className="hero-digital-scan" aria-hidden="true">
         <div className="hero-digital-field">{Array.from({ length: 240 }, (_, index) => {
           const codes = index % 3 === 0 ? ['01', '10', '11', '00', '01'] : index % 3 === 1 ? ['10', '00', '01', '11', '10'] : ['001', '110', '010', '101', '001'];
           return <span key={index}><b style={{ animationDelay: `${-(index % 11) * .27}s` }}>{codes.map((code, row) => <i key={row}>{code}</i>)}</b></span>;
         })}</div>
       </div>
-      <div className="hero-grid">
-        <motion.div className="hero-copy" variants={heroEntrance} initial={reduceMotion ? false : 'hidden'} animate="visible">
-          <motion.p className="hero-kicker" variants={heroEntranceItem}>WEB2 × WEB3 × AI</motion.p>
-          <motion.h1 variants={heroEntranceItem}>AI 驱动的 Web5 财富科技平台</motion.h1>
-          <motion.p variants={heroEntranceItem}>您想了解哪类财富科技能力？我可以帮您快速找到对应的产品与解决方案</motion.p>
-          <motion.div className="hero-ai-chat" aria-label="Finloop AI 业务助手" variants={heroEntranceItem}>
-            <form autoComplete="off" onSubmit={event => { event.preventDefault(); submitQuestion(question); }}><label className="sr-only" htmlFor="hero-ai-question">输入您的业务问题</label><input id="hero-ai-question" name="finloop-business-question" autoComplete="off" autoCorrect="off" autoCapitalize="off" spellCheck={false} value={question} onChange={event => setQuestion(event.target.value)} placeholder="请输入您的角色或您的业务问题，我们为你快速解决" /><button type="submit" aria-label="发送问题" disabled={isLoading || !question.trim()}><HeroIcon icon={ArrowUp} /></button></form>
+      <motion.div className="hero-grid" style={{ opacity: contentOpacity }}>
+        <motion.div className="hero-copy" variants={heroEntrance} initial={reduceMotion ? false : "hidden"} animate={reduceMotion || entranceVisible ? "visible" : "hidden"}>
+          <motion.h1 variants={heroEntranceItem}>{t('AI 驱动的 Web5 财富科技平台')}</motion.h1>
+          <motion.p variants={heroEntranceItem}>{t('您想了解哪类财富科技能力？我可以帮您快速找到对应的产品与解决方案')}</motion.p>
+          <motion.div className="hero-ai-chat" aria-label={t('Finloop AI 业务助手')} variants={heroEntranceItem}>
+            <form autoComplete="off" onSubmit={event => { event.preventDefault(); submitQuestion(question); }}><label className="sr-only" htmlFor="hero-ai-question">{t('输入您的业务问题')}</label><input id="hero-ai-question" name="finloop-business-question" autoComplete="off" autoCorrect="off" autoCapitalize="off" spellCheck={false} value={question} onChange={event => setQuestion(event.target.value)} placeholder={t('请输入您的角色或您的业务问题，我们为你快速解决')} /><button type="submit" aria-label={t('发送问题')} disabled={isLoading || !question.trim()}><img src="/assets/ai-icon.svg" alt=""/><span>Ask AI</span></button></form>
             <div className="hero-ai-chat-footer">
-              <div className="hero-ai-suggestions" aria-label="示例问题">{heroSuggestionBatches[suggestionBatch].map(item => <button type="button" key={item} onClick={() => submitQuestion(item)}>{item}</button>)}</div>
-              <div className="hero-ai-tools">
-              <button className="hero-ai-shuffle" type="button" onClick={() => setSuggestionBatch(current => (current + 1) % heroSuggestionBatches.length)}><HeroIcon icon={RefreshCw} />换一批</button></div>
+              <div ref={suggestionsRef} className="hero-ai-suggestions" aria-label={t('示例问题')}>{heroSuggestionBatches[suggestionBatch].map(item => <button type="button" key={t(item)} onClick={() => submitQuestion(t(item))}>{t(item)}</button>)}</div>
             </div>
           </motion.div>
+          <div className="hero-ai-tools">
+            <button className="hero-ai-shuffle" type="button" onClick={() => setSuggestionBatch(current => (current + 1) % heroSuggestionBatches.length)}><HeroIcon icon={RefreshCw} />{t('换一批')}</button>
+          </div>
         </motion.div>
-      </div>
+      </motion.div>
+      {!reduceMotion && <div className="hero-metrics metric-grid" id="metrics" aria-label={t('Finloop 业务数据')}>
+        {heroMetrics.map((item, index) => <HeroMetric key={t(item[2])} item={item} index={index} progress={reveal} reduced={false} />)}
+      </div>}
     </section>
+    {reduceMotion && <div className="metrics metric-grid" id="metrics">{heroMetrics.map((item, index) => <HeroMetric key={t(item[2])} item={item} index={index} progress={reveal} reduced />)}</div>}
+    <MetricsVideoReveal reduced={Boolean(reduceMotion)} />
+    </div>
   );
 }
 
@@ -165,16 +507,16 @@ export function CoverageSection() {
   return (
     <section className="coverage section-pad" id="coverage">
       <div className="coverage-header">
-        <div><h2>覆盖多元投资需求的财富产品货架</h2>
-          <p>连接现金管理、公募基金、私募基金、债券、结构性产品、保险、虚拟资产与 RWA 等产品类别，为不同客户与资产配置场景提供多元选择。</p>
+        <div><h2>{t('覆盖多元投资需求的财富产品货架')}</h2>
+          <p>{t('连接现金管理、公募基金、私募基金、债券、结构性产品、保险、虚拟资产与 RWA 等产品类别，为不同客户与资产配置场景提供多元选择。')}</p>
         </div>
-        <a className="coverage-overview-link" href="/products">查看全部金融产品 <i data-lucide="arrow-right"></i></a>
+        <a className="coverage-overview-link" href={localizedHref('/products')}>{t('查看全部金融产品')}<i data-lucide="arrow-right"></i></a>
       </div>
 
       <div className="product-universe" data-active={activeAsset}>
-        <div className="product-globe" aria-hidden="true"><i></i><i></i><i></i><span></span></div>
+        <ProductGlobe />
         <div className="product-orbits" aria-hidden="true"><i></i><i></i><i></i></div>
-        <div className="product-nodes" aria-label="金融产品类别">
+        <div className="product-nodes" aria-label={t('金融产品类别')}>
           {assetTabs.map(([id, label], index) => (
             <button
               type="button"
@@ -186,12 +528,12 @@ export function CoverageSection() {
               onFocus={() => setActiveAsset(id)}
             >
               <span>0{index + 1}</span>
-              <strong>{label}</strong>
-              <div><p>{assetContent[id][1]}</p><small>{assetContent[id][2]}</small></div>
+              <strong>{t(label)}</strong>
+              <div><p>{t(assetContent[id][1])}</p><small>{t(assetContent[id][2])}</small></div>
             </button>
           ))}
         </div>
-        <a className="product-universe-entry" href="/products">进入金融产品总览 <i data-lucide="arrow-right"></i></a>
+        <a className="product-universe-entry" href={localizedHref('/products')}>{t('进入金融产品总览')}<i data-lucide="arrow-right"></i></a>
       </div>
     </section>
   );
@@ -277,14 +619,14 @@ export function SolutionsSection({ groups }: { groups: SolutionGroup[] }) {
       <div className="solution-showcase">
         <div className="solution-copy">
           <div className="solution-heading">
-            <h2>{activeGroup?.title}</h2>
-            <p>{activeGroup?.description}</p>
+            <h2>{t(activeGroup?.title)}</h2>
+            <p>{t(activeGroup?.description)}</p>
           </div>
-          <div className="solution-mode-tabs" role="tablist" aria-label="解决方案分类方式">
-            {groups.map(group => <button key={group.id} type="button" role="tab" aria-selected={group.id === activeGroupId} onClick={() => setActiveGroupId(group.id)}>{group.label}</button>)}
+          <div className="solution-mode-tabs" role="tablist" aria-label={t('解决方案分类方式')}>
+            {groups.map(group => <button key={group.id} type="button" role="tab" aria-selected={group.id === activeGroupId} onClick={() => setActiveGroupId(group.id)}>{t(group.label)}</button>)}
           </div>
           <div className="solution-accordion">
-            {items.map(([id, name, desc], index) => {
+            {items.map(([id, name, desc]) => {
               const isActive = activeId === id;
               return (
                 <article
@@ -297,13 +639,12 @@ export function SolutionsSection({ groups }: { groups: SolutionGroup[] }) {
                     aria-controls={`solution-detail-${id}`}
                     onClick={() => setActiveId(id)}
                   >
-                    <span>0{index + 1}</span>
-                    <strong>{name}</strong>
+                    <strong>{t(name)}</strong>
                     <i aria-hidden="true">{isActive ? '−' : '+'}</i>
                   </button>
                   <div className="solution-option-detail" id={`solution-detail-${id}`} aria-hidden={!isActive}>
-                    <p>{desc}</p>
-                    <a href={`/solutions/${id}`}>了解方案 <i data-lucide="arrow-right"></i></a>
+                    <p>{t(desc)}</p>
+                    <a href={localizedHref(`/solutions/${id}`)}>{t('了解方案')}<i data-lucide="arrow-right"></i></a>
                   </div>
                 </article>
               );
@@ -311,10 +652,9 @@ export function SolutionsSection({ groups }: { groups: SolutionGroup[] }) {
           </div>
         </div>
         <figure className="solution-media">
-          <img key={activeItem[0]} src={activeImage.src} alt={activeImage.alt} />
+          <img key={activeItem[0]} src={activeImage.src} alt={t(activeImage.alt)} />
           <figcaption>
-            <span>0{activeIndex + 1}</span>
-            <strong>{activeItem[1]}</strong>
+            <strong>{t(activeItem[1])}</strong>
           </figcaption>
         </figure>
       </div>

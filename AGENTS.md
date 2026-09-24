@@ -27,8 +27,8 @@
 ## 前端规范
 
 - 前端使用 Vite、Lucide 图标、React 不要无必要地引入Vue 或其他 UI 框架。
-- 页面入口为 `index.html`，应用渲染和交互逻辑主要放在 `src/main.js`，全局样式放在 `src/styles.css`。
-- 复用现有 CSS 变量、断点、间距、颜色和动效；页面私有样式优先放在 `src/styles.css` 的对应区域，不新增零散样式文件。
+- 页面入口为 `index.html`，应用入口为 `src/main.tsx`；`src/styles.css` 只负责按顺序导入样式，具体职责见 `src/styles/README.md`。
+- 复用现有 CSS 变量、断点、间距、颜色和动效；全局基础放在 `src/styles/global/`，公共组件放在 `components/`，页面样式放在 `pages/`，跨页面组合与适配放在 `shared/`。优先修改对应文件，不在入口追加样式；保留导入顺序，不随意合并后置覆盖规则。
 - 图标优先使用已安装的 `lucide`，通过现有 `createIcons` 方式注册和渲染，不手写重复 SVG 图标。
 - 交互控件必须具备可访问名称、键盘焦点样式和正确的 ARIA 状态；移动端菜单、下拉导航和标签切换要同步更新 `aria-expanded` / `aria-selected` 等属性。
 - 保持响应式布局，修改桌面布局后同步检查窄屏；不要让导航、按钮、长文案或图片在移动端溢出或相互遮挡。

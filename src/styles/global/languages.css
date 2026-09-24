@@ -1,0 +1,4 @@
+/* Use Traditional Chinese glyph forms when the content declares that language. */
+:lang(zh-TW), :lang(zh-HK), :lang(zh-Hant) {
+  --font-sans: 'Plus Jakarta Sans', 'PingFang HK', 'PingFang SC', 'Noto Sans SC', sans-serif;
+}

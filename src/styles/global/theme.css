@@ -1,0 +1,24 @@
+@theme {
+  --color-brand-ink: #080a0b;
+  --color-brand-paper: #f7f8f5;
+  --color-brand-surface: #ffffff;
+  --color-brand-muted: #626967;
+  --color-brand-line: #d9ddda;
+  --color-brand-action: #0D7DF1;
+  --color-brand-blue: #0D7DF1;
+  --font-sans: 'Plus Jakarta Sans', 'PingFang SC', 'PingFang HK', 'Noto Sans SC', sans-serif;
+  --font-data: var(--font-sans);
+  --radius-brand: 6px;
+  --spacing-edge: clamp(20px, 4.5vw, 64px);
+}
+
+@media (min-width: 681px) {
+  .wle-challenge-section .goal-head-plain {
+    max-width: none;
+  }
+
+  .wle-challenge-section .goal-head-plain h2 {
+    white-space: nowrap;
+  }
+}
+

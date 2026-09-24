@@ -1,0 +1,41 @@
+/* Respond to the space left beside AI, rather than the browser width. */
+#app { container-name: site; container-type: inline-size; }
+
+@container site (max-width: 1180px) {
+  body.assistant-sidebar-open .header-inner { grid-template-columns: 1fr auto; }
+  body.assistant-sidebar-open .desktop-nav,
+  body.assistant-sidebar-open .header-cta { display: none; }
+  body.assistant-sidebar-open .menu-button { display: flex; }
+}
+
+@container site (max-width: 1100px) {
+  body.assistant-sidebar-open main { --edge: 32px; }
+  body.assistant-sidebar-open main [class$="-hero-grid"] {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 40px;
+  }
+  body.assistant-sidebar-open main [class$="-hero-grid"] > * { min-width: 0; }
+  body.assistant-sidebar-open main [class$="-hero"] h1 {
+    max-width: 900px;
+    font-size: clamp(40px, 6cqw, 68px);
+    white-space: normal;
+  }
+  body.assistant-sidebar-open .f1-core-visual {
+    width: min(520px, 100%);
+    min-height: 0;
+    margin-inline: auto;
+  }
+  body.assistant-sidebar-open :is(.f1-legacy-grid, .f1-cap-grid, .f1-ai-head, .f1-enterprise-grid,
+    .f1-channel-groups, .f1-channel-core, .f1-core-value-system, .f1-onboarding-head) {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 32px;
+  }
+}
+
+@container site (max-width: 680px) {
+  body.assistant-sidebar-open main { --edge: 20px; }
+  body.assistant-sidebar-open :is(.f1-complexity, .f1-core-value-grid, .f1-product-groups) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+

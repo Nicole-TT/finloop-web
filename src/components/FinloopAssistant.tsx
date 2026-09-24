@@ -146,15 +146,17 @@ export function FinloopAssistantProvider({ children }: { children: ReactNode }) 
 
     function syncFloatingLauncher() {
       const hero = document.querySelector<HTMLElement>('.hero');
-      setShowFloatingLauncher(!hero || hero.getBoundingClientRect().bottom <= 0);
+      setShowFloatingLauncher(!hero || hero.classList.contains('hero-collapsed') || hero.getBoundingClientRect().bottom <= 0);
     }
 
     syncFloatingLauncher();
     window.addEventListener('scroll', syncFloatingLauncher, { passive: true });
     window.addEventListener('resize', syncFloatingLauncher);
+    window.addEventListener('finloop:hero-theme', syncFloatingLauncher);
     return () => {
       window.removeEventListener('scroll', syncFloatingLauncher);
       window.removeEventListener('resize', syncFloatingLauncher);
+      window.removeEventListener('finloop:hero-theme', syncFloatingLauncher);
     };
   }, [location.pathname]);
 
@@ -205,12 +207,8 @@ export function FinloopAssistantProvider({ children }: { children: ReactNode }) 
           aria-label={hasConversation ? '继续向 Finloop AI 提问' : '向 Finloop AI 提问'}
           onClick={() => setMode('sidebar')}
         >
-          <span aria-hidden="true"><i />AI</span>
-          <span className="finloop-assistant-floating-copy">
-            <small>{hasConversation ? '对话已为您保留' : '想快速找到产品或解决方案？'}</small>
-            <strong>{hasConversation ? '继续向 Finloop AI 提问' : '向 Finloop AI 提问'}</strong>
-          </span>
-          <b aria-hidden="true">→</b>
+          <span className="finloop-assistant-floating-icon" aria-hidden="true"><img src="/assets/ai-icon.svg" alt="" /></span>
+          <strong>Ask AI</strong>
         </button>
       )}
     </FinloopAssistantContext.Provider>

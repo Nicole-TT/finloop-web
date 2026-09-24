@@ -1,0 +1,101 @@
+
+.site-footer {
+  background: var(--navy-950);
+  color: white;
+  padding: 74px var(--edge) 28px;
+}
+
+.footer-top,
+.footer-directory,
+.footer-contact,
+.footer-legal {
+  width: min(var(--max), 100%);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.footer-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  padding-bottom: 60px;
+  border-bottom: 1px solid rgba(255, 255, 255, .16);
+}
+
+.footer-brand img {
+  width: 170px;
+}
+
+.footer-brand p {
+  color: rgba(255, 255, 255, .55);
+  max-width: 430px;
+  line-height: 1.7;
+}
+
+.back-top {
+  width: 48px;
+  height: 48px;
+  border: 1px solid rgba(255, 255, 255, .28);
+  display: grid;
+  place-items: center;
+  font-size: 20px;
+}
+
+.footer-directory {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 36px;
+  padding: 56px 0;
+}
+
+.footer-directory h3 {
+  font-size: 13px;
+  margin: 0 0 22px;
+  color: white;
+}
+
+.footer-directory a {
+  display: block;
+  color: rgba(255, 255, 255, .53);
+  font-size: 13px;
+  margin: 11px 0;
+}
+
+.footer-directory a:hover {
+  color: var(--aqua-300);
+}
+
+.footer-contact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px 50px;
+  padding: 25px 0;
+  border-top: 1px solid rgba(255, 255, 255, .16);
+  border-bottom: 1px solid rgba(255, 255, 255, .16);
+  color: rgba(255, 255, 255, .62);
+  font-size: 13px;
+}
+
+.footer-contact div {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.footer-contact svg {
+  width: 16px;
+}
+
+.footer-legal {
+  padding-top: 27px;
+  display: flex;
+  justify-content: space-between;
+  color: rgba(255, 255, 255, .4);
+  font-size: 11px;
+}
+
+.footer-legal nav {
+  display: flex;
+  gap: 22px;
+}
+

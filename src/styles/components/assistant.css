@@ -1,0 +1,514 @@
+/* Persistent Finloop AI conversation */
+body.assistant-modal-open {
+  overflow: hidden;
+}
+
+.finloop-assistant-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2100;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: clamp(88px, 9vh, 118px) clamp(20px, 4vw, 64px) 0;
+  background: rgba(5, 13, 20, .58);
+  backdrop-filter: blur(7px);
+}
+
+.finloop-assistant-panel {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid #dce5ec;
+  background: #f8fbfe;
+  color: #102a43;
+  box-shadow: 0 18px 70px rgba(0, 28, 54, .23);
+}
+
+.finloop-assistant-modal {
+  width: min(1480px, 100%);
+  height: min(850px, calc(100svh - clamp(88px, 9vh, 118px)));
+  min-height: 560px;
+  border-bottom: 0;
+  border-radius: 18px 18px 0 0;
+}
+
+.finloop-assistant-sidebar {
+  position: fixed;
+  z-index: 2070;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(410px, calc(100vw - 24px));
+  border-width: 0 0 0 1px;
+  border-radius: 0;
+  box-shadow: -16px 0 48px rgba(0, 28, 54, .18);
+}
+
+.finloop-assistant-head {
+  display: flex;
+  min-height: 58px;
+  flex: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 10px 14px 10px 20px;
+  border-bottom: 1px solid #dce5ec;
+  background: #fff;
+}
+
+.finloop-assistant-head > div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.finloop-assistant-head > div span {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #102a43;
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.finloop-assistant-head > div span i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #0d7df1;
+  box-shadow: 0 0 0 5px rgba(13, 125, 241, .12);
+}
+
+.finloop-assistant-head small {
+  color: #7a8d9c;
+  font-size: 10px;
+  letter-spacing: .08em;
+}
+
+.finloop-assistant-head nav {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.finloop-assistant-head button {
+  min-height: 34px;
+  padding: 0 11px;
+  border: 1px solid #cdd9e2;
+  border-radius: 8px;
+  background: #fff;
+  color: #385166;
+  font: inherit;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.finloop-assistant-head .finloop-assistant-close {
+  width: 34px;
+  padding: 0;
+  font-size: 21px;
+  font-weight: 300;
+  line-height: 1;
+}
+
+.finloop-assistant-conversation {
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 82% 6%, rgba(13, 125, 241, .1), transparent 31%),
+    linear-gradient(135deg, #fff 0%, #fbfdff 55%, #f2f7ff 100%);
+}
+
+.finloop-assistant-intro {
+  flex: none;
+  padding: clamp(26px, 4vh, 46px) 28px 10px;
+  text-align: center;
+}
+
+.finloop-assistant-intro h2 {
+  margin: 0;
+  color: #102a43;
+  font-size: clamp(28px, 3vw, 43px);
+  font-weight: 550;
+  letter-spacing: -.04em;
+}
+
+.finloop-assistant-intro h2::first-letter {
+  color: #0d7df1;
+}
+
+.finloop-assistant-intro p {
+  margin: 12px 0 0;
+  color: #718493;
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.finloop-assistant-sidebar .finloop-assistant-intro {
+  padding: 25px 18px 8px;
+}
+
+.finloop-assistant-sidebar .finloop-assistant-intro h2 {
+  font-size: 27px;
+  line-height: 1.05;
+}
+
+.finloop-assistant-sidebar .finloop-assistant-intro p {
+  font-size: 11px;
+}
+
+.finloop-assistant-messages {
+  display: flex;
+  min-height: 0;
+  width: min(780px, calc(100% - 40px));
+  flex: 1;
+  align-self: center;
+  flex-direction: column;
+  gap: 24px;
+  overflow-y: auto;
+  padding: 22px 0 28px;
+  overscroll-behavior: contain;
+}
+
+.finloop-assistant-sidebar .finloop-assistant-messages {
+  width: auto;
+  align-self: stretch;
+  gap: 18px;
+  padding: 18px 17px 22px;
+}
+
+.finloop-assistant-exchange {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.finloop-assistant-message {
+  width: fit-content;
+  max-width: 88%;
+  padding: 14px 17px;
+  border: 1px solid #dfe8ef;
+  border-radius: 6px 16px 16px 16px;
+  background: #fff;
+  color: #385166;
+  box-shadow: 0 5px 18px rgba(17, 52, 82, .05);
+}
+
+.finloop-assistant-message b {
+  display: block;
+  margin-bottom: 8px;
+  color: #0d7df1;
+  font-size: 11px;
+  font-weight: 650;
+}
+
+.finloop-assistant-message p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.finloop-assistant-message.is-user {
+  align-self: flex-end;
+  border-color: #d6e8fa;
+  border-radius: 16px 6px 16px 16px;
+  background: #eaf4ff;
+  color: #173b5b;
+}
+
+.finloop-assistant-detail {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 14px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #0d7df1;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.finloop-assistant-detail span[aria-hidden="true"] {
+  font-size: 18px;
+  line-height: 1;
+  transition: transform .16s ease;
+}
+
+.finloop-assistant-form {
+  display: grid;
+  width: min(660px, calc(100% - 40px));
+  grid-template-columns: 1fr 42px;
+  flex: none;
+  align-self: center;
+  gap: 10px;
+  margin: 0 20px 18px;
+  padding: 7px 7px 7px 16px;
+  border: 1px solid #c8d6e0;
+  border-radius: 28px;
+  background: #fff;
+  box-shadow: 0 8px 25px rgba(17, 52, 82, .1);
+}
+
+.finloop-assistant-sidebar .finloop-assistant-form {
+  width: auto;
+  align-self: stretch;
+  margin: 0 12px 12px;
+}
+
+.finloop-assistant-form input {
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #102a43;
+  font: inherit;
+  font-size: 13px;
+}
+
+.finloop-assistant-form:focus-within {
+  border-color: #70baff;
+  outline: 2px solid #70baff;
+  outline-offset: 2px;
+}
+
+.finloop-assistant-form input:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+.finloop-assistant-form input::placeholder {
+  color: #8293a0;
+}
+
+.finloop-assistant-form button {
+  width: 42px;
+  height: 42px;
+  border: 0;
+  border-radius: 50%;
+  background: #0d7df1;
+  color: #fff;
+  font-size: 19px;
+  cursor: pointer;
+}
+
+.finloop-assistant-form button:disabled {
+  background: #dfe6eb;
+  color: #81909b;
+  cursor: default;
+}
+
+.finloop-assistant-floating {
+  position: fixed;
+  z-index: 2040;
+  right: 22px;
+  bottom: 24px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 60px;
+  padding: 8px 22px 8px 9px;
+  border: 0;
+  border-radius: 999px;
+  background: #050607;
+  color: #fff;
+  box-shadow: none;
+  transition: opacity .5s ease, transform .5s cubic-bezier(.22, 1, .36, 1);
+  cursor: pointer;
+}
+
+.finloop-assistant-floating-icon {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border-radius: 50%;
+  background: #176df5;
+}
+
+.finloop-assistant-floating-icon img {
+  width: 24px;
+  height: 24px;
+}
+
+.finloop-assistant-floating > strong {
+  font-size: 20px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+body:has(.hero-scroll-scene) .finloop-assistant-floating {
+  opacity: 0;
+  transform: translateY(14px);
+  pointer-events: none;
+}
+
+body:has(.hero-scroll-stage.hero-collapsed) .finloop-assistant-floating {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+
+.finloop-assistant-head button:focus-visible,
+.finloop-assistant-detail:focus-visible,
+.finloop-assistant-form button:focus-visible,
+.finloop-assistant-floating:focus-visible {
+  outline: 2px solid #70baff;
+  outline-offset: 2px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .finloop-assistant-head button:hover {
+    border-color: #79b8ef;
+    background: #f0f7fd;
+  }
+
+  .finloop-assistant-detail:hover span[aria-hidden="true"] {
+    transform: translateX(3px);
+  }
+
+  .finloop-assistant-floating:hover {
+    transform: translateY(-3px);
+  }
+}
+
+@media (max-width: 680px) {
+  .finloop-assistant-overlay {
+    padding: 58px 0 0;
+  }
+
+  .finloop-assistant-modal,
+  .finloop-assistant-sidebar {
+    position: fixed;
+    inset: 58px 0 0;
+    width: auto;
+    height: auto;
+    min-height: 0;
+    border-width: 1px 0 0;
+    border-radius: 16px 16px 0 0;
+  }
+
+  .finloop-assistant-head {
+    min-height: 58px;
+    padding: 9px 10px 9px 15px;
+  }
+
+  .finloop-assistant-head > div {
+    gap: 7px;
+  }
+
+  .finloop-assistant-head small {
+    display: none;
+  }
+
+  .finloop-assistant-head button {
+    padding-inline: 8px;
+  }
+
+  .finloop-assistant-intro,
+  .finloop-assistant-sidebar .finloop-assistant-intro {
+    padding: 22px 15px 6px;
+  }
+
+  .finloop-assistant-intro h2,
+  .finloop-assistant-sidebar .finloop-assistant-intro h2 {
+    font-size: 26px;
+  }
+
+  .finloop-assistant-intro p {
+    margin-top: 8px;
+    font-size: 11px;
+  }
+
+  .finloop-assistant-messages,
+  .finloop-assistant-sidebar .finloop-assistant-messages {
+    width: auto;
+    align-self: stretch;
+    padding: 17px 14px 20px;
+  }
+
+  .finloop-assistant-message {
+    max-width: 92%;
+    padding: 12px 14px;
+  }
+
+  .finloop-assistant-message p {
+    font-size: 13px;
+  }
+
+  .finloop-assistant-form,
+  .finloop-assistant-sidebar .finloop-assistant-form {
+    width: auto;
+    align-self: stretch;
+    margin: 0 10px max(10px, env(safe-area-inset-bottom));
+  }
+
+  .finloop-assistant-floating {
+    right: 10px;
+    bottom: max(12px, env(safe-area-inset-bottom));
+    min-height: 54px;
+    padding: 7px 18px 7px 8px;
+  }
+
+  .finloop-assistant-floating-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .finloop-assistant-floating > strong { font-size: 18px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .finloop-assistant-detail span[aria-hidden="true"],
+  .finloop-assistant-floating {
+    transition: none;
+  }
+}
+
+#app {
+  width: 100%;
+  transition: width .24s var(--ease);
+}
+
+@media (min-width: 901px) {
+  :root {
+    --assistant-sidebar-width: 410px;
+  }
+
+  body.assistant-sidebar-open #app {
+    width: calc(100% - var(--assistant-sidebar-width));
+  }
+
+  .finloop-assistant-sidebar {
+    width: var(--assistant-sidebar-width);
+    box-shadow: none;
+  }
+
+  body .site-header.site-header {
+    right: 0;
+    transition: right .24s var(--ease), background .3s var(--ease), box-shadow .3s var(--ease);
+  }
+
+  body.assistant-sidebar-open .site-header.site-header {
+    right: var(--assistant-sidebar-width);
+  }
+}
+
+@media (max-width: 900px) {
+  body.assistant-sidebar-open #app {
+    width: 100%;
+  }
+
+  .finloop-assistant-sidebar {
+    inset: 72px 0 0;
+    width: auto;
+    border-width: 1px 0 0;
+    border-radius: 0;
+  }
+}

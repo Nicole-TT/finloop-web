@@ -1,8 +1,8 @@
-import './styles.css';
+import { isEnglish } from './i18n';
+import { animate } from 'motion';
 import { createRoot } from 'react-dom/client';
 import { useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { animate } from 'motion';
 import { createIcons, ArrowLeftRight, ArrowRight, ArrowUp, BadgeDollarSign, ChevronDown, ChevronRight, Database, FileChartColumn, Globe2, ListFilter, Menu, MoveRight, PackagePlus, PieChart, RefreshCw, X, Building2, Landmark, Network, WalletCards, BriefcaseBusiness, Blocks, Bot, ShieldCheck, CircleCheck, CircleDollarSign, Gauge, Users, Gem, Orbit, Mail, MapPin } from 'lucide';
 import { Markup } from './components/PageRegions';
 import { CoverageSection, HeroSection, SolutionsSection } from './components/BusinessSections';
@@ -105,7 +105,7 @@ const customerTypeSolutionItems: Array<[string, string, string]> = [
 ];
 
 const solutionGroups = [
-  { id: 'goals', label: '按业务目标', title: '从想要完成的业务目标出发', description: '围绕财富业务、嵌入式服务、企业资金、RWA 与 AI 落地组合端到端能力。', items: businessGoalSolutionItems },
+  { id: 'goals', label: '按业务目标', title: '从想完成的业务目标出发', description: '围绕财富业务、嵌入式服务、企业资金、RWA 与 AI 落地组合端到端能力。', items: businessGoalSolutionItems },
   { id: 'customers', label: '按客户类型', title: '面向不同类型的机构与企业', description: '根据财富与资产管理机构、券商、银行、数字平台、数字资产机构和企业客户的业务特征组合对应能力。', items: customerTypeSolutionItems },
 ];
 
@@ -145,7 +145,7 @@ const headerMarkup = `
       </nav>
       <div class="header-actions">
         <button class="language-button" aria-label="切换语言"><i data-lucide="globe-2"></i><span>简</span></button>
-        <a class="button button-accent header-cta" href="/contact">预约咨询</a>
+        <a class="button button-accent header-cta" href="/contact">联系我们</a>
         <button class="menu-button" aria-label="打开菜单" aria-expanded="false"><i data-lucide="menu"></i></button>
       </div>
     </div>
@@ -213,15 +213,6 @@ const mainMarkup = `
       </div>
     </section>
 
-    <section class="metrics section-pad" id="metrics">
-      <div class="metric-grid">
-        <article><strong data-count="8000" data-suffix="+"><span class="metric-value">0</span></strong><h3>财富产品</h3><p>覆盖多元财富产品体系</p></article>
-        <article><strong data-count="250" data-suffix="+"><span class="metric-value">0</span></strong><h3>机构客户</h3><p>服务多类型专业机构</p></article>
-        <article><strong data-count="50" data-suffix="B+"><span class="metric-value">0</span> <small>HKD</small></strong><h3>2025 年交易规模</h3><p>承载真实机构财富业务</p></article>
-        <article><strong data-count="8"><span class="metric-value">0</span> <small>大</small></strong><h3>金融品类</h3><p>覆盖传统金融与 Web3</p></article>
-      </div>
-    </section>
-
     <section class="coverage section-pad" id="coverage">
       <div class="section-heading editorial-heading"><h2>财富业务与产品覆盖</h2><p>Finloop 具备真实金融产品和业务基础，而不仅是软件能力。平台覆盖现金管理、公募基金、私募基金、债券、结构性产品、保险与数字资产/RWA。</p></div>
       <div class="asset-browser" data-active="cash">
@@ -267,11 +258,11 @@ const mainMarkup = `
     <section class="why section-pad" id="why">
       <div class="section-heading editorial-heading"><h2>不止提供软件，更连接真实金融业务</h2><p>Finloop 以金融业务和产品能力为基础，连接业务应用、财富核心、交易基础设施、数字资产与 AI。</p></div>
       <div class="why-grid">
-        <article class="why-feature"><i data-lucide="wallet-cards"></i><h3>金融业务和产品能力</h3><p>连接传统财富产品、机构交易与业务运营流程。</p></article>
-        <article><i data-lucide="blocks"></i><h3>从应用到核心交易的完整技术栈</h3><p>覆盖业务应用、FinOne 财富核心与 FinMix 交易基础设施。</p></article>
-        <article><i data-lucide="network"></i><h3>灵活部署与开放连接能力</h3><p>通过平台与 API 连接机构现有系统、产品网络和数字资产生态。</p></article>
-        <article><i data-lucide="shield-check"></i><h3>金融级合规、安全和稳定性</h3><p>围绕机构业务要求，支持权限、治理与稳定的业务运营。</p></article>
-        <article><i data-lucide="bot"></i><h3>Web2、Web3 与 AI 的组合能力</h3><p>连接传统财富、数字资产与进入真实金融工作流的 AI 能力。</p></article>
+        <article><div class="why-visual why-visual-products" aria-hidden="true"><span></span><span></span><span></span><span></span></div><div class="why-copy"><h3>金融业务和产品能力</h3><p>连接传统财富产品、机构交易与业务运营流程。</p></div></article>
+        <article><div class="why-visual why-visual-stack" aria-hidden="true"><span></span><span></span><span></span><span></span></div><div class="why-copy"><h3>从应用到核心交易的完整技术栈</h3><p>覆盖业务应用、FinOne 财富核心与 FinMix 交易基础设施。</p></div></article>
+        <article><div class="why-visual why-visual-connect" aria-hidden="true"><span></span><span></span><span></span><span></span></div><div class="why-copy"><h3>灵活部署与开放连接能力</h3><p>通过平台与 API 连接机构现有系统、产品网络和数字资产生态。</p></div></article>
+        <article><div class="why-visual why-visual-security" aria-hidden="true"><span></span><span></span><span></span></div><div class="why-copy"><h3>金融级合规、安全和稳定性</h3><p>围绕机构业务要求，支持权限、治理与稳定的业务运营。</p></div></article>
+        <article><div class="why-visual why-visual-ai" aria-hidden="true"><span></span><span></span><span></span><span></span></div><div class="why-copy"><h3>Web2、Web3 与 AI 的组合能力</h3><p>连接传统财富、数字资产与进入真实金融工作流的 AI 能力。</p></div></article>
       </div>
     </section>
 
@@ -329,34 +320,7 @@ const mainBodyMarkup = mainMarkup
 const [beforeCoverageMarkup, afterCoverageBlock] = mainBodyMarkup.split(/<section class="coverage section-pad" id="coverage">[\s\S]*?<\/section>\s*/);
 const [afterCoverageMarkup, afterSolutionsMarkup] = afterCoverageBlock.split(/<section class="solutions section-pad" id="solutions">[\s\S]*?<\/section>\s*/);
 
-function initializeMetricCounters() {
-  const metricNumbers = [...document.querySelectorAll<HTMLElement>('.metric-grid strong[data-count]')];
-  if (!metricNumbers.length) return;
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const animations: ReturnType<typeof animate>[] = [];
-  const revealMetric = (element: HTMLElement) => {
-    if (element.dataset.animated === 'true') return;
-    element.dataset.animated = 'true';
-    const target = Number(element.dataset.count || 0);
-    const suffix = element.dataset.suffix || '';
-    const valueElement = element.querySelector<HTMLElement>('.metric-value') || element;
-    const render = (value: number) => { valueElement.textContent = `${Math.round(value).toLocaleString('en-US')}${suffix}`; };
-    if (reduceMotion) { render(target); return; }
-    animations.push(animate(0, target, { duration: 1.25, ease: [0.22, 1, 0.36, 1], onUpdate: render }));
-  };
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      revealMetric(entry.target as HTMLElement);
-      observer.unobserve(entry.target);
-    });
-  }, { threshold: .45 });
-  metricNumbers.forEach(number => observer.observe(number));
-  return () => { observer.disconnect(); animations.forEach(animation => animation.stop()); };
-}
-
 function HomePage() {
-  useEffect(() => initializeMetricCounters(), []);
   return (
     <>
       <HeroSection />
@@ -375,7 +339,7 @@ const aiPageItems = aiItems.map(([title, description]) => ({ title, description 
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={isEnglish ? "/en" : "/"}>
       <Routes>
         <Route element={<SiteLayout headerMarkup={headerMarkup} mobileDrawerMarkup={mobileDrawerMarkup} footerMarkup={footerMarkup} initializeShell={initializePage} />}>
           <Route index element={<HomePage />} />

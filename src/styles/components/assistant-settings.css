@@ -1,0 +1,30 @@
+/* Finloop AI connection settings */
+.hero-ai-tools { display: flex; align-items: center; flex: none; gap: 8px; }
+.hero-ai-tools button { white-space: nowrap; }
+.hero-ai-shuffle:focus-visible, .finloop-api-dialog :focus-visible { outline: 2px solid var(--color-brand-action); outline-offset: 3px; }
+.finloop-api-dialog { width: min(460px, calc(100vw - 32px)); max-height: calc(100dvh - 32px); margin: auto; padding: 28px; border: 1px solid var(--line); border-radius: 16px; background: #fff; color: var(--ink); box-shadow: 0 24px 80px #071a2e33; }
+.finloop-api-dialog::backdrop { background: #071a2e80; }
+.finloop-api-dialog form { display: grid; gap: 16px; }
+.finloop-api-dialog header, .finloop-api-dialog footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.finloop-api-dialog h2 { margin: 0; font-size: 22px; }
+.finloop-api-dialog p { margin: 0; color: var(--muted); }
+.finloop-api-dialog label { font-size: 14px; font-weight: 500; }
+.finloop-api-dialog input { width: 100%; min-width: 0; padding: 12px; border: 1px solid var(--line); border-radius: 8px; font: inherit; }
+.finloop-api-dialog small { color: var(--muted); line-height: 1.7; }
+.finloop-api-dialog button { cursor: pointer; font: inherit; }
+.finloop-api-dialog button:not(.button) { padding: 8px; border: 0; background: transparent; color: inherit; }
+.finloop-api-dialog footer { justify-content: flex-end; flex-wrap: wrap; }
+.finloop-api-dialog [role="alert"] { color: #b42318; font-size: 13px; }
+.finloop-api-dialog button:disabled, .finloop-assistant-form button:disabled { opacity: .5; cursor: not-allowed; }
+.finloop-assistant-message p { white-space: pre-wrap; overflow-wrap: anywhere; }
+@media (max-width: 860px) {
+  .hero-ai-chat-footer { flex-wrap: wrap; }
+  .hero-ai-tools { margin-left: auto; }
+  .finloop-api-dialog { padding: 22px; }
+}
+
+.finloop-assistant-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.finloop-assistant-links a { display: inline-flex; align-items: center; gap: 8px; max-width: 100%; padding: 8px 12px; border: 1px solid #c9def3; border-radius: 8px; color: #0869c7; background: #f3f8fd; font-size: 13px; text-decoration: none; overflow-wrap: anywhere; }
+.finloop-assistant-links a:hover { background: #e7f2fd; }
+.finloop-assistant-links a:focus-visible { outline: 2px solid #0d7df1; outline-offset: 3px; }
+

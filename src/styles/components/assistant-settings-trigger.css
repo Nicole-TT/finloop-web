@@ -1,0 +1,14 @@
+/* Temporary API settings: invisible click target, keyboard focus remains available. */
+.finloop-api-entry,
+.finloop-api-entry:hover {
+  color: transparent !important;
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+.finloop-api-entry:focus-visible {
+  outline: 2px solid #70baff;
+  outline-offset: 2px;
+}
+
+

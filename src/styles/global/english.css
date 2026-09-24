@@ -1,0 +1,20 @@
+/* English shares the same layouts, with room for longer labels. */
+html:lang(en) .hero h1 { max-width: 1050px; line-height: 1.12; white-space: normal; }
+html:lang(en) .hero-copy > p { max-width: 850px; margin-inline: auto; }
+html:lang(en) .hero-ai-suggestions button { white-space: nowrap; text-align: left; }
+html:lang(en) .nav-link { padding-inline: 10px; white-space: nowrap; }
+html:lang(en) .header-inner { grid-template-columns: 160px 1fr auto; gap: 16px; }
+html:lang(en) .header-cta { white-space: nowrap; }
+html:lang(en) .product-node strong { white-space: normal; }
+.translation-notice { margin: 76px 0 0; padding: 12px var(--edge); background: #edf5ff; color: #38536c; font-size: 13px; }
+@media (max-width: 1200px) {
+  html:lang(en) .desktop-nav, html:lang(en) .header-cta { display: none; }
+  html:lang(en) .header-inner { grid-template-columns: 1fr auto; }
+  html:lang(en) .menu-button { display: flex; }
+}
+@media (max-width: 760px) {
+}
+
+@media (min-width: 1201px) {
+  html:lang(en) .hero h1 { max-width: none; white-space: nowrap; }
+}

@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useMemo } from 'react';
+import { translateMarkup } from '../i18n';
 
 type MarkupProps = { html: string };
 
 export function Markup({ html }: MarkupProps) {
-  return <div dangerouslySetInnerHTML={{ __html: html }} />;
+  const localized = useMemo(() => translateMarkup(html), [html]);
+  return <div dangerouslySetInnerHTML={{ __html: localized }} />;
 }
 
 export function SiteHeader({ html }: MarkupProps) {

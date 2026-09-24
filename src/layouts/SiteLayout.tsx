@@ -1,3 +1,4 @@
+import { isEnglish, t } from '../i18n';
 import { useEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { MobileDrawer, SiteFooter, SiteHeader } from '../components/PageRegions';
@@ -32,7 +33,7 @@ export function SiteLayout({ headerMarkup, mobileDrawerMarkup, footerMarkup, ini
     const navItems = document.querySelectorAll<HTMLElement>('.desktop-nav > .nav-link');
 
     navItems.forEach((item) => {
-      const href = item.getAttribute('href');
+      const href = item.getAttribute('href')?.replace(/^\/en(?=\/|$)/, '');
       const itemSection = item.dataset.menu || href?.split('/').filter(Boolean)[0];
       const isActive = itemSection === activeSection;
 
@@ -58,7 +59,11 @@ export function SiteLayout({ headerMarkup, mobileDrawerMarkup, footerMarkup, ini
 
     function syncHeaderTheme() {
       const inverseRegion = document.querySelector<HTMLElement>('[data-header-theme="inverse"]');
-      const scrollProgress = Math.min(1, Math.max(0, window.scrollY / 100));
+      const hero = document.querySelector<HTMLElement>('.hero-scroll-stage');
+      const heroProgress = hero?.dataset.headerProgress;
+      const scrollProgress = heroProgress !== undefined && hero!.getBoundingClientRect().bottom > header!.offsetHeight
+        ? Number(heroProgress)
+        : Math.min(1, Math.max(0, window.scrollY / 100));
       const isOverInverseRegion = Boolean(
         inverseRegion
         && inverseRegion.getBoundingClientRect().bottom > header!.offsetHeight,
@@ -72,11 +77,13 @@ export function SiteLayout({ headerMarkup, mobileDrawerMarkup, footerMarkup, ini
     const frame = window.requestAnimationFrame(syncHeaderTheme);
     window.addEventListener('scroll', syncHeaderTheme, { passive: true });
     window.addEventListener('resize', syncHeaderTheme);
+    window.addEventListener('finloop:hero-theme', syncHeaderTheme);
 
     return () => {
       window.cancelAnimationFrame(frame);
       window.removeEventListener('scroll', syncHeaderTheme);
       window.removeEventListener('resize', syncHeaderTheme);
+      window.removeEventListener('finloop:hero-theme', syncHeaderTheme);
     };
   }, [pathname]);
 
@@ -87,17 +94,26 @@ export function SiteLayout({ headerMarkup, mobileDrawerMarkup, footerMarkup, ini
       const anchor = target?.closest<HTMLAnchorElement>('a[href^="/"]');
       if (!anchor || anchor.target === '_blank') return;
       event.preventDefault();
-      navigate(anchor.getAttribute('href') || '/');
+      navigate((anchor.getAttribute('href') || '/').replace(/^\/en(?=\/|$)/, '') || '/');
     }
 
+    function switchLanguage(event: MouseEvent) {
+      const target = event.target as Element | null;
+      if (!target?.closest('.language-button')) return;
+      const path = window.location.pathname.replace(/^\/en(?=\/|$)/, '') || '/';
+      window.location.assign(`${isEnglish ? path : `/en${path}`}${window.location.search}${window.location.hash}`);
+    }
+    document.addEventListener('click', switchLanguage);
     document.addEventListener('click', handleInternalLink);
-    return () => document.removeEventListener('click', handleInternalLink);
+    return () => { document.removeEventListener('click', handleInternalLink); document.removeEventListener('click', switchLanguage); };
   }, [navigate]);
 
   return (
     <FinloopAssistantProvider>
+      <a className="skip-link" href="#main">{t('跳至主要内容')}</a>
       <SiteHeader html={headerMarkup} />
       <MobileDrawer html={mobileDrawerMarkup} />
+      {isEnglish && pathname !== '/' && <p className="translation-notice" role="status">This page is awaiting English translation. Chinese content is shown for now.</p>}
       <Outlet />
       <SiteFooter html={footerMarkup} />
     </FinloopAssistantProvider>

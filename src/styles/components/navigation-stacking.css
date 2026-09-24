@@ -1,0 +1,4 @@
+/* Keep navigation and expanded menus above the embedded assistant. */
+body .site-header.site-header {
+  z-index: 2060;
+}
