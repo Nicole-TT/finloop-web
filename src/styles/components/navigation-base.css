@@ -119,9 +119,9 @@
 }
 
 .button-accent {
-  background: #0D7DF1;
+  background: var(--color-brand-blue);
   color: #ffffff;
-  border-color: #0D7DF1;
+  border-color: var(--color-brand-blue);
 }
 
 .button-accent:hover {
@@ -294,13 +294,13 @@
 }
 
 .mega-solution-grid > div {
-  grid-template-columns: 112px repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   border-bottom: 1px solid var(--line);
   padding-bottom: 10px;
 }
 
-.mega-solution-grid > div > a:nth-of-type(odd) { grid-column: 2; }
-.mega-solution-grid > div > a:nth-of-type(even) { grid-column: 3; }
+.mega-solution-grid > div > a:nth-of-type(odd) { grid-column: 1; }
+.mega-solution-grid > div > a:nth-of-type(even) { grid-column: 2; }
 
 .mega-solution-grid > div:last-child {
   border-bottom: 0;

@@ -1,9 +1,10 @@
-import { isEnglish } from './i18n';
+import { isEnglish, t } from './i18n';
+import { PlatformCasesSection } from './components/PlatformProofSections';
 import { animate } from 'motion';
 import { createRoot } from 'react-dom/client';
 import { useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { createIcons, ArrowLeftRight, ArrowRight, ArrowUp, BadgeDollarSign, ChevronDown, ChevronRight, Database, FileChartColumn, Globe2, ListFilter, Menu, MoveRight, PackagePlus, PieChart, RefreshCw, X, Building2, Landmark, Network, WalletCards, BriefcaseBusiness, Blocks, Bot, ShieldCheck, CircleCheck, CircleDollarSign, Gauge, Users, Gem, Orbit, Mail, MapPin } from 'lucide';
+import { createIcons, ArrowLeftRight, ArrowRight, ArrowUp, BadgeDollarSign, Award, ChevronDown, ChevronRight, Database, FileChartColumn, Globe2, ListFilter, Menu, MoveRight, PackagePlus, PieChart, RefreshCw, X, Building2, Landmark, Network, WalletCards, BriefcaseBusiness, Blocks, Bot, ShieldCheck, CircleCheck, CircleDollarSign, Gauge, Users, Gem, Orbit, Mail, MapPin } from 'lucide';
 import { Markup } from './components/PageRegions';
 import { CoverageSection, HeroSection, SolutionsSection } from './components/BusinessSections';
 import { SiteLayout } from './layouts/SiteLayout';
@@ -109,25 +110,17 @@ const solutionGroups = [
   { id: 'customers', label: '按客户类型', title: '面向不同类型的机构与企业', description: '根据财富与资产管理机构、券商、银行、数字平台、数字资产机构和企业客户的业务特征组合对应能力。', items: customerTypeSolutionItems },
 ];
 
-const footerGroups: Array<[string, string[]]> = [
-  ['产品与平台', ['FinOne', 'FinEAM', '星企通', 'Web Portal', 'FinTaaS']],
-  ['解决方案', ['财富与资产管理机构', '银行、证券及金融机构', '数字平台', '企业客户']],
-  ['Finloop AI', ['FAI', '星路通', '星智通']],
-  ['资源中心', ['行业洞察', '公司动态', '产品资料', '开发者中心']],
-  ['关于星路', ['公司介绍', '发展历程', '市场认可', '合作生态', '加入我们', '联系我们']],
-];
-
 type MobileNavGroup = [string, string, string[]];
 const mobileNavGroups: MobileNavGroup[] = [
   ['金融产品', '/products', productGroups[0].items.map(i => i[0])],
   ['金融平台', '/technology-platform', productGroups[1].items.map(i => i[0])],
-  ['解决方案', '', [...businessGoalSolutionItems, ...customerTypeSolutionItems].map(i => i[1])],
+  ['解决方案', '', businessGoalSolutionItems.map(i => i[1])],
   ['Finloop AI', '/ai', aiItems.map(i => i[0])],
   ['资源中心', '/resources', ['技术平台', '新闻资讯']],
   ['关于星路', '/about', ['公司介绍', '加入我们', '联系我们']],
 ];
 
-const mobileSolutionLinks = solutionGroups.map(group => `<span class="mobile-nav-label">${group.label}</span>${group.items.map(([id, name]) => `<a href="/solutions/${id}">${name}</a>`).join('')}`).join('');
+const mobileSolutionLinks = businessGoalSolutionItems.map(([id, name]) => `<a href="/solutions/${id}">${name}</a>`).join('');
 
 const headerMarkup = `
   <header class="site-header" id="top">
@@ -159,8 +152,8 @@ const headerMarkup = `
         <div class="mega-grid mega-grid-unlabeled"><div>${productGroups[1].items.map(([name, desc]) => `<a href="${productLinks[name]}"${name === 'FinTaaS' ? ' target="_blank" rel="noopener noreferrer"' : ''}><span>${name}</span><small>${desc}</small><i data-lucide="arrow-right"></i></a>`).join('')}</div></div>
       </div>
       <div class="mega-panel" data-panel="solutions">
-        <div class="mega-intro"><strong>从业务目标或客户类型找方案</strong><p>两种视角，对应同一套可组合的财富科技底座。</p></div>
-        <div class="mega-grid mega-solution-grid">${solutionGroups.map(group => `<div><h3>${group.label}</h3>${group.items.map(([id, name, desc]) => `<a href="/solutions/${id}"><span>${name}</span><small>${desc}</small><i data-lucide="arrow-right"></i></a>`).join('')}</div>`).join('')}</div>
+        <div class="mega-intro"><strong>从想完成的业务目标出发</strong><p>围绕财富业务、嵌入式服务、企业资金、RWA 与 AI 落地组合端到端能力。</p></div>
+        <div class="mega-grid mega-solution-grid"><div>${businessGoalSolutionItems.map(([id, name, desc]) => `<a href="/solutions/${id}"><span>${name}</span><small>${desc}</small><i data-lucide="arrow-right"></i></a>`).join('')}</div></div>
       </div>
       <div class="mega-panel compact-panel" data-panel="resources">
         <div class="mega-intro"><strong>资源中心</strong><p>查看技术平台与 Finloop 最新内容。</p></div>
@@ -234,13 +227,11 @@ const mainMarkup = `
     <section class="architecture section-pad" id="architecture">
       <div class="architecture-top"><div><h2>选择适合业务场景的金融平台</h2></div><p>从财富核心、机构工作台和企业资金管理，到数字资产、AI 与交易基础设施，进入对应平台了解产品定位与能力范围。</p></div>
       <div class="platform-directory" aria-label="Finloop 金融平台入口">
-        <a class="platform-card platform-featured" href="/products/finone"><i data-lucide="database"></i><div><h3>FinOne</h3><p>统一客户、账户、产品、交易、资产与运营的财富核心。</p></div><span>了解详情 <i data-lucide="arrow-right"></i></span></a>
-        <a class="platform-card" href="/products/fineam"><i data-lucide="briefcase-business"></i><div><h3>FinEAM</h3><p>EAM 与家族办公室财富管理工作平台。</p></div><span>了解详情 <i data-lucide="arrow-right"></i></span></a>
-        <a class="platform-card" href="/products/xingqitong"><i data-lucide="wallet-cards"></i><div><h3>星企通</h3><p>连接企业现金、投资与资产管理场景。</p></div><span>了解详情 <i data-lucide="arrow-right"></i></span></a>
-        <a class="platform-card" href="/products/web-portal"><i data-lucide="list-filter"></i><div><h3>Web Portal</h3><p>面向机构的产品、交易与运营工作台。</p></div><span>了解详情 <i data-lucide="arrow-right"></i></span></a>
-        <a class="platform-card" href="https://finlooprwa.com/fintaas/" target="_blank" rel="noopener noreferrer"><i data-lucide="orbit"></i><div><h3>FinTaaS</h3><p>提供真实资产上链与资产代币化相关金融科技服务。</p></div><span>了解详情 <i data-lucide="arrow-right"></i></span></a>
-        <a class="platform-card" href="/ai"><i data-lucide="bot"></i><div><h3>Finloop AI</h3><p>连接模型、Agent、Skills 与金融工作流。</p></div><span>了解详情 <i data-lucide="arrow-right"></i></span></a>
-        <a class="platform-card" href="/products"><i data-lucide="arrow-left-right"></i><div><h3>FinMix</h3><p>机构级交易、账户、清结算与运营基础设施。</p></div><span>了解详情 <i data-lucide="arrow-right"></i></span></a>
+        <a class="platform-card" href="/products/finone"><div><h3>FinOne</h3><p>统一客户、账户、产品、交易、资产与运营的财富核心。</p></div><span>了解详情 <i data-lucide="arrow-right"></i></span></a>
+        <a class="platform-card" href="/products/fineam"><div><h3>FinEAM</h3><p>EAM 与家族办公室财富管理工作平台。</p></div><span>了解详情 <i data-lucide="arrow-right"></i></span></a>
+        <a class="platform-card" href="/products/xingqitong"><div><h3>星企通</h3><p>连接企业现金、投资与资产管理场景。</p></div><span>了解详情 <i data-lucide="arrow-right"></i></span></a>
+        <a class="platform-card" href="/products/web-portal"><div><h3>Web Portal</h3><p>面向机构的产品、交易与运营工作台。</p></div><span>了解详情 <i data-lucide="arrow-right"></i></span></a>
+        <a class="platform-card" href="https://finlooprwa.com/fintaas/" target="_blank" rel="noopener noreferrer"><div><h3>FinTaaS</h3><p>提供真实资产上链与资产代币化相关金融科技服务。</p></div><span>了解详情 <i data-lucide="arrow-right"></i></span></a>
       </div>
     </section>
 
@@ -266,34 +257,33 @@ const mainMarkup = `
       </div>
     </section>
 
-    <section class="ecosystem section-pad" id="ecosystem">
-      <div class="section-inner">
-        <div class="case-showcase-head"><h2>从真实项目，看见财富科技如何落地</h2><p>连接金融机构、数字资产与企业业务场景，以专业技术和持续服务推动财富科技融入真实业务流程。</p></div>
-        <div class="case-showcase-grid">
-          <article class="client-case client-case-featured"><div class="client-case-top"><small>数字财富平台</small></div><div><h3>星财富</h3><strong>FinOne 驱动财富运营升级</strong><p>通过 FinOne 连接客户开户、金融产品、投资交易与财富运营流程，支撑面向个人客户的数字财富服务。</p></div><footer><span>了解详情</span><i data-lucide="arrow-right"></i></footer></article>
-          <article class="client-case"><div class="client-case-top"><small>RWA 项目</small></div><div><h3>泰康资管香港 × OSL</h3><strong>代币化基金份额项目</strong><p>围绕基金份额代币化场景，探索传统资产与数字资产基础设施的连接。</p></div><footer><span>了解详情</span><i data-lucide="arrow-right"></i></footer></article>
-          <a class="client-case" href="/products/white-label-app"><div class="client-case-top"><small>白标财富 App · 已上线</small></div><div><h3>陆浦财富</h3><strong>自有品牌财富 App</strong><p>基于白标财富能力，为机构构建连接账户、产品、交易、资产与持续服务的品牌化客户终端。</p></div><footer><span>了解详情</span><i data-lucide="arrow-right"></i></footer></a>
-        </div>
-      </div>
-    </section>
-
     <section class="trust section-pad" id="trust">
       <div class="section-inner trust-layout">
         <div class="trust-title"><h2>合规持牌，市场认可</h2><p>为机构财富、投资交易与相关金融服务提供合规基础支持，并持续获得香港政府及行业机构的市场认可。</p></div>
         <div class="trust-pillars">
-          <article><h3>持牌金融体系</h3><p>依托复星财富控股旗下持牌金融机构体系，覆盖 1、2、4、6、9 号牌相关金融业务基础。</p></article>
-          <article><h3>机构级合规支持</h3><p>围绕机构财富、投资交易与相关金融服务，连接产品、交易与运营流程。</p></article>
-          <article><h3>政府与行业认可</h3><p>获得 OASES、香港数码港及多项金融科技与专业投资奖项认可。</p></article>
+          <article><i data-lucide="landmark" aria-hidden="true"></i><h3>持牌金融体系</h3><p>依托复星财富控股旗下持牌金融机构体系，覆盖 1、2、4、6、9 号牌相关金融业务基础。</p></article>
+          <article><i data-lucide="shield-check" aria-hidden="true"></i><h3>机构级合规支持</h3><p>围绕机构财富、投资交易与相关金融服务，连接产品、交易与运营流程。</p></article>
+          <article><i data-lucide="award" aria-hidden="true"></i><h3>政府与行业认可</h3><p>获得 OASES、香港数码港及多项金融科技与专业投资奖项认可。</p></article>
         </div>
-        <div class="trust-awards" aria-label="Finloop 市场认可与奖项">
+        <div class="trust-awards" tabindex="0" aria-label="Finloop 市场认可与奖项">
+          <div class="trust-awards-track"><div class="trust-awards-group">
           <article><small>香港特区政府引进重点企业办公室</small><h3>重点企业办公室<br />（OASES）重点企业</h3></article>
           <article><small>香数码港培育计划</small><h3>香港数码港培育计划<br />培育企业</h3></article>
           <article><small>2025 年 11 月 · 香港 ICT 奖</small><h3>香港资讯及通讯科技奖金融科技奖及金奖</h3></article>
           <article><small>2025 年 3 月 · 香港经济通 ET Net</small><h3>“杰出一站式数智化<br />财富管理平台”大奖</h3></article>
           <article><small>2026 年 5 月 · I&amp;M 专业投资大奖</small><h3>I&amp;M 专业投资大奖<br />“年度最佳金融科技公司”</h3></article>
+          </div><div class="trust-awards-group trust-awards-copy" aria-hidden="true">
+          <article><small>香港特区政府引进重点企业办公室</small><h3>重点企业办公室<br />（OASES）重点企业</h3></article>
+          <article><small>香数码港培育计划</small><h3>香港数码港培育计划<br />培育企业</h3></article>
+          <article><small>2025 年 11 月 · 香港 ICT 奖</small><h3>香港资讯及通讯科技奖金融科技奖及金奖</h3></article>
+          <article><small>2025 年 3 月 · 香港经济通 ET Net</small><h3>“杰出一站式数智化<br />财富管理平台”大奖</h3></article>
+          <article><small>2026 年 5 月 · I&amp;M 专业投资大奖</small><h3>I&amp;M 专业投资大奖<br />“年度最佳金融科技公司”</h3></article>
+          </div></div>
         </div>
       </div>
     </section>
+
+    <!-- home-cases -->
 
     <section class="contact section-pad" id="contact">
       <div class="section-inner contact-layout">
@@ -307,7 +297,10 @@ const mainMarkup = `
 const footerMarkup = `
   <footer class="site-footer" id="footer">
     <div class="footer-top"><div class="footer-brand"><img src="/assets/finloop-logo.svg" alt="Finloop 星路科技" /><p>连接传统财富、数字资产与 AI 的机构财富科技平台。</p></div><a class="back-top" href="#top" aria-label="返回顶部"><i data-lucide="arrow-up"></i></a></div>
-    <div class="footer-directory">${footerGroups.map(([title, items]) => `<div><h3>${title}</h3>${items.map(item => `<a href="${item === 'FinTaaS' ? 'https://finlooprwa.com/fintaas/' : title === '资源中心' && item === '行业洞察' ? '/resources/insights' : title === '资源中心' && item === '公司动态' ? '/resources/company' : title === '关于星路' && item === '加入我们' ? recruitmentUrl : title === '关于星路' && item === '联系我们' ? '/contact' : title === '关于星路' ? '/about' : '#top'}"${item === 'FinTaaS' || item === '加入我们' ? ' target="_blank" rel="noopener noreferrer"' : ''}>${item}</a>`).join('')}</div>`).join('')}</div>
+    <div class="footer-directory">${mobileNavGroups.map(([title, path, items]) => `<div><h3>${title}</h3>${items.map(item => {
+      const href = title === '解决方案' ? `/solutions/${businessGoalSolutionItems.find(([, name]) => name === item)![0]}` : mobileItemHref(title, item, path);
+      return `<a href="${href}"${item === 'FinTaaS' || item === '加入我们' ? ' target="_blank" rel="noopener noreferrer"' : ''}>${item}</a>`;
+    }).join('')}</div>`).join('')}</div>
     <div class="footer-contact"><div><i data-lucide="map-pin"></i><span>香港总部：香港中环花园道 3 号冠君大厦 21 楼 2101-2105 室</span></div><div><i data-lucide="map-pin"></i><span>香港数码港：香港数码港道 100 号数码港三期 12 楼 1208A 室</span></div><div><i data-lucide="map-pin"></i><span>上海：上海市黄浦区中山东二路 600 号外滩金融中心 S1 栋 15 楼</span></div><div><i data-lucide="mail"></i><a href="mailto:CS@finloop.hk">CS@finloop.hk</a></div><div><a href="tel:+85230088996">(852) 3008 8996</a></div></div>
     <div class="footer-legal"><span>© 2026 Finloop Finance Technology Holding Limited</span><nav aria-label="法律信息"><a href="#footer">隐私政策</a><a href="#footer">使用条款</a><a href="#footer">Cookie Policy</a><a href="#footer">金融免责声明</a><a href="#footer">监管声明</a></nav></div>
   </footer>
@@ -320,7 +313,22 @@ const mainBodyMarkup = mainMarkup
 const [beforeCoverageMarkup, afterCoverageBlock] = mainBodyMarkup.split(/<section class="coverage section-pad" id="coverage">[\s\S]*?<\/section>\s*/);
 const [afterCoverageMarkup, afterSolutionsMarkup] = afterCoverageBlock.split(/<section class="solutions section-pad" id="solutions">[\s\S]*?<\/section>\s*/);
 
+const [beforeCasesMarkup, afterCasesMarkup] = (afterCoverageMarkup + afterSolutionsMarkup).split('<!-- home-cases -->');
+
 function HomePage() {
+  useEffect(() => {
+    const awards = document.querySelector<HTMLElement>('.trust-awards');
+    const group = awards?.querySelector<HTMLElement>('.trust-awards-group');
+    if (!awards || !group) return;
+    const measure = () => {
+      awards.style.setProperty('--awards-duration', `${group.scrollWidth / 35}s`);
+    };
+    const observer = new ResizeObserver(measure);
+    observer.observe(awards);
+    observer.observe(group);
+    measure();
+    return () => observer.disconnect();
+  }, []);
   return (
     <>
       <HeroSection />
@@ -328,7 +336,14 @@ function HomePage() {
         <Markup html={beforeCoverageMarkup} />
         <CoverageSection />
         <SolutionsSection groups={solutionGroups} />
-        <Markup html={afterCoverageMarkup + afterSolutionsMarkup} />
+        <Markup html={beforeCasesMarkup} />
+        <PlatformCasesSection id="ecosystem" sectionClass="ecosystem section-pad" shellClass="section-inner"
+          title={t('从真实项目，看见财富科技如何落地')}
+          copy={t('连接金融机构、数字资产与企业业务场景，以专业技术和持续服务推动财富科技融入真实业务流程。')}
+          cases={[{ mark: "FinOne", name: t("星财富"), type: t("数字财富平台"), copy: t("通过 FinOne 连接客户开户、金融产品、投资交易与财富运营流程，支撑面向个人客户的数字财富服务。"), details: [[t("FinOne 驱动财富运营升级"), t("通过 FinOne 连接客户开户、金融产品、投资交易与财富运营流程，支撑面向个人客户的数字财富服务。")]] },
+            { mark: "RWA", name: isEnglish ? "Zhongtai" : t("泰康资管香港 × OSL"), type: t("RWA 项目"), copy: t("围绕基金份额代币化场景，探索传统资产与数字资产基础设施的连接。"), details: [[t("代币化基金份额项目"), t("围绕基金份额代币化场景，探索传统资产与数字资产基础设施的连接。")]] },
+            { mark: "陆浦", name: t("陆浦财富"), type: t("白标财富 App · 已上线"), copy: t("基于白标财富能力，为机构构建连接账户、产品、交易、资产与持续服务的品牌化客户终端。"), details: [[t("自有品牌财富 App"), t("基于白标财富能力，为机构构建连接账户、产品、交易、资产与持续服务的品牌化客户终端。")]] }]} />
+        <Markup html={afterCasesMarkup} />
       </main>
     </>
   );
@@ -385,7 +400,7 @@ function App() {
 createRoot(document.querySelector('#app')!).render(<App />);
 
 function refreshPageIcons() {
-  createIcons({ icons: { ArrowLeftRight, ArrowRight, ArrowUp, BadgeDollarSign, ChevronDown, ChevronRight, Database, FileChartColumn, Globe2, ListFilter, Menu, MoveRight, PackagePlus, PieChart, RefreshCw, X, Building2, Landmark, Network, WalletCards, BriefcaseBusiness, Blocks, Bot, ShieldCheck, CircleCheck, CircleDollarSign, Gauge, Users, Gem, Orbit, Mail, MapPin } });
+  createIcons({ icons: { ArrowLeftRight, ArrowRight, ArrowUp, BadgeDollarSign, Award, ChevronDown, ChevronRight, Database, FileChartColumn, Globe2, ListFilter, Menu, MoveRight, PackagePlus, PieChart, RefreshCw, X, Building2, Landmark, Network, WalletCards, BriefcaseBusiness, Blocks, Bot, ShieldCheck, CircleCheck, CircleDollarSign, Gauge, Users, Gem, Orbit, Mail, MapPin } });
 }
 
 function initializePage() {
@@ -548,6 +563,21 @@ function initializePage() {
 
   function observePageSections() {
     refreshPageIcons();
+    const home = document.querySelector('.hero-scroll-scene');
+    if (home) {
+      document.querySelectorAll<HTMLElement>('main .section-pad').forEach(section => {
+        section.classList.add('home-element-entrance', 'in-view');
+        const elements = section.querySelectorAll<HTMLElement>(
+          'h2, .coverage-header p, .coverage-header > a, .section-heading p, .architecture-top > p, .solution-copy > p, .solution-mode-tabs, .solution-option, .solution-media, .platform-card, .ai-copy > p, .ai-copy > a, .ai-product-grid > a, .why-grid > article, .trust-title > p, .trust-pillars > article, .trust-awards, .platform-cases-head > p, .platform-case-grid > button, .contact-copy > p, .contact-actions'
+        );
+        elements.forEach((element, index) => {
+          if (element.classList.contains('home-reveal-item')) return;
+          element.classList.add('home-reveal-item');
+          element.style.setProperty('--reveal-delay', `${Math.min(index % 5, 3) * 70}ms`);
+          observer.observe(element);
+        });
+      });
+    }
     document.querySelectorAll('.section-pad:not(.in-view), .hero-system:not(.in-view)').forEach(el => observer.observe(el));
   }
 

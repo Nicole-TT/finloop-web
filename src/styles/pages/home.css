@@ -61,6 +61,53 @@ body:has(.hero-scroll-scene) .site-header:not(.menu-open) .menu-button {
   will-change: transform, opacity;
 }
 
+.hero-video-frame { position: relative; }
+.hero-video-caption {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(18px, 3vw, 42px);
+  color: #fff;
+  text-align: center;
+}
+.hero-video-caption h2 { margin: 0; font-size: clamp(28px, 5vw, 80px); font-weight: 600; line-height: 1.1; }
+.hero-video-play {
+  display: inline-flex;
+  align-items: center;
+  gap: 24px;
+  padding: 4px 4px 4px 24px;
+  border: 0;
+  border-radius: 999px;
+  background: #fff;
+  color: #121212;
+  font: inherit;
+  font-size: clamp(14px, 1.6vw, 24px);
+  cursor: pointer;
+}
+.hero-video-play span { display: grid; place-items: center; width: clamp(36px, 4vw, 64px); aspect-ratio: 1; border-radius: 50%; background: var(--color-brand-blue); color: #fff; }
+.hero-video-play:focus-visible { outline: 3px solid #fff; outline-offset: 6px; }
+.brand-video-dialog {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 64px 24px;
+  border: 0;
+  background: transparent;
+  overflow: auto;
+}
+.brand-video-dialog[open] { display: grid; place-items: center; }
+.brand-video-dialog::backdrop { background: rgba(3, 12, 24, .4); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+.brand-video-dialog iframe { display: block; width: min(1200px, 100%, calc((100dvh - 128px) * 16 / 9)); aspect-ratio: 16 / 9; border: 0; border-radius: 32px; overflow: hidden; background: #000; }
+.brand-video-close { position: absolute; top: 18px; right: 24px; width: 44px; height: 44px; border: 0; border-radius: 50%; background: rgba(255,255,255,.15); color: #fff; font-size: 30px; cursor: pointer; }
+.brand-video-close:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
+
 .hero-video-frame video {
   display: block;
   width: 100%;
@@ -195,16 +242,23 @@ body:has(.hero-scroll-scene) .site-header:not(.menu-open) .menu-button {
   pointer-events: none;
 }
 
-.hero-ai-chat::after {
-  content: '';
+.hero-ai-chat-background {
   position: absolute;
   inset: 0;
   z-index: 1;
   border-radius: inherit;
   background: linear-gradient(180deg, rgba(0, 22, 67, .15) 71.72%, rgba(0, 77, 233, .56) 100%);
   opacity: 0;
-  backdrop-filter: blur(16px);
+
   pointer-events: none;
+}
+
+/* Sibling of hero-grid: opacity ancestors must not isolate backdrop sampling. */
+.hero-ai-chat-backdrop {
+  position: absolute;
+  pointer-events: none;
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
 }
 
 .hero-ai-chat>form,
@@ -229,7 +283,7 @@ body:has(.hero-scroll-scene) .site-header:not(.menu-open) .menu-button {
     hero-chat-outline-fade .24s ease-out .76s forwards;
 }
 
-.hero[data-entrance-visible="true"] .hero-ai-chat::after {
+.hero[data-entrance-visible="true"] .hero-ai-chat-background {
   animation: hero-chat-background .24s ease-out .72s forwards;
 }
 
@@ -251,6 +305,22 @@ body:has(.hero-scroll-scene) .site-header:not(.menu-open) .menu-button {
   to { --hero-chat-outline: 360deg; }
 }
 
+/* Scroll and reverse transitions use only the hero-grid Motion opacity. */
+.hero[data-scroll-content-ready="true"] .hero-ai-chat::before {
+  animation: none;
+  --hero-chat-outline: 360deg;
+  opacity: .5;
+}
+
+.hero[data-scroll-content-ready="true"] .hero-ai-chat-background,
+.hero[data-scroll-content-ready="true"] .hero-ai-chat>form,
+.hero[data-scroll-content-ready="true"] .hero-ai-suggestions button,
+.hero[data-scroll-content-ready="true"] .hero-copy>.hero-ai-tools {
+  animation: none;
+  opacity: 1;
+  transform: none;
+}
+
 @keyframes hero-chat-outline-fade {
   from { opacity: 1; }
   to { opacity: .5; }
@@ -267,7 +337,7 @@ body:has(.hero-scroll-scene) .site-header:not(.menu-open) .menu-button {
 
 @media (prefers-reduced-motion: reduce) {
   .hero-ai-chat::before { --hero-chat-outline: 360deg; }
-  .hero-ai-chat::after { opacity: 1; }
+  .hero-ai-chat-background { opacity: 1; }
   .hero-ai-chat>form,
   .hero-ai-chat>.hero-ai-chat-footer,
   .hero-ai-suggestions button,
@@ -336,7 +406,7 @@ body:has(.hero-scroll-scene) .site-header:not(.menu-open) .menu-button {
   flex-wrap: nowrap;
   gap: 8px;
   padding: 0;
-  overflow-x: auto;
+  overflow-x: hidden;
   scrollbar-width: none;
 }
 
@@ -484,6 +554,10 @@ body:has(.hero-scroll-scene) .site-header:not(.menu-open) .menu-button {
 }
 
 @media (max-width: 900px) {
+  .hero-ai-suggestions {
+    overflow-x: auto;
+  }
+
   .hero h1 {
     font-size: clamp(45px, 7vw, 66px);
     white-space: normal;

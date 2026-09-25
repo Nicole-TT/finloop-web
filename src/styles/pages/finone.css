@@ -96,7 +96,7 @@
 .f1-case-entries button small{display:block;margin:0}
 .f1-case-entries button p{margin-top:20px;font-size:13px}
 .f1-case-entries button b{left:24px;bottom:24px}
-.f1-case-modal{position:fixed;z-index:1200;inset:0;display:grid;place-items:center;padding:24px;background:rgba(5,21,36,.68);backdrop-filter:blur(6px)}
+.f1-case-modal{position:fixed;z-index:2200;inset:0;display:grid;place-items:center;padding:24px;background:rgba(5,21,36,.68);backdrop-filter:blur(6px)}
 .f1-case-modal>article{position:relative;width:min(780px,100%);max-height:calc(100vh - 48px);overflow:auto;padding:42px;border-radius:20px;background:#fff;box-shadow:0 24px 80px rgba(5,21,36,.28)}
 .f1-case-modal>article>header{display:flex;align-items:center;gap:22px;margin-bottom:30px}
 .f1-case-modal .f1-client-logo{width:88px;height:88px}

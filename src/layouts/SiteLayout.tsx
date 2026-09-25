@@ -113,7 +113,6 @@ export function SiteLayout({ headerMarkup, mobileDrawerMarkup, footerMarkup, ini
       <a className="skip-link" href="#main">{t('跳至主要内容')}</a>
       <SiteHeader html={headerMarkup} />
       <MobileDrawer html={mobileDrawerMarkup} />
-      {isEnglish && pathname !== '/' && <p className="translation-notice" role="status">This page is awaiting English translation. Chinese content is shown for now.</p>}
       <Outlet />
       <SiteFooter html={footerMarkup} />
     </FinloopAssistantProvider>

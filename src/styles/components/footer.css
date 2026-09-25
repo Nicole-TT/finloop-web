@@ -43,7 +43,8 @@
 
 .footer-directory {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(6, minmax(0, max-content));
+  justify-content: space-between;
   gap: 36px;
   padding: 56px 0;
 }
@@ -98,4 +99,3 @@
   display: flex;
   gap: 22px;
 }
-

@@ -1,7 +1,8 @@
 import { t, localizedHref } from '../i18n';
+import { createPortal } from 'react-dom';
 import React, { useEffect, useId, useRef, useState } from 'react';
 import logoSource from '../../public/assets/finloop-logo.svg?raw';
-import createGlobe from 'cobe';
+import RotatingEarth from './ui/wireframe-dotted-globe';
 import { animate, motion, useMotionValue, useReducedMotion, useScroll, useTransform, type MotionValue, type Variants } from 'motion/react';
 import { useFinloopAssistant } from './FinloopAssistant';
 import { RefreshCw, type IconNode } from 'lucide';
@@ -54,21 +55,6 @@ const heroMetrics = [
   ['8', '', '金融品类', '覆盖传统金融与 Web3'],
 ];
 
-const productGlobeMarkers = [
-  [42, -105, 27, 42], [58, -110, 14, 25], [-14, -60, 30, 22],
-  [50, 18, 18, 28], [8, 21, 34, 25], [38, 82, 31, 58],
-  [55, 56, 17, 30], [-25, 134, 14, 21], [35, 138, 8, 8],
-].flatMap(([centerLat, centerLng, radiusLat, radiusLng]) => {
-  const points: Array<{ location: [number, number]; size: number }> = [];
-  for (let lat = centerLat - radiusLat; lat <= centerLat + radiusLat; lat += 3.4) {
-    for (let lng = centerLng - radiusLng; lng <= centerLng + radiusLng; lng += 3.4) {
-      const distance = ((lat - centerLat) / radiusLat) ** 2 + ((lng - centerLng) / radiusLng) ** 2;
-      if (distance <= 1) points.push({ location: [lat, lng], size: .006 });
-    }
-  }
-  return points;
-});
-
 function HeroMetric({ item, index, progress, reduced }: { item: string[]; index: number; progress: MotionValue<number>; reduced: boolean }) {
   const start = 1.28 + index * .12;
   const opacity = useTransform(progress, [start, start + .4], [0, 1], { ease: heroPhaseEase });
@@ -86,80 +72,79 @@ function HeroMetric({ item, index, progress, reduced }: { item: string[]; index:
 function MetricsVideoReveal({ reduced }: { reduced: boolean }) {
   const sceneRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [visible, setVisible] = useState(false);
+  const [playing, setPlaying] = useState(false);
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const playButtonRef = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    if (!playing) return;
+    const dialog = dialogRef.current;
+    const overflow = document.documentElement.style.overflow;
+    document.documentElement.style.overflow = 'hidden';
+    dialog?.showModal();
+    videoRef.current?.pause();
+    return () => {
+      dialog?.close();
+      document.documentElement.style.overflow = overflow;
+      playButtonRef.current?.focus({ preventScroll: true });
+      if (sceneRef.current && sceneRef.current.getBoundingClientRect().bottom > 0) void videoRef.current?.play().catch(() => {});
+    };
+  }, [playing]);
   const { scrollYProgress } = useScroll({
     target: sceneRef,
     offset: ['start end', 'center center'],
   });
-  const opacity = useTransform(scrollYProgress, [0, .32], [0, 1], { ease: heroPhaseEase });
   const y = useTransform(scrollYProgress, [0, 1], [72, 0], { ease: value => 1 - (1 - value) ** 3 });
-  const scale = useTransform(scrollYProgress, [0, 1], [.72, 1], { ease: heroPhaseEase });
+  const scale = useTransform(scrollYProgress, [0, 1], [.576, 1], { ease: heroPhaseEase });
 
   useEffect(() => {
     const scene = sceneRef.current;
     const video = videoRef.current;
     if (!scene || !video) return;
     const observer = new IntersectionObserver(([entry]) => {
+      setVisible(entry.isIntersecting);
       if (entry.isIntersecting) void video.play().catch(() => {});
       else video.pause();
     }, { threshold: .05 });
-    observer.observe(scene);
+    observer.observe(video);
     return () => { observer.disconnect(); video.pause(); };
   }, []);
 
   return <section ref={sceneRef} className={`hero-video-reveal${reduced ? ' is-reduced' : ''}`} aria-label={t('首页品牌影片')}>
     <div className="hero-video-sticky">
-      <motion.div className="hero-video-frame" style={reduced ? undefined : { opacity, y, scale }}>
+      <motion.div className="hero-video-frame"
+        initial={{ opacity: reduced ? 1 : 0 }}
+        animate={{ opacity: reduced || visible ? 1 : 0 }}
+        transition={{ opacity: { duration: reduced ? 0 : .65, ease: 'easeOut' } }}
+        style={reduced ? undefined : { y, scale }}>
         <video ref={videoRef} src="/assets/home-metrics-video.mp4" muted loop playsInline autoPlay preload="metadata" aria-label={t('Finloop 品牌影片')} />
+        <div className="hero-video-caption">
+          <h2>Who Are We</h2>
+          <button ref={playButtonRef} type="button" className="hero-video-play" aria-haspopup="dialog" onClick={() => setPlaying(true)}>
+            See the Video <span aria-hidden="true">▶</span>
+          </button>
+        </div>
       </motion.div>
     </div>
+    {playing && createPortal(<dialog ref={dialogRef} className="brand-video-dialog" aria-label="Finloop brand video"
+      onCancel={() => setPlaying(false)} onClose={() => setPlaying(false)}
+      onClick={event => { if (event.target === event.currentTarget) setPlaying(false); }}>
+      <button type="button" className="brand-video-close" aria-label="Close video" autoFocus onClick={() => setPlaying(false)}>×</button>
+      <iframe src="https://www.youtube.com/embed/fRr7gAOQd64?si=olmwZExwJjahmg9k&autoplay=1" title="YouTube video player"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerPolicy="strict-origin-when-cross-origin" allowFullScreen />
+    </dialog>, document.body)}
   </section>;
 }
 
 function ProductGlobe() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const reduceMotion = useReducedMotion();
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    let phi = -.35;
-    let width = canvas.parentElement?.clientWidth ?? 820;
-    const globeOptions: Parameters<typeof createGlobe>[1] = {
-      devicePixelRatio: Math.min(window.devicePixelRatio, 2),
-      width: width * 2,
-      height: width * 2,
-      phi,
-      theta: .12,
-      dark: 0,
-      diffuse: 1.05,
-      mapSamples: 12000,
-      mapBrightness: .35,
-      mapBaseBrightness: 0,
-      baseColor: [.68, .71, .74],
-      markerColor: [.42, .46, .5],
-      glowColor: [.95, .97, 1],
-      markers: productGlobeMarkers,
-      opacity: .82,
-      onRender: state => {
-        if (!reduceMotion) phi += .003;
-        state.phi = phi;
-        state.width = width * 2;
-        state.height = width * 2;
-      },
-    };
-    const globe = createGlobe(canvas, globeOptions);
-    const observer = new ResizeObserver(entries => {
-      width = entries[0]?.contentRect.width ?? width;
-    });
-    if (canvas.parentElement) observer.observe(canvas.parentElement);
-    return () => { observer.disconnect(); globe.destroy(); };
-  }, [reduceMotion]);
-
-  return <div className="product-globe" aria-hidden="true"><canvas ref={canvasRef} /></div>;
+  return <div className="product-globe" aria-hidden="true"><RotatingEarth width={820} height={820} interactive={false} /></div>;
 }
 
 export function HeroSection() {
   const heroRef = useRef<HTMLElement>(null);
+  const chatRef = useRef<HTMLDivElement>(null);
+  const chatBackdropRef = useRef<HTMLDivElement>(null);
   const logoClipId = useId();
   const logoGradientId = useId();
   const dotVideoRef = useRef<HTMLVideoElement>(null);
@@ -177,11 +162,40 @@ export function HeroSection() {
   const stageWidth = useMotionValue(0);
   const stageHeight = useMotionValue(0);
   const contentOpacity = useTransform(reveal, [0, .24], [1, 0], { ease: heroPhaseEase });
+  const chatBackdropEntrance = useMotionValue(0);
+  const chatBackdropOpacity = useTransform(() => contentOpacity.get() * chatBackdropEntrance.get());
+  const alignChatBackdrop = () => {
+    const hero = heroRef.current;
+    const chat = chatRef.current;
+    const backdrop = chatBackdropRef.current;
+    if (!hero || !chat || !backdrop) return;
+    const heroBounds = hero.getBoundingClientRect();
+    const bounds = chat.getBoundingClientRect();
+    Object.assign(backdrop.style, {
+      left: `${bounds.left - heroBounds.left}px`, top: `${bounds.top - heroBounds.top}px`,
+      width: `${bounds.width}px`, height: `${bounds.height}px`,
+      borderRadius: getComputedStyle(chat).borderRadius,
+    });
+  };
+  useEffect(() => {
+    const observer = new ResizeObserver(alignChatBackdrop);
+    if (chatRef.current) observer.observe(chatRef.current);
+    if (heroRef.current) observer.observe(heroRef.current);
+    window.addEventListener('resize', alignChatBackdrop);
+    alignChatBackdrop();
+    return () => { observer.disconnect(); window.removeEventListener('resize', alignChatBackdrop); };
+  }, []);
+  useEffect(() => {
+    if (reduceMotion) { chatBackdropEntrance.set(1); return; }
+    if (!entranceVisible) return;
+    const animation = animate(chatBackdropEntrance, 1, { delay: .72, duration: .24, ease: 'easeOut' });
+    return () => animation.stop();
+  }, [entranceVisible, reduceMotion]);
   const maskProgress = useTransform(reveal, [.24, 1], [0, 1], { ease: progress => 1 - (1 - progress) ** 3 });
   const backgroundBlur = useTransform(maskProgress, value => `blur(${value * 20}px)`);
   const logoLift = useTransform(reveal, [1, 1.6], [0, 1], { ease: heroPhaseEase });
-  const gradientOpacity = useTransform(reveal, [.7, .8], [0, 1], { ease: heroPhaseEase });
-  const blackOpacity = useTransform(reveal, [.82, .98], [0, 1], { ease: heroPhaseEase });
+  const gradientOpacity = useTransform(reveal, [.58, .76], [0, 1], { ease: heroPhaseEase });
+  const blackOpacity = useTransform(reveal, [.76, .98], [0, 1], { ease: heroPhaseEase });
   const gradientWidth = useTransform(() => {
     const start = largeLogoHeight.get();
     return start * (finalLogoHeight.get() / start) ** maskProgress.get() * 147 / 32;
@@ -278,6 +292,10 @@ export function HeroSection() {
       restoreScroll = undefined;
     };
     const start = (forward: boolean) => {
+      // Finish the entrance sequence once; scrolling fades the complete group.
+      hero.dataset.scrollContentReady = 'true';
+      chatBackdropEntrance.stop();
+      chatBackdropEntrance.set(1);
       target = forward ? 2.1 : 0;
       phase = 'running';
       if (content?.contains(document.activeElement)) (document.activeElement as HTMLElement).blur();
@@ -349,6 +367,7 @@ export function HeroSection() {
       window.removeEventListener('keydown', key);
       content?.removeAttribute('inert');
       hero.classList.remove('hero-collapsed');
+      delete hero.dataset.scrollContentReady;
       delete hero.dataset.headerProgress;
     };
   }, [reduceMotion, reveal, largeLogoHeight, finalLogoHeight, stageWidth, stageHeight]);
@@ -440,7 +459,9 @@ export function HeroSection() {
   useEffect(() => {
     const rail = suggestionsRef.current;
     if (!rail) return;
+    const mobile = window.matchMedia('(max-width: 900px)');
     const scrollSuggestions = (event: WheelEvent) => {
+      if (!mobile.matches) return;
       const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
       event.preventDefault();
       event.stopPropagation();
@@ -476,15 +497,15 @@ export function HeroSection() {
           return <span key={index}><b style={{ animationDelay: `${-(index % 11) * .27}s` }}>{codes.map((code, row) => <i key={row}>{code}</i>)}</b></span>;
         })}</div>
       </div>
+      <motion.div ref={chatBackdropRef} className="hero-ai-chat-backdrop" aria-hidden="true" style={{ opacity: chatBackdropOpacity }} />
       <motion.div className="hero-grid" style={{ opacity: contentOpacity }}>
         <motion.div className="hero-copy" variants={heroEntrance} initial={reduceMotion ? false : "hidden"} animate={reduceMotion || entranceVisible ? "visible" : "hidden"}>
           <motion.h1 variants={heroEntranceItem}>{t('AI 驱动的 Web5 财富科技平台')}</motion.h1>
           <motion.p variants={heroEntranceItem}>{t('您想了解哪类财富科技能力？我可以帮您快速找到对应的产品与解决方案')}</motion.p>
-          <motion.div className="hero-ai-chat" aria-label={t('Finloop AI 业务助手')} variants={heroEntranceItem}>
+          <motion.div ref={chatRef} onUpdate={alignChatBackdrop} className="hero-ai-chat" aria-label={t('Finloop AI 业务助手')} variants={heroEntranceItem}>
+            <div className="hero-ai-chat-background" aria-hidden="true" />
             <form autoComplete="off" onSubmit={event => { event.preventDefault(); submitQuestion(question); }}><label className="sr-only" htmlFor="hero-ai-question">{t('输入您的业务问题')}</label><input id="hero-ai-question" name="finloop-business-question" autoComplete="off" autoCorrect="off" autoCapitalize="off" spellCheck={false} value={question} onChange={event => setQuestion(event.target.value)} placeholder={t('请输入您的角色或您的业务问题，我们为你快速解决')} /><button type="submit" aria-label={t('发送问题')} disabled={isLoading || !question.trim()}><img src="/assets/ai-icon.svg" alt=""/><span>Ask AI</span></button></form>
-            <div className="hero-ai-chat-footer">
-              <div ref={suggestionsRef} className="hero-ai-suggestions" aria-label={t('示例问题')}>{heroSuggestionBatches[suggestionBatch].map(item => <button type="button" key={t(item)} onClick={() => submitQuestion(t(item))}>{t(item)}</button>)}</div>
-            </div>
+            <div className="hero-ai-chat-footer"><div ref={suggestionsRef} className="hero-ai-suggestions" aria-label={t('示例问题')}>{heroSuggestionBatches[suggestionBatch].map(item => <button type="button" key={t(item)} onClick={() => submitQuestion(t(item))}>{t(item)}</button>)}</div></div>
           </motion.div>
           <div className="hero-ai-tools">
             <button className="hero-ai-shuffle" type="button" onClick={() => setSuggestionBatch(current => (current + 1) % heroSuggestionBatches.length)}><HeroIcon icon={RefreshCw} />{t('换一批')}</button>
@@ -502,7 +523,7 @@ export function HeroSection() {
 }
 
 export function CoverageSection() {
-  const [activeAsset, setActiveAsset] = useState('cash');
+  const [activeAsset, setActiveAsset] = useState<string | null>(null);
 
   return (
     <section className="coverage section-pad" id="coverage">
@@ -510,30 +531,30 @@ export function CoverageSection() {
         <div><h2>{t('覆盖多元投资需求的财富产品货架')}</h2>
           <p>{t('连接现金管理、公募基金、私募基金、债券、结构性产品、保险、虚拟资产与 RWA 等产品类别，为不同客户与资产配置场景提供多元选择。')}</p>
         </div>
-        <a className="coverage-overview-link" href={localizedHref('/products')}>{t('查看全部金融产品')}<i data-lucide="arrow-right"></i></a>
+        <a className="button button-accent" href={localizedHref('/products')}>{t('查看全部金融产品')}<i data-lucide="arrow-right"></i></a>
       </div>
 
       <div className="product-universe" data-active={activeAsset}>
         <ProductGlobe />
-        <div className="product-orbits" aria-hidden="true"><i></i><i></i><i></i></div>
         <div className="product-nodes" aria-label={t('金融产品类别')}>
           {assetTabs.map(([id, label], index) => (
             <button
               type="button"
               key={id}
               className={`product-node node-${index + 1}${activeAsset === id ? ' active' : ''}`}
-              aria-pressed={activeAsset === id}
+              aria-expanded={activeAsset === id}
               onClick={() => setActiveAsset(id)}
               onMouseEnter={() => setActiveAsset(id)}
+              onMouseLeave={() => setActiveAsset(null)}
+              onBlur={() => setActiveAsset(null)}
+              onKeyDown={event => { if (event.key === 'Escape') setActiveAsset(null); }}
               onFocus={() => setActiveAsset(id)}
             >
-              <span>0{index + 1}</span>
               <strong>{t(label)}</strong>
               <div><p>{t(assetContent[id][1])}</p><small>{t(assetContent[id][2])}</small></div>
             </button>
           ))}
         </div>
-        <a className="product-universe-entry" href={localizedHref('/products')}>{t('进入金融产品总览')}<i data-lucide="arrow-right"></i></a>
       </div>
     </section>
   );

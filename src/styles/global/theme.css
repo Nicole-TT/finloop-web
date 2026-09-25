@@ -5,7 +5,7 @@
   --color-brand-muted: #626967;
   --color-brand-line: #d9ddda;
   --color-brand-action: #0D7DF1;
-  --color-brand-blue: #0D7DF1;
+  --color-brand-blue: #176EF5;
   --font-sans: 'Plus Jakarta Sans', 'PingFang SC', 'PingFang HK', 'Noto Sans SC', sans-serif;
   --font-data: var(--font-sans);
   --radius-brand: 6px;
@@ -21,4 +21,3 @@
     white-space: nowrap;
   }
 }
-

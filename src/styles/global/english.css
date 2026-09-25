@@ -6,7 +6,6 @@ html:lang(en) .nav-link { padding-inline: 10px; white-space: nowrap; }
 html:lang(en) .header-inner { grid-template-columns: 160px 1fr auto; gap: 16px; }
 html:lang(en) .header-cta { white-space: nowrap; }
 html:lang(en) .product-node strong { white-space: normal; }
-.translation-notice { margin: 76px 0 0; padding: 12px var(--edge); background: #edf5ff; color: #38536c; font-size: 13px; }
 @media (max-width: 1200px) {
   html:lang(en) .desktop-nav, html:lang(en) .header-cta { display: none; }
   html:lang(en) .header-inner { grid-template-columns: 1fr auto; }
