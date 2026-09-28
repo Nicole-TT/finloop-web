@@ -14,7 +14,7 @@
 :is(.f1-cta,.eam-cta,.xqp-cta,.portal-cta,.xlt-cta,.xzt-cta,.wl-cta,.fai-cta,.fde-cta,.ai-cta,.bank-cta,.digital-cta,.wealth-cta,.bfi-cta,.psf-cta,.pwi-cta,.tech-cta,.cif-cta,.goal-cta,.rwa-cta,#contact.contact) .button{min-height:48px;min-width:178px;border-radius:32px;background:#fff;border:1px solid #fff;color:#121212;justify-content:center}
 :is(.f1-cta,.eam-cta,.xqp-cta,.portal-cta,.xlt-cta,.xzt-cta,.wl-cta,.fai-cta,.fde-cta,.ai-cta,.bank-cta,.digital-cta,.wealth-cta,.bfi-cta,.psf-cta,.pwi-cta,.tech-cta,.cif-cta,.goal-cta,.rwa-cta,#contact.contact) .button:hover{background:#edf5ff;color:#121212}
 #contact.contact{padding-top:0}
-#contact .contact-layout{gap:0;text-align:center;align-items:center}
+#contact .contact-layout{gap:0;text-align:center;align-items:center;border:0}
 #contact .contact-copy{display:block;max-width:798px;margin-inline:auto}
 #contact .contact-actions{max-width:100%;justify-content:center}
 #contact .contact-actions small{color:rgba(255,255,255,.8);margin-top:6px}
