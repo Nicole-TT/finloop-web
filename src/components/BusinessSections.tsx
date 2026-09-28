@@ -1,5 +1,4 @@
 import { t, localizedHref } from '../i18n';
-import { createPortal } from 'react-dom';
 import React, { useEffect, useId, useRef, useState } from 'react';
 import logoSource from '../../public/assets/finloop-logo.svg?raw';
 import RotatingEarth from './ui/wireframe-dotted-globe';
@@ -74,21 +73,8 @@ function MetricsVideoReveal({ reduced }: { reduced: boolean }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [visible, setVisible] = useState(false);
   const [playing, setPlaying] = useState(false);
-  const dialogRef = useRef<HTMLDialogElement>(null);
-  const playButtonRef = useRef<HTMLButtonElement>(null);
   useEffect(() => {
-    if (!playing) return;
-    const dialog = dialogRef.current;
-    const overflow = document.documentElement.style.overflow;
-    document.documentElement.style.overflow = 'hidden';
-    dialog?.showModal();
-    videoRef.current?.pause();
-    return () => {
-      dialog?.close();
-      document.documentElement.style.overflow = overflow;
-      playButtonRef.current?.focus({ preventScroll: true });
-      if (sceneRef.current && sceneRef.current.getBoundingClientRect().bottom > 0) void videoRef.current?.play().catch(() => {});
-    };
+    if (playing) videoRef.current?.pause();
   }, [playing]);
   const { scrollYProgress } = useScroll({
     target: sceneRef,
@@ -103,12 +89,12 @@ function MetricsVideoReveal({ reduced }: { reduced: boolean }) {
     if (!scene || !video) return;
     const observer = new IntersectionObserver(([entry]) => {
       setVisible(entry.isIntersecting);
-      if (entry.isIntersecting) void video.play().catch(() => {});
+      if (entry.isIntersecting && !playing) void video.play().catch(() => {});
       else video.pause();
     }, { threshold: .05 });
     observer.observe(video);
     return () => { observer.disconnect(); video.pause(); };
-  }, []);
+  }, [playing]);
 
   return <section ref={sceneRef} className={`hero-video-reveal${reduced ? ' is-reduced' : ''}`} aria-label={t('首页品牌影片')}>
     <div className="hero-video-sticky">
@@ -118,22 +104,19 @@ function MetricsVideoReveal({ reduced }: { reduced: boolean }) {
         transition={{ opacity: { duration: reduced ? 0 : .65, ease: 'easeOut' } }}
         style={reduced ? undefined : { y, scale }}>
         <video ref={videoRef} src="/assets/home-metrics-video.mp4" muted loop playsInline autoPlay preload="metadata" aria-label={t('Finloop 品牌影片')} />
-        <div className="hero-video-caption">
+        {!playing && <div className="hero-video-caption">
           <h2>Who Are We</h2>
-          <button ref={playButtonRef} type="button" className="hero-video-play" aria-haspopup="dialog" onClick={() => setPlaying(true)}>
+          <button type="button" className="hero-video-play" onClick={() => setPlaying(true)}>
             See the Video <span aria-hidden="true">▶</span>
           </button>
-        </div>
+        </div>}
+        {playing && <iframe className="hero-video-player"
+          src="https://www.youtube.com/embed/fRr7gAOQd64?si=olmwZExwJjahmg9k&autoplay=1&playsinline=1"
+          title="Finloop brand video"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerPolicy="strict-origin-when-cross-origin" allowFullScreen />}
       </motion.div>
     </div>
-    {playing && createPortal(<dialog ref={dialogRef} className="brand-video-dialog" aria-label="Finloop brand video"
-      onCancel={() => setPlaying(false)} onClose={() => setPlaying(false)}
-      onClick={event => { if (event.target === event.currentTarget) setPlaying(false); }}>
-      <button type="button" className="brand-video-close" aria-label="Close video" autoFocus onClick={() => setPlaying(false)}>×</button>
-      <iframe src="https://www.youtube.com/embed/fRr7gAOQd64?si=olmwZExwJjahmg9k&autoplay=1" title="YouTube video player"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        referrerPolicy="strict-origin-when-cross-origin" allowFullScreen />
-    </dialog>, document.body)}
   </section>;
 }
 

@@ -685,14 +685,12 @@
   min-height: 380px;
   padding: 0;
   flex-direction: column;
-  grid-column: span 4;
+  grid-column: span 3;
   border: 0;
   border-radius: 24px;
   background: #f8fafc;
   overflow: hidden;
 }
-
-.why-grid article:nth-child(-n+2) { min-height: 430px; grid-column: span 6; }
 
 .why-copy { margin-top: auto; padding: 24px 28px 28px; }
 
@@ -711,7 +709,6 @@
 }
 
 .why-visual { position: relative; min-height: 235px; overflow: hidden; }
-.why-grid article:nth-child(-n+2) .why-visual { min-height: 270px; }
 .why-visual span { position: absolute; display: block; }
 .why-visual-products span { left: 12%; right: 12%; height: 42px; border: 1px solid #cbd7e3; border-radius: 9px; background: #fff; box-shadow: 0 8px 24px rgba(23,61,99,.05); }
 .why-visual-products span:nth-child(1) { top: 24px; }

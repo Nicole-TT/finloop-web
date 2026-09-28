@@ -254,7 +254,6 @@ const mainMarkup = `
       <div class="section-heading editorial-heading"><h2>不止提供软件，更连接真实金融业务</h2><p>Finloop 以金融业务和产品能力为基础，连接业务应用、财富核心、交易基础设施、数字资产与 AI。</p></div>
       <div class="why-grid">
         <article><div class="why-visual why-visual-products" aria-hidden="true"><span></span><span></span><span></span><span></span></div><div class="why-copy"><h3>金融业务和产品能力</h3><p>连接传统财富产品、机构交易与业务运营流程。</p></div></article>
-        <article><div class="why-visual why-visual-stack" aria-hidden="true"><span></span><span></span><span></span><span></span></div><div class="why-copy"><h3>从应用到核心交易的完整技术栈</h3><p>覆盖业务应用、FinOne 财富核心与 FinMix 交易基础设施。</p></div></article>
         <article><div class="why-visual why-visual-connect" aria-hidden="true"><span></span><span></span><span></span><span></span></div><div class="why-copy"><h3>灵活部署与开放连接能力</h3><p>通过平台与 API 连接机构现有系统、产品网络和数字资产生态。</p></div></article>
         <article><div class="why-visual why-visual-security" aria-hidden="true"><span></span><span></span><span></span></div><div class="why-copy"><h3>金融级合规、安全和稳定性</h3><p>围绕机构业务要求，支持权限、治理与稳定的业务运营。</p></div></article>
         <article><div class="why-visual why-visual-ai" aria-hidden="true"><span></span><span></span><span></span><span></span></div><div class="why-copy"><h3>Web2、Web3 与 AI 的组合能力</h3><p>连接传统财富、数字资产与进入真实金融工作流的 AI 能力。</p></div></article>
