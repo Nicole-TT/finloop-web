@@ -1,10 +1,10 @@
 import { isEnglish, t } from './i18n';
-import { PlatformCasesSection } from './components/PlatformProofSections';
+import { HomeLogoWall } from './components/HomeLogoWall';
 import { animate } from 'motion';
 import { createRoot } from 'react-dom/client';
 import { useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { createIcons, ArrowLeftRight, ArrowRight, ArrowUp, BadgeDollarSign, Award, ChevronDown, ChevronRight, Database, FileChartColumn, Globe2, ListFilter, Menu, MoveRight, PackagePlus, PieChart, RefreshCw, X, Building2, Landmark, Network, WalletCards, BriefcaseBusiness, Blocks, Bot, ShieldCheck, CircleCheck, CircleDollarSign, Gauge, Users, Gem, Orbit, Mail, MapPin } from 'lucide';
+import { createIcons, ArrowLeftRight, ArrowRight, ArrowUp, BadgeDollarSign, Award, ChevronDown, ChevronRight, Database, FileChartColumn, Globe2, ListFilter, Menu, MoveRight, PackagePlus, PieChart, RefreshCw, X, Building2, Landmark, Network, WalletCards, BriefcaseBusiness, Blocks, Bot, ShieldCheck, CircleCheck, CircleDollarSign, Gauge, Users, Gem, Orbit, Mail, Phone, MapPin } from 'lucide';
 import { Markup } from './components/PageRegions';
 import { CoverageSection, HeroSection, SolutionsSection } from './components/BusinessSections';
 import { SiteLayout } from './layouts/SiteLayout';
@@ -235,13 +235,17 @@ const mainMarkup = `
       </div>
     </section>
 
-    <section class="ai-section section-pad" id="ai">
-      <div class="section-inner ai-layout">
-        <div class="ai-copy"><h2>让 AI 从工具进入真实业务流程</h2><p>Finloop AI 从金融业务工作台、企业智能、模型基础设施到 Agent 与 Skills，将 AI 能力连接到具体岗位和工作流。</p><a class="button button-light" href="/ai">了解 Finloop AI <i data-lucide="arrow-right"></i></a></div>
-        <div class="ai-product-grid" aria-label="Finloop AI 产品入口">
-          <a href="/ai/xinglutong"><span>01</span><small>FINANCIAL AI WORKSPACE</small><h3>星路通</h3><p>KYP、GAP 分析、风险预警与竞品洞察。</p><strong>了解产品 <i data-lucide="arrow-right"></i></strong></a>
-          <a href="/ai/fai"><span>02</span><small>ENTERPRISE INTELLIGENCE</small><h3>FAI</h3><p>连接资讯、资料、任务、AI 员工与 Skills。</p><strong>了解产品 <i data-lucide="arrow-right"></i></strong></a>
-          <a href="/ai/xingzhitong"><span>03</span><small>AI INFRASTRUCTURE</small><h3>星智通</h3><p>统一 AI API 网关、智能路由与企业安全。</p><strong>了解产品 <i data-lucide="arrow-right"></i></strong></a>
+    <section class="ai-section home-ai-section section-pad" id="ai">
+      <img class="home-ai-blue-glow" src="/assets/home-figma/ai-blue-glow.svg" alt="" />
+      <img class="home-ai-cyan-glow" src="/assets/home-figma/ai-cyan-glow.svg" alt="" />
+      <div class="section-inner home-ai-inner">
+        <div class="home-ai-heading"><div class="ai-copy"><h2>让 AI 从工具进入真实业务流程</h2><p>Finloop AI 从金融业务工作台、企业智能、模型基础设施到 Agent 与 Skills，将 AI 能力连接到具体岗位和工作流。</p></div><a class="button button-light" href="/ai">了解 Finloop AI</a></div>
+        <div class="home-ai-cards" aria-label="Finloop AI 产品入口">
+          ${[
+            ['xinglutong', '星路通', 'KYP、GAP 分析、风险预警与竞品洞察。'],
+            ['fai', 'FAI', '连接资讯、资料、任务、AI 员工与 Skills。'],
+            ['xingzhitong', '星智通', '统一 AI API 网关、智能路由与企业安全。'],
+          ].map(([slug, name, copy], index) => `<a class="home-ai-card" href="/ai/${slug}"><h3>${name}</h3><p>${copy}</p><img class="home-ai-card-glow" src="/assets/home-figma/ai-card-glow.svg" alt="" /><span class="home-ai-card-arrow" aria-hidden="true"><img src="/assets/home-figma/ai-arrow.svg" alt="" /></span>${index === 1 ? `<div class="home-ai-agents" aria-hidden="true">${Array.from({length:4}, () => '<span>Agent</span>').join('')}</div>` : index === 2 ? '<img class="home-ai-network" src="/assets/home-figma/ai-network.png" alt="" />' : ''}</a>`).join('')}
         </div>
       </div>
     </section>
@@ -296,12 +300,14 @@ const mainMarkup = `
 
 const footerMarkup = `
   <footer class="site-footer" id="footer">
-    <div class="footer-top"><div class="footer-brand"><img src="/assets/finloop-logo.svg" alt="Finloop 星路科技" /><p>连接传统财富、数字资产与 AI 的机构财富科技平台。</p></div><a class="back-top" href="#top" aria-label="返回顶部"><i data-lucide="arrow-up"></i></a></div>
+    <div class="footer-top"><div class="footer-brand"><img src="/assets/finloop-logo.svg" alt="Finloop 星路科技" /></div><div class="footer-socials" aria-label="Social media"><span class="footer-social-logo footer-social-x" role="img" aria-label="X (Twitter)">𝕏</span><span class="footer-social-logo footer-social-linkedin" role="img" aria-label="LinkedIn">in</span></div></div>
+    <div class="footer-content">
+    <div class="footer-contact"><div><i data-lucide="map-pin" aria-hidden="true"></i><span>香港总部：香港中环花园道 3 号冠君大厦 21 楼 2101-2105 室</span></div><div><i data-lucide="mail" aria-hidden="true"></i><a href="mailto:CS@finloop.hk">CS@finloop.hk</a></div><div><i data-lucide="phone" aria-hidden="true"></i><a href="tel:+85230088996">(852) 3008 8996</a></div></div>
     <div class="footer-directory">${mobileNavGroups.map(([title, path, items]) => `<div><h3>${title}</h3>${items.map(item => {
       const href = title === '解决方案' ? `/solutions/${businessGoalSolutionItems.find(([, name]) => name === item)![0]}` : mobileItemHref(title, item, path);
       return `<a href="${href}"${item === 'FinTaaS' || item === '加入我们' ? ' target="_blank" rel="noopener noreferrer"' : ''}>${item}</a>`;
     }).join('')}</div>`).join('')}</div>
-    <div class="footer-contact"><div><i data-lucide="map-pin"></i><span>香港总部：香港中环花园道 3 号冠君大厦 21 楼 2101-2105 室</span></div><div><i data-lucide="map-pin"></i><span>香港数码港：香港数码港道 100 号数码港三期 12 楼 1208A 室</span></div><div><i data-lucide="map-pin"></i><span>上海：上海市黄浦区中山东二路 600 号外滩金融中心 S1 栋 15 楼</span></div><div><i data-lucide="mail"></i><a href="mailto:CS@finloop.hk">CS@finloop.hk</a></div><div><a href="tel:+85230088996">(852) 3008 8996</a></div></div>
+    </div>
     <div class="footer-legal"><span>© 2026 Finloop Finance Technology Holding Limited</span><nav aria-label="法律信息"><a href="#footer">隐私政策</a><a href="#footer">使用条款</a><a href="#footer">Cookie Policy</a><a href="#footer">金融免责声明</a><a href="#footer">监管声明</a></nav></div>
   </footer>
 `;
@@ -337,12 +343,7 @@ function HomePage() {
         <CoverageSection />
         <SolutionsSection groups={solutionGroups} />
         <Markup html={beforeCasesMarkup} />
-        <PlatformCasesSection id="ecosystem" sectionClass="ecosystem section-pad" shellClass="section-inner"
-          title={t('从真实项目，看见财富科技如何落地')}
-          copy={t('连接金融机构、数字资产与企业业务场景，以专业技术和持续服务推动财富科技融入真实业务流程。')}
-          cases={[{ mark: "FinOne", name: t("星财富"), type: t("数字财富平台"), copy: t("通过 FinOne 连接客户开户、金融产品、投资交易与财富运营流程，支撑面向个人客户的数字财富服务。"), details: [[t("FinOne 驱动财富运营升级"), t("通过 FinOne 连接客户开户、金融产品、投资交易与财富运营流程，支撑面向个人客户的数字财富服务。")]] },
-            { mark: "RWA", name: isEnglish ? "Zhongtai" : t("泰康资管香港 × OSL"), type: t("RWA 项目"), copy: t("围绕基金份额代币化场景，探索传统资产与数字资产基础设施的连接。"), details: [[t("代币化基金份额项目"), t("围绕基金份额代币化场景，探索传统资产与数字资产基础设施的连接。")]] },
-            { mark: "陆浦", name: t("陆浦财富"), type: t("白标财富 App · 已上线"), copy: t("基于白标财富能力，为机构构建连接账户、产品、交易、资产与持续服务的品牌化客户终端。"), details: [[t("自有品牌财富 App"), t("基于白标财富能力，为机构构建连接账户、产品、交易、资产与持续服务的品牌化客户终端。")]] }]} />
+        <HomeLogoWall />
         <Markup html={afterCasesMarkup} />
       </main>
     </>
@@ -400,7 +401,7 @@ function App() {
 createRoot(document.querySelector('#app')!).render(<App />);
 
 function refreshPageIcons() {
-  createIcons({ icons: { ArrowLeftRight, ArrowRight, ArrowUp, BadgeDollarSign, Award, ChevronDown, ChevronRight, Database, FileChartColumn, Globe2, ListFilter, Menu, MoveRight, PackagePlus, PieChart, RefreshCw, X, Building2, Landmark, Network, WalletCards, BriefcaseBusiness, Blocks, Bot, ShieldCheck, CircleCheck, CircleDollarSign, Gauge, Users, Gem, Orbit, Mail, MapPin } });
+  createIcons({ icons: { ArrowLeftRight, ArrowRight, ArrowUp, BadgeDollarSign, Award, ChevronDown, ChevronRight, Database, FileChartColumn, Globe2, ListFilter, Menu, MoveRight, PackagePlus, PieChart, RefreshCw, X, Building2, Landmark, Network, WalletCards, BriefcaseBusiness, Blocks, Bot, ShieldCheck, CircleCheck, CircleDollarSign, Gauge, Users, Gem, Orbit, Mail, Phone, MapPin } });
 }
 
 function initializePage() {
@@ -568,7 +569,7 @@ function initializePage() {
       document.querySelectorAll<HTMLElement>('main .section-pad').forEach(section => {
         section.classList.add('home-element-entrance', 'in-view');
         const elements = section.querySelectorAll<HTMLElement>(
-          'h2, .coverage-header p, .coverage-header > a, .section-heading p, .architecture-top > p, .solution-copy > p, .solution-mode-tabs, .solution-option, .solution-media, .platform-card, .ai-copy > p, .ai-copy > a, .ai-product-grid > a, .why-grid > article, .trust-title > p, .trust-pillars > article, .trust-awards, .platform-cases-head > p, .platform-case-grid > button, .contact-copy > p, .contact-actions'
+          'h2, .home-logo-heading p, .home-logo-grid > li, .home-ai-card, .home-ai-heading > a, .coverage-header p, .coverage-header > a, .section-heading p, .architecture-top > p, .solution-copy > p, .solution-mode-tabs, .solution-option, .solution-media, .platform-card, .ai-copy > p, .ai-copy > a, .ai-product-grid > a, .why-grid > article, .trust-title > p, .trust-pillars > article, .trust-awards, .platform-cases-head > p, .platform-case-grid > button, .contact-copy > p, .contact-actions'
         );
         elements.forEach((element, index) => {
           if (element.classList.contains('home-reveal-item')) return;

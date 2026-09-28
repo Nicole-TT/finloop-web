@@ -944,7 +944,9 @@
 }
 
 .trust {
-  background: var(--white);
+  background: #031222;
+  color: #fff;
+  --muted: #aab8c6;
 }
 
 .trust-layout {
@@ -960,6 +962,7 @@
 }
 
 .trust-title p {
+  color: var(--muted);
   line-height: 1.8;
   margin: 28px auto 0;
   max-width: 550px;
@@ -976,7 +979,7 @@
   padding: 30px;
   border: 0;
   border-radius: var(--card-radius);
-  background: #f5f7f8;
+  background: rgba(255, 255, 255, .06);
   text-align: center;
 }
 
@@ -1016,7 +1019,7 @@
   overflow: hidden;
   border: 0;
   border-radius: 0;
-  background: #fff;
+  background: transparent;
   box-shadow: none;
 }
 
@@ -1074,7 +1077,7 @@
 .trust-awards article::after { right: 18px; transform: translateY(-50%) scaleX(-1); }
 
 .trust-awards small {
-  color: #b88635;
+  color: #d9ad68;
   font-size: 12px;
   line-height: 1.5;
   font-weight: 600;
