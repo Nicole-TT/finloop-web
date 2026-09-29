@@ -17,7 +17,7 @@ const faiAgents = [
   { name: '新闻资讯 Agent', description: '聚合并梳理市场资讯，识别可能影响产品、资产或客户的变化。' },
   { name: '视觉营销 Agent', description: '将金融观点、产品材料与数据组织为更易理解的内容方案。' },
   { name: '更多 Agent', description: '' },
-  { name: 'FAI运营中台', description: '' },
+  { name: 'FinWork运营中台', description: '' },
 ];
 
 function Head({ title, copy }: { title: string; copy?: string }) {
@@ -65,9 +65,9 @@ export function FinloopAIPage() {
     <section className="ai-section ai-apps ai-apps-compare" id="applications"><div className="ai-shell"><Head title="从底层 AI 能力，到真正可用的业务产品" copy="Finloop AI 既可以成为独立 AI 应用，也可以直接进入现有金融产品 Workflow。" /><div className="ai-stack-stage" ref={appStackRef}><div className="ai-app-grid">
         <motion.div className="ai-app-combo" data-ai-layer="AI 应用层">
           <article className="ai-app-feature"><div><h3>星路通</h3><p>面向金融专业工作的 AI 工作台</p><span>KYP · GAP · 风险 · 市场洞察</span></div><GreyWorkspace title="星路通" output="AI workflow" /></article>
-          <div className="ai-embedded-products">{[['FinEAM','/products/fineam'],['星企通','/products/xingqitong'],['Webportal','/products/web-portal'],['FinOne','/products/finone'],['支付平台','/contact'],['AI 股票柜台','/contact']].map(([name,href],i)=><Link key={name} to={href}><span>{String(i+1).padStart(2,'0')}</span><small>AI 能力嵌入</small><strong>{name}</strong></Link>)}</div>
+          <div className="ai-embedded-products">{[['FinEAM','https://fineam.com.hk/'],['星企通','/products/xingqitong'],['Webportal','/products/web-portal'],['FinOne','/products/finone'],['支付平台','/contact'],['AI 股票柜台','/contact']].map(([name,href],i)=><Link key={name} to={href} target={href === 'https://fineam.com.hk/' ? '_blank' : undefined} rel={href === 'https://fineam.com.hk/' ? 'noopener noreferrer' : undefined}><span>{String(i+1).padStart(2,'0')}</span><small>AI 能力嵌入</small><strong>{name}</strong></Link>)}</div>
         </motion.div>
-        <motion.article className="ai-app-wide" data-ai-layer="AI PaaS层" style={{ scale: paasScale }}><div><h3>FAI平台</h3><p>将 AI 变成企业组织能力</p><span>企业资料 · 任务 · AI 员工 · Workflow</span></div><div className="ai-fai-agents">{faiAgents.map((agent,i)=><section key={agent.name}><span>{String(i+1).padStart(2,'0')}</span><h4>{agent.name}</h4>{agent.description && <p>{agent.description}</p>}</section>)}</div></motion.article>
+        <motion.article className="ai-app-wide" data-ai-layer="AI PaaS层" style={{ scale: paasScale }}><div><h3>FinWork平台</h3><p>将 AI 变成企业组织能力</p><span>企业资料 · 任务 · AI 员工 · Workflow</span></div><div className="ai-fai-agents">{faiAgents.map((agent,i)=><section key={agent.name}><span>{String(i+1).padStart(2,'0')}</span><h4>{agent.name}</h4>{agent.description && <p>{agent.description}</p>}</section>)}</div></motion.article>
         <motion.article className="ai-app-wide" data-ai-layer="AI MaaS层" style={{ scale: maasScale }}><div><h3>星智通</h3><p>统一连接和管理多模型能力</p><span>模型市场 · 统一 API · 智能路由 · 成本治理</span></div><GreyWorkspace title="星智通" output="AI workflow" /></motion.article>
       </div></div></div></section>
 

@@ -41,13 +41,13 @@ export function WealthSolutionPage() {
     </div></section>
 
     <section className="wealth-section wealth-infrastructure"><div className="wealth-shell"><SectionHead title="按需构建适合您的财富解决方案" copy="根据机构现有系统和业务阶段，可灵活组合财富平台、交易基础设施、产品网络、AI 与 API / 数据能力，形成完整方案或按模块接入。"/><div className="wealth-platform-grid">{[
-      ['01','WEALTH PLATFORM','FinEAM','客户、账户、资产及财富管理业务','/products/fineam'],
+      ['01','WEALTH PLATFORM','FinEAM','客户、账户、资产及财富管理业务','https://fineam.com.hk/'],
       ['02','WEALTH PLATFORM','FinOne','平台管理、白标及业务运营能力','/products/finone'],
       ['03','TRADING INFRASTRUCTURE','Web Portal','机构端产品与交易工作平台','/products/web-portal'],
       ['04','TRADING INFRASTRUCTURE','FinMix','自研交易与柜台基础设施','/technology-platform'],
       ['05','INTELLIGENCE','Finloop AI','AI、Agent 与智能业务能力','/ai'],
       ['06','TECHNOLOGY','API / Data Infrastructure','系统连接、数据及开放能力','/technology-platform'],
-    ].map(([number,group,name,copy,to])=><Link to={to} key={name}><div><span>{number}</span><small>{group}</small></div><h3>{name}</h3><p>{copy}</p><b>进入产品 →</b></Link>)}</div></div></section>
+    ].map(([number,group,name,copy,to])=><Link to={to} target={to === 'https://fineam.com.hk/' ? '_blank' : undefined} rel={to === 'https://fineam.com.hk/' ? 'noopener noreferrer' : undefined} key={name}><div><span>{number}</span><small>{group}</small></div><h3>{name}</h3><p>{copy}</p><b>进入产品 →</b></Link>)}</div></div></section>
 
     <section className="wealth-section wealth-delivery-section"><div className="wealth-shell wealth-delivery-layout"><SectionHead title="提供多方式接入现有系统业务" copy="无论从零建立财富业务，还是升级现有平台，都可以根据已有系统选择适合的接入方式。"/><div className="wealth-why wealth-delivery">{[
       ['完整平台','从客户、产品、交易到资产服务，快速上线完整财富业务。',[]],

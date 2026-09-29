@@ -18,7 +18,7 @@ const integratedCapabilities = [
 ];
 
 const platforms = [
-  { name: 'FinEAM', type: '数字财富管理平台', position: '面向专业财富管理机构的数字财富管理平台', image: '/assets/account-architecture-light.png', alt: 'FinEAM 客户、账户与资产管理平台示意图', href: '/products/fineam' },
+  { name: 'FinEAM', type: '数字财富管理平台', position: '面向专业财富管理机构的数字财富管理平台', image: '/assets/account-architecture-light.png', alt: 'FinEAM 客户、账户与资产管理平台示意图', href: 'https://fineam.com.hk/' },
   { name: 'Web Portal', type: '多资产产品与交易平台', position: '面向专业机构的多资产财富产品与交易平台', image: '/assets/product-template-labeled.png', alt: 'Web Portal 多资产产品与专业交易平台示意图', href: '/products/web-portal' },
   { name: 'FinOne', type: '财富运营中台', position: '支撑 FinEAM 的统一财富运营中台', image: '/assets/finone-onboarding.png', alt: 'FinOne 财富业务运营管理平台界面', href: '/products/finone' },
   { name: 'FinMix', type: '金融基础设施', position: '星路自研金融交易与账户基础设施', image: '/assets/finmix-infrastructure-light.png', alt: 'FinMix 金融交易与账户基础设施示意图' },
@@ -85,7 +85,7 @@ export function InstitutionalWealthSolutionPage() {
 
     <section className="goal-section iw-integrated" id="capabilities"><div className="goal-shell"><header className="iw-integrated-head"><div><h2>打通财富管理全链路</h2><p>从客户与账户、投资组合，到全品类产品、专业交易和持续运营，星路通过 FinEAM、Web Portal 及统一中后台与金融基础设施，为专业机构构建可按需组合的一体化财富管理能力。</p></div></header><div className="iw-capability-tabs" role="tablist" aria-label="财富管理能力">{integratedCapabilities.map((item, i) => <button key={item.title} id={`capability-tab-${i}`} role="tab" aria-selected={activeCapability === i} aria-controls="capability-panel" onClick={() => setActiveCapability(i)}>{item.title}</button>)}</div><article className="iw-capability-panel" id="capability-panel" role="tabpanel" aria-labelledby={`capability-tab-${activeCapability}`}><figure><img src={capability.image} alt={capability.alt} /></figure><div className="iw-capability-copy"><h3>{capability.heading}</h3><p>{capability.copy}</p><div className="iw-capability-items">{capability.items.map(x => <span key={x}>{x}</span>)}</div><footer>{capability.systems.map(x => <b key={x}>{x}</b>)}</footer></div></article></div></section>
 
-    <section className="goal-section" id="platforms"><div className="goal-shell"><Heading title="平台与基础设施支撑" copy="根据机构业务需求，可由不同平台独立或组合支撑；平台是能力载体，不是方案分类依据。" /><div className="iw-platform-cards">{platforms.map(item => <article key={item.name}><div><small>{item.type}</small><h3>{item.name}</h3><strong>{item.position}</strong>{item.href && <Link to={item.href}>了解 {item.name} →</Link>}</div><figure aria-hidden="true" /></article>)}</div></div></section>
+    <section className="goal-section" id="platforms"><div className="goal-shell"><Heading title="平台与基础设施支撑" copy="根据机构业务需求，可由不同平台独立或组合支撑；平台是能力载体，不是方案分类依据。" /><div className="iw-platform-cards">{platforms.map(item => <article key={item.name}><div><small>{item.type}</small><h3>{item.name}</h3><strong>{item.position}</strong>{item.href && <Link to={item.href} target={item.href === 'https://fineam.com.hk/' ? '_blank' : undefined} rel={item.href === 'https://fineam.com.hk/' ? 'noopener noreferrer' : undefined}>了解 {item.name} →</Link>}</div><figure aria-hidden="true" /></article>)}</div></div></section>
 
     <section className="goal-section" id="delivery"><div className="goal-shell"><Heading title="我们的服务流程链路" copy="从业务规划、方案配置与系统连接，到测试上线和持续运营，推动机构财富管理方案真正落地。" /><ol className="goal-timeline iw-delivery">{delivery.map(([title, copy], i) => <li key={title}><span>0{i + 1}</span><div><h3>{title}</h3><p>{copy}</p></div></li>)}</ol></div></section>
 

@@ -137,22 +137,9 @@ const WhiteLabelEmbeddedSolutionPage = lazy(() => import('./pages/WhiteLabelEmbe
   default: (props: ComponentProps<typeof module.WhiteLabelEmbeddedSolutionPage>) => <PageReady><module.WhiteLabelEmbeddedSolutionPage {...props} /></PageReady>,
 })));
 
-const navigationEntry = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined;
-if (navigationEntry?.type === 'reload') {
-  history.scrollRestoration = 'manual';
-  if (window.location.hash) {
-    history.replaceState(history.state, '', window.location.pathname + window.location.search);
-  }
-  window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-  window.addEventListener('pageshow', () => {
-    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-    history.scrollRestoration = 'auto';
-  }, { once: true });
-}
-
 const aiItems = [
   ['星路通', '面向金融专业人员的 AI 工作台'],
-  ['FAI平台', '企业资料、任务与 AI 员工中枢'],
+  ['FinWork平台', '企业资料、任务与 AI 员工中枢'],
   ['星智通', '统一 AI API 网关与分发平台'],
 ];
 
@@ -188,9 +175,9 @@ const productLinks: Record<string, string> = {
   '现金管理': '/products#cash', '公募基金': '/products#public', '私募基金': '/products#private',
   '债券': '/products#bonds', '结构性产品': '/products#structured', '保险': '/products#insurance',
   '虚拟资产': '/products#virtual', 'RWA': '/products#rwa', 'FinOne': '/products/finone',
-  'FinEAM': '/products/fineam', '星企通': '/products/xingqitong', 'Web Portal': '/products/web-portal',
+  'FinEAM': 'https://fineam.com.hk/', '星企通': '/products/xingqitong', 'Web Portal': '/products/web-portal',
   'FinTaaS': 'https://finlooprwa.com/fintaas/', '白标 App': '/products/white-label-app',
-  '星路通': '/ai/xinglutong', 'FAI平台': '/ai/fai', '星智通': '/ai/xingzhitong',
+  '星路通': '/ai/xinglutong', 'FinWork平台': '/ai/fai', '星智通': '/ai/xingzhitong',
 };
 const recruitmentUrl = 'https://app.mokahr.com/social-recruitment/fosunwealth/146702?locale=zh-CN&previewKey=f4650087c2b0473194aa497d7ebfa3bda864a12453be4a14841444ede6673ada#/jobs?department%5B0%5D=3635833&page=1&anchorName=jobsList';
 
@@ -261,7 +248,7 @@ const headerMarkup = `
       </div>
       <div class="mega-panel" data-panel="technology">
         <div class="mega-intro"><strong>财富科技平台</strong><p>从客户终端、业务工作台到财富核心与资产上链能力。</p></div>
-        <div class="mega-grid mega-grid-unlabeled"><div>${productGroups[1].items.map(([name, desc]) => `<a href="${productLinks[name]}"${name === 'FinTaaS' ? ' target="_blank" rel="noopener noreferrer"' : ''}><span>${name}</span><small>${desc}</small><i data-lucide="arrow-right"></i></a>`).join('')}</div></div>
+        <div class="mega-grid mega-grid-unlabeled"><div>${productGroups[1].items.map(([name, desc]) => `<a href="${productLinks[name]}"${(name === 'FinTaaS' || name === 'FinEAM') ? ' target="_blank" rel="noopener noreferrer"' : ''}><span>${name}</span><small>${desc}</small><i data-lucide="arrow-right"></i></a>`).join('')}</div></div>
       </div>
       <div class="mega-panel" data-panel="solutions">
         <div class="mega-intro"><strong>从想完成的业务目标出发</strong><p>围绕财富业务、嵌入式服务、企业资金、RWA 与 AI 落地组合端到端能力。</p></div>
@@ -284,7 +271,7 @@ const mobileDrawerMarkup = `
   <div class="mobile-drawer" aria-hidden="true">
     <div class="drawer-top"><a href="/" aria-label="Finloop 星路科技首页"><img src="/assets/finloop-logo.svg" alt="Finloop 星路科技" /></a><button class="drawer-close" aria-label="关闭菜单"><i data-lucide="x"></i></button></div>
     <nav class="mobile-nav" aria-label="移动端导航">
-      ${mobileNavGroups.map(([title, path, items]) => `<div class="mobile-group"><button aria-expanded="false">${title}<i data-lucide="chevron-down"></i></button><div>${path ? `<a href="${path}">查看全部</a>` : ''}${title === '解决方案' ? mobileSolutionLinks : items.map(item => `<a href="${mobileItemHref(title, item, path)}"${item === 'FinTaaS' || item === '加入我们' ? ' target="_blank" rel="noopener noreferrer"' : ''}>${item}</a>`).join('')}</div></div>`).join('')}
+      ${mobileNavGroups.map(([title, path, items]) => `<div class="mobile-group"><button aria-expanded="false">${title}<i data-lucide="chevron-down"></i></button><div>${path ? `<a href="${path}">查看全部</a>` : ''}${title === '解决方案' ? mobileSolutionLinks : items.map(item => `<a href="${mobileItemHref(title, item, path)}"${item === 'FinTaaS' || item === 'FinEAM' || item === '加入我们' ? ' target="_blank" rel="noopener noreferrer"' : ''}>${item}</a>`).join('')}</div></div>`).join('')}
     </nav>
     <div class="drawer-bottom"><button class="language-button"><i data-lucide="globe-2"></i> 简体中文</button><a class="button button-accent" href="/contact">预约咨询 <i data-lucide="arrow-right"></i></a></div>
   </div>
@@ -340,7 +327,7 @@ const mainMarkup = `
       <div class="architecture-top"><div><h2>选择适合业务场景的金融平台</h2></div><p>从财富核心、机构工作台和企业资金管理，到数字资产、AI 与交易基础设施，进入对应平台了解产品定位与能力范围。</p></div>
       <div class="platform-directory" aria-label="Finloop 金融平台入口">
         <a class="platform-card" href="/products/finone"><div><h3>FinOne</h3><p>统一客户、账户、产品、交易、资产与运营的财富核心。</p></div><span>了解详情 <i data-lucide="arrow-right"></i></span></a>
-        <a class="platform-card" href="/products/fineam"><div><h3>FinEAM</h3><p>EAM 与家族办公室财富管理工作平台。</p></div><span>了解详情 <i data-lucide="arrow-right"></i></span></a>
+        <a class="platform-card" href="https://fineam.com.hk/" target="_blank" rel="noopener noreferrer"><div><h3>FinEAM</h3><p>EAM 与家族办公室财富管理工作平台。</p></div><span>了解详情 <i data-lucide="arrow-right"></i></span></a>
         <a class="platform-card" href="/products/xingqitong"><div><h3>星企通</h3><p>连接企业现金、投资与资产管理场景。</p></div><span>了解详情 <i data-lucide="arrow-right"></i></span></a>
         <a class="platform-card" href="/products/web-portal"><div><h3>Web Portal</h3><p>面向机构的产品、交易与运营工作台。</p></div><span>了解详情 <i data-lucide="arrow-right"></i></span></a>
         <a class="platform-card" href="https://finlooprwa.com/fintaas/" target="_blank" rel="noopener noreferrer"><div><h3>FinTaaS</h3><p>提供真实资产上链与资产代币化相关金融科技服务。</p></div><span>了解详情 <i data-lucide="arrow-right"></i></span></a>
@@ -355,7 +342,7 @@ const mainMarkup = `
         <div class="home-ai-cards" aria-label="Finloop AI 产品入口">
           ${[
             ['xinglutong', '星路通', 'KYP、GAP 分析、风险预警与竞品洞察。'],
-            ['fai', 'FAI', '连接资讯、资料、任务、AI 员工与 Skills。'],
+            ['fai', 'FinWork', '连接资讯、资料、任务、AI 员工与 Skills。'],
             ['xingzhitong', '星智通', '统一 AI API 网关、智能路由与企业安全。'],
           ].map(([slug, name, copy], index) => `<a class="home-ai-card" href="/ai/${slug}"><h3>${name}</h3><p>${copy}</p><img class="home-ai-card-glow" src="/assets/home-figma/ai-card-glow.svg" alt="" /><span class="home-ai-card-arrow" aria-hidden="true"><img src="/assets/home-figma/ai-arrow.svg" alt="" /></span>${index === 1 ? `<div class="home-ai-agents" aria-hidden="true">${Array.from({length:4}, () => '<span>Agent</span>').join('')}</div>` : index === 2 ? '<img class="home-ai-network" src="/assets/home-figma/ai-network.png" alt="" />' : ''}</a>`).join('')}
         </div>
@@ -416,7 +403,7 @@ const footerMarkup = `
     <div class="footer-contact"><div><i data-lucide="map-pin" aria-hidden="true"></i><span>香港总部：香港中环花园道 3 号冠君大厦 21 楼 2101-2105 室</span></div><div><i data-lucide="mail" aria-hidden="true"></i><a href="mailto:CS@finloop.hk">CS@finloop.hk</a></div><div><i data-lucide="phone" aria-hidden="true"></i><a href="tel:+85230088996">(852) 3008 8996</a></div></div>
     <div class="footer-directory">${mobileNavGroups.map(([title, path, items]) => `<div><h3>${title}</h3>${items.map(item => {
       const href = title === '解决方案' ? `/solutions/${businessGoalSolutionItems.find(([, name]) => name === item)![0]}` : mobileItemHref(title, item, path);
-      return `<a href="${href}"${item === 'FinTaaS' || item === '加入我们' ? ' target="_blank" rel="noopener noreferrer"' : ''}>${item}</a>`;
+      return `<a href="${href}"${item === 'FinTaaS' || item === 'FinEAM' || item === '加入我们' ? ' target="_blank" rel="noopener noreferrer"' : ''}>${item}</a>`;
     }).join('')}</div>`).join('')}</div>
     </div>
     <div class="footer-legal"><span>© 2026 Finloop Finance Technology Holding Limited</span><nav aria-label="法律信息"><a href="#footer">隐私政策</a><a href="#footer">使用条款</a><a href="#footer">Cookie Policy</a><a href="#footer">金融免责声明</a><a href="#footer">监管声明</a></nav></div>

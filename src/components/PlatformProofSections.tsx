@@ -1,3 +1,4 @@
+import { translateFinOne } from '../i18n/finone';
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
@@ -19,11 +20,11 @@ type SectionProps = {
 
 export function PlatformTrustSection({ sectionClass, shellClass }: SectionProps) {
   const points = [
-    ['持牌金融服务体系', '相关受规管金融业务由持有香港证监会第 1、4、9 类受规管活动牌照的星路金融开展，具体范围以适用牌照与项目约定为准。'],
-    ['专业金融业务能力', '围绕客户、账户、产品、交易与资产运营构建平台能力，让技术始终服务于真实金融流程。'],
-    ['合规、权限与记录', '将身份验证、适当性、流程授权和操作记录嵌入业务过程，支持机构建立清晰可控的管理边界。'],
+    [translateFinOne("持牌金融服务体系"), translateFinOne("相关受规管金融业务由持有香港证监会第 1、4、9 类受规管活动牌照的星路金融开展，具体范围以适用牌照与项目约定为准。")],
+    [translateFinOne("专业金融业务能力"), translateFinOne("围绕客户、账户、产品、交易与资产运营构建平台能力，让技术始终服务于真实金融流程。")],
+    [translateFinOne("合规、权限与记录"), translateFinOne("将身份验证、适当性、流程授权和操作记录嵌入业务过程，支持机构建立清晰可控的管理边界。")],
   ];
-  return <section className={`platform-trust ${sectionClass}`}><div className={`${shellClass} platform-trust-inner`}><header><h2>专业金融基础，贯穿每一个平台</h2><p>Finloop 将财富科技平台建立在专业金融业务、合规流程与机构级技术基础之上，帮助机构在清晰的业务边界与权限控制下开展金融服务。</p></header><div className="platform-trust-grid">{points.map(([title, copy], index) => <article key={title}><span>0{index + 1}</span><h3>{title}</h3><p>{copy}</p></article>)}</div></div></section>;
+  return <section className={`platform-trust ${sectionClass}`}><div className={`${shellClass} platform-trust-inner`}><header><h2>{translateFinOne("专业金融基础，贯穿每一个平台")}</h2><p>{translateFinOne("Finloop 将财富科技平台建立在专业金融业务、合规流程与机构级技术基础之上，帮助机构在清晰的业务边界与权限控制下开展金融服务。")}</p></header><div className="platform-trust-grid">{points.map(([title, copy], index) => <article key={title}><span>0{index + 1}</span><h3>{title}</h3><p>{copy}</p></article>)}</div></div></section>;
 }
 
 export function PlatformCasesSection({ id, sectionClass, shellClass, title, copy, cases }: SectionProps & { title: string; copy: string; cases: PlatformCase[] }) {

@@ -51,7 +51,7 @@ export function HomeLogoWall() {
     <div className="section-inner">
       <header className="home-logo-heading">
         <h2>{isEnglish ? 'They all trust us' : '他们都信赖我们'}</h2>
-        <p>{t('连接金融机构、数字资产与企业业务场景，以专业技术和持续服务推动财富科技融入真实业务流程。')}</p>
+        <p>{t('携手金融机构与生态伙伴，共同拓展财富服务的更多可能。')}</p>
       </header>
       <ul ref={row} className="home-logo-grid" tabIndex={0}
         onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}

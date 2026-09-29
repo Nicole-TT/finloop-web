@@ -29,7 +29,7 @@ export const en: Record<string, string> = {
   "Web Portal": "Webportal",
   "星路通": "Fintelligence",
   "星智通": "FinAMH",
-  "FAI平台": "FAI",
+  "FinWork平台": "FinWork",
   "面向金融专业人员的 AI 工作台": "An AI workspace for financial professionals",
   "企业资料、任务与 AI 员工中枢": "A hub for enterprise knowledge, tasks and AI employees",
   "统一 AI API 网关与分发平台": "A unified AI API gateway and distribution platform",
@@ -233,5 +233,6 @@ export const en: Record<string, string> = {
 "与星路一起连接财富科技的未来": "Build the future of wealth technology with Finloop",
 "香港、上海与业务咨询": "Hong Kong, Shanghai and business enquiries",
 "查看全部": "View all",
-"连接债券产品数据、询价、订单与存续管理，服务机构多资产配置场景。": "Connect bond data, quotes, orders and lifecycle management for institutional multi-asset allocation."
+"连接债券产品数据、询价、订单与存续管理，服务机构多资产配置场景。": "Connect bond data, quotes, orders and lifecycle management for institutional multi-asset allocation.",
+  "携手金融机构与生态伙伴，共同拓展财富服务的更多可能。": "Working with financial institutions and ecosystem partners to expand the possibilities of wealth services."
 };
