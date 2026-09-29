@@ -78,12 +78,14 @@ export function SiteLayout({ headerMarkup, mobileDrawerMarkup, footerMarkup, ini
     window.addEventListener('scroll', syncHeaderTheme, { passive: true });
     window.addEventListener('resize', syncHeaderTheme);
     window.addEventListener('finloop:hero-theme', syncHeaderTheme);
+    window.addEventListener('finloop:route-change', syncHeaderTheme);
 
     return () => {
       window.cancelAnimationFrame(frame);
       window.removeEventListener('scroll', syncHeaderTheme);
       window.removeEventListener('resize', syncHeaderTheme);
       window.removeEventListener('finloop:hero-theme', syncHeaderTheme);
+      window.removeEventListener('finloop:route-change', syncHeaderTheme);
     };
   }, [pathname]);
 
