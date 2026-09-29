@@ -234,5 +234,21 @@ export const en: Record<string, string> = {
 "香港、上海与业务咨询": "Hong Kong, Shanghai and business enquiries",
 "查看全部": "View all",
 "连接债券产品数据、询价、订单与存续管理，服务机构多资产配置场景。": "Connect bond data, quotes, orders and lifecycle management for institutional multi-asset allocation.",
-  "携手金融机构与生态伙伴，共同拓展财富服务的更多可能。": "Working with financial institutions and ecosystem partners to expand the possibilities of wealth services."
+  "携手金融机构与生态伙伴，共同拓展财富服务的更多可能。": "Working with financial institutions and ecosystem partners to expand the possibilities of wealth services.",
+  "复用统一财富核心，减少重复建设，让新产品与新业务更快上线、持续扩展。": "Reuse a unified wealth core to reduce duplicated development, launch new products and services faster, and keep growing.",
+  "贯通客户、投资与运营，帮助 EAM 与家族办公室提升团队协作，持续服务客户财富。": "Connect clients, investments and operations so EAMs and family offices can collaborate effectively and deliver ongoing wealth services.",
+  "一站管理企业现金与投资，清晰掌握资金状态，让资金配置与资产管理更高效。": "Manage corporate cash and investments in one place, with clear visibility into funds for more efficient allocation and asset management.",
+  "从产品筛选、询价比价到下单跟踪，在同一工作台推进交易，减少分散沟通与重复操作。": "Move from product selection and quote comparison to orders and tracking in one workspace, reducing fragmented communication and repeated work.",
+  "连接真实资产与链上业务，为资产代币化提供技术支撑，帮助机构拓展数字资产业务。": "Connect real-world assets with on-chain workflows through tokenization technology that supports institutional digital asset services.",
+  "用 AI 辅助产品尽调、需求分析与风险洞察，减少信息整理，让金融专业人员更专注于判断与服务。": "Use AI to assist product due diligence, needs analysis and risk insights, so financial professionals spend less time organizing information and more time on decisions and service.",
+  "将企业知识与 AI 员工融入任务流程，把分散工具转化为团队可复用、可协作的工作能力。": "Bring enterprise knowledge and AI employees into task workflows, turning separate tools into reusable capabilities teams can work with together.",
+  "通过统一 API 接入多种模型，集中管理调用、成本与权限，降低企业 AI 集成与治理复杂度。": "Access multiple models through one API and manage usage, costs and permissions centrally to simplify enterprise AI integration and governance.",
+  "为财富业务构建持久的核心能力，从容应对变化，持续拓展增长空间。": "Build lasting capabilities for your wealth business, adapt to change and create room for growth.",
+  "让专业成就信任，让财富服务承载更长远的客户价值。": "Turn expertise into trust and create lasting value through wealth services.",
+  "让企业资金更好地服务经营，为稳健发展增添从容与主动。": "Put corporate capital to work for the business, with greater confidence and flexibility for sustainable growth.",
+  "连接市场机遇与专业行动，让机构交易更从容、更有掌控。": "Connect market opportunities with professional action for greater confidence and control in institutional trading.",
+  "拓展真实资产的数字价值，让传统金融与新兴生态产生更多可能。": "Extend the digital potential of real-world assets and open new possibilities between traditional finance and emerging ecosystems.",
+  "拓宽专业洞察的边界，让每一次判断与服务更有深度。": "Broaden professional insight and bring greater depth to every decision and client interaction.",
+  "让个体智慧汇聚为组织能力，释放人机协作的长期价值。": "Turn individual expertise into organizational capability and unlock lasting value from human–AI collaboration.",
+  "企业人工智能应用基座，让 AI 的可能性不断延伸。": "A foundation for enterprise AI applications, expanding what AI can make possible."
 };

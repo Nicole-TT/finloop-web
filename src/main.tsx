@@ -100,9 +100,6 @@ const NewsDetailPage = lazy(() => import('./pages/NewsPage').then(module => ({
 const NewsPage = lazy(() => import('./pages/NewsPage').then(module => ({
   default: (props: ComponentProps<typeof module.NewsPage>) => <PageReady><module.NewsPage {...props} /></PageReady>,
 })));
-const ResourcesRedirect = lazy(() => import('./pages/NewsPage').then(module => ({
-  default: (props: ComponentProps<typeof module.ResourcesRedirect>) => <PageReady><module.ResourcesRedirect {...props} /></PageReady>,
-})));
 const AboutPage = lazy(() => import('./pages/AboutPage').then(module => ({
   default: (props: ComponentProps<typeof module.AboutPage>) => <PageReady><module.AboutPage {...props} /></PageReady>,
 })));
@@ -326,11 +323,11 @@ const mainMarkup = `
     <section class="architecture section-pad" id="architecture">
       <div class="architecture-top"><div><h2>选择适合业务场景的金融平台</h2></div><p>从财富核心、机构工作台和企业资金管理，到数字资产、AI 与交易基础设施，进入对应平台了解产品定位与能力范围。</p></div>
       <div class="platform-directory" aria-label="Finloop 金融平台入口">
-        <a class="platform-card" href="/products/finone"><div><h3>FinOne</h3><p>统一客户、账户、产品、交易、资产与运营的财富核心。</p></div><span>了解详情 <i data-lucide="arrow-right"></i></span></a>
-        <a class="platform-card" href="https://fineam.com.hk/" target="_blank" rel="noopener noreferrer"><div><h3>FinEAM</h3><p>EAM 与家族办公室财富管理工作平台。</p></div><span>了解详情 <i data-lucide="arrow-right"></i></span></a>
-        <a class="platform-card" href="/products/xingqitong"><div><h3>星企通</h3><p>连接企业现金、投资与资产管理场景。</p></div><span>了解详情 <i data-lucide="arrow-right"></i></span></a>
-        <a class="platform-card" href="/products/web-portal"><div><h3>Web Portal</h3><p>面向机构的产品、交易与运营工作台。</p></div><span>了解详情 <i data-lucide="arrow-right"></i></span></a>
-        <a class="platform-card" href="https://finlooprwa.com/fintaas/" target="_blank" rel="noopener noreferrer"><div><h3>FinTaaS</h3><p>提供真实资产上链与资产代币化相关金融科技服务。</p></div><span>了解详情 <i data-lucide="arrow-right"></i></span></a>
+        <a class="platform-card" href="/products/finone"><div><h3>FinOne</h3><p>为财富业务构建持久的核心能力，从容应对变化，持续拓展增长空间。</p></div><span>了解详情 <i data-lucide="arrow-right"></i></span></a>
+        <a class="platform-card" href="https://fineam.com.hk/" target="_blank" rel="noopener noreferrer"><div><h3>FinEAM</h3><p>让专业成就信任，让财富服务承载更长远的客户价值。</p></div><span>了解详情 <i data-lucide="arrow-right"></i></span></a>
+        <a class="platform-card" href="/products/xingqitong"><div><h3>星企通</h3><p>让企业资金更好地服务经营，为稳健发展增添从容与主动。</p></div><span>了解详情 <i data-lucide="arrow-right"></i></span></a>
+        <a class="platform-card" href="/products/web-portal"><div><h3>Web Portal</h3><p>连接市场机遇与专业行动，让机构交易更从容、更有掌控。</p></div><span>了解详情 <i data-lucide="arrow-right"></i></span></a>
+        <a class="platform-card" href="https://finlooprwa.com/fintaas/" target="_blank" rel="noopener noreferrer"><div><h3>FinTaaS</h3><p>拓展真实资产的数字价值，让传统金融与新兴生态产生更多可能。</p></div><span>了解详情 <i data-lucide="arrow-right"></i></span></a>
       </div>
     </section>
 
@@ -341,9 +338,9 @@ const mainMarkup = `
         <div class="home-ai-heading"><div class="ai-copy"><h2>让 AI 从工具进入真实业务流程</h2><p>Finloop AI 从金融业务工作台、企业智能、模型基础设施到 Agent 与 Skills，将 AI 能力连接到具体岗位和工作流。</p></div><a class="button button-light" href="/ai">了解 Finloop AI</a></div>
         <div class="home-ai-cards" aria-label="Finloop AI 产品入口">
           ${[
-            ['xinglutong', '星路通', 'KYP、GAP 分析、风险预警与竞品洞察。'],
-            ['fai', 'FinWork', '连接资讯、资料、任务、AI 员工与 Skills。'],
-            ['xingzhitong', '星智通', '统一 AI API 网关、智能路由与企业安全。'],
+            ['xinglutong', '星路通', '拓宽专业洞察的边界，让每一次判断与服务更有深度。'],
+            ['fai', 'FinWork', '让个体智慧汇聚为组织能力，释放人机协作的长期价值。'],
+            ['xingzhitong', '星智通', '企业人工智能应用基座，让 AI 的可能性不断延伸。'],
           ].map(([slug, name, copy], index) => `<a class="home-ai-card" href="/ai/${slug}"><h3>${name}</h3><p>${copy}</p><img class="home-ai-card-glow" src="/assets/home-figma/ai-card-glow.svg" alt="" /><span class="home-ai-card-arrow" aria-hidden="true"><img src="/assets/home-figma/ai-arrow.svg" alt="" /></span>${index === 1 ? `<div class="home-ai-agents" aria-hidden="true">${Array.from({length:4}, () => '<span>Agent</span>').join('')}</div>` : index === 2 ? '<img class="home-ai-network" src="/assets/home-figma/ai-network.png" alt="" />' : ''}</a>`).join('')}
         </div>
       </div>
@@ -483,7 +480,7 @@ function App() {
           <Route path="ai/xingzhitong" element={<XingZhiTongPage />} />
           <Route path="support" element={<SupportPage />} />
           <Route path="technology-platform" element={<TechnologyPlatformPage />} />
-          <Route path="resources" element={<ResourcesRedirect />} />
+          <Route path="resources" element={<NewsPage />} />
           <Route path="resources/:category" element={<NewsPage />} />
           <Route path="resources/:category/:slug" element={<NewsDetailPage />} />
           <Route path="about" element={<AboutPage />} />
