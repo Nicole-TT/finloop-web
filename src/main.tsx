@@ -2,41 +2,153 @@ import { isEnglish, t } from './i18n';
 import { HomeLogoWall } from './components/HomeLogoWall';
 import { animate } from 'motion';
 import { createRoot } from 'react-dom/client';
-import { useEffect } from 'react';
+import { lazy, useEffect, type ReactNode, type ComponentProps } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { createIcons, ArrowLeftRight, ArrowRight, ArrowUp, BadgeDollarSign, Award, ChevronDown, ChevronRight, Database, FileChartColumn, Globe2, ListFilter, Menu, MoveRight, PackagePlus, PieChart, RefreshCw, X, Building2, Landmark, Network, WalletCards, BriefcaseBusiness, Blocks, Bot, ShieldCheck, CircleCheck, CircleDollarSign, Gauge, Users, Gem, Orbit, Mail, Phone, MapPin } from 'lucide';
 import { Markup } from './components/PageRegions';
 import { CoverageSection, HeroSection, SolutionsSection } from './components/BusinessSections';
 import { SiteLayout } from './layouts/SiteLayout';
-import { NotFoundPage } from './pages/SectionPage';
-import { ContactPage } from './pages/ContactPage';
-import { FinancialProductsPage } from './pages/FinancialProductsPage';
-import { FinOnePage } from './pages/FinOnePage';
-import { FinEAMPage } from './pages/FinEAMPage';
-import { XingQiTongPage } from './pages/XingQiTongPage';
-import { XingQiTongNewPage } from './pages/XingQiTongNewPage';
-import { FinRWAPage } from './pages/FinRWAPage';
-import { WebPortalPage } from './pages/WebPortalPage';
-import { XingLuTongPage } from './pages/XingLuTongPage';
-import { XingZhiTongPage } from './pages/XingZhiTongPage';
-import { BrokerSolutionPage } from './pages/BrokerSolutionPage';
-import { PlatformSolutionPage } from './pages/PlatformSolutionPage';
-import { DigitalAssetSolutionPage } from './pages/DigitalAssetSolutionPage';
-import { EnterpriseSolutionPage } from './pages/EnterpriseSolutionPage';
-import { FinloopAIPage } from './pages/FinloopAIPage';
-import { FAIPage } from './pages/FAIPage';
-import { NewsDetailPage, NewsPage, ResourcesRedirect } from './pages/NewsPage';
-import { AboutPage } from './pages/AboutPage';
-import { FDEAIPage } from './pages/FDEAIPage';
-import { SupportPage } from './pages/SupportPage';
-import { TechnologyPlatformPage } from './pages/TechnologyPlatformPage';
-import { CareersPage } from './pages/CareersPage';
-import { WhiteLabelAppPage } from './pages/WhiteLabelAppPage';
-import { GoalSolutionPage } from './pages/GoalSolutionPage';
-import { InstitutionalWealthSolutionPage } from './pages/InstitutionalWealthSolutionPage';
-import { ProfessionalWealthSolutionPage } from './pages/ProfessionalWealthSolutionPage';
-import { CorporateTreasurySolutionPage } from './pages/CorporateTreasurySolutionPage';
-import { WhiteLabelEmbeddedSolutionPage } from './pages/WhiteLabelEmbeddedSolutionPage';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function PageReady({ children }: { children: ReactNode }) {
+  useEffect(() => { window.dispatchEvent(new Event('finloop:route-change')); }, []);
+  return <>{children}</>;
+}
+
+const NotFoundPage = lazy(() => import('./pages/SectionPage').then(module => ({
+  default: (props: ComponentProps<typeof module.NotFoundPage>) => <PageReady><module.NotFoundPage {...props} /></PageReady>,
+})));
+const ContactPage = lazy(() => import('./pages/ContactPage').then(module => ({
+  default: (props: ComponentProps<typeof module.ContactPage>) => <PageReady><module.ContactPage {...props} /></PageReady>,
+})));
+const FinancialProductsPage = lazy(() => import('./pages/FinancialProductsPage').then(module => ({
+  default: (props: ComponentProps<typeof module.FinancialProductsPage>) => <PageReady><module.FinancialProductsPage {...props} /></PageReady>,
+})));
+const FinOnePage = lazy(() => import('./pages/FinOnePage').then(module => ({
+  default: (props: ComponentProps<typeof module.FinOnePage>) => <PageReady><module.FinOnePage {...props} /></PageReady>,
+})));
+const FinEAMPage = lazy(() => import('./pages/FinEAMPage').then(module => ({
+  default: (props: ComponentProps<typeof module.FinEAMPage>) => <PageReady><module.FinEAMPage {...props} /></PageReady>,
+})));
+const XingQiTongPage = lazy(() => import('./pages/XingQiTongPage').then(module => ({
+  default: (props: ComponentProps<typeof module.XingQiTongPage>) => <PageReady><module.XingQiTongPage {...props} /></PageReady>,
+})));
+const XingQiTongNewPage = lazy(() => import('./pages/XingQiTongNewPage').then(module => ({
+  default: (props: ComponentProps<typeof module.XingQiTongNewPage>) => <PageReady><module.XingQiTongNewPage {...props} /></PageReady>,
+})));
+const FinRWAPage = lazy(() => import('./pages/FinRWAPage').then(module => ({
+  default: (props: ComponentProps<typeof module.FinRWAPage>) => <PageReady><module.FinRWAPage {...props} /></PageReady>,
+})));
+const WebPortalPage = lazy(() => import('./pages/WebPortalPage').then(module => ({
+  default: (props: ComponentProps<typeof module.WebPortalPage>) => <PageReady><module.WebPortalPage {...props} /></PageReady>,
+})));
+const XingLuTongPage = lazy(() => import('./pages/XingLuTongPage').then(module => ({
+  default: (props: ComponentProps<typeof module.XingLuTongPage>) => <PageReady><module.XingLuTongPage {...props} /></PageReady>,
+})));
+const XingZhiTongPage = lazy(() => import('./pages/XingZhiTongPage').then(module => ({
+  default: (props: ComponentProps<typeof module.XingZhiTongPage>) => <PageReady><module.XingZhiTongPage {...props} /></PageReady>,
+})));
+const BrokerSolutionPage = lazy(() => import('./pages/BrokerSolutionPage').then(module => ({
+  default: (props: ComponentProps<typeof module.BrokerSolutionPage>) => <PageReady><module.BrokerSolutionPage {...props} /></PageReady>,
+})));
+const PlatformSolutionPage = lazy(() => import('./pages/PlatformSolutionPage').then(module => ({
+  default: (props: ComponentProps<typeof module.PlatformSolutionPage>) => <PageReady><module.PlatformSolutionPage {...props} /></PageReady>,
+})));
+const DigitalAssetSolutionPage = lazy(() => import('./pages/DigitalAssetSolutionPage').then(module => ({
+  default: (props: ComponentProps<typeof module.DigitalAssetSolutionPage>) => <PageReady><module.DigitalAssetSolutionPage {...props} /></PageReady>,
+})));
+const EnterpriseSolutionPage = lazy(() => import('./pages/EnterpriseSolutionPage').then(module => ({
+  default: (props: ComponentProps<typeof module.EnterpriseSolutionPage>) => <PageReady><module.EnterpriseSolutionPage {...props} /></PageReady>,
+})));
+const FinloopAIPage = lazy(() => import('./pages/FinloopAIPage').then(module => ({
+  default: (props: ComponentProps<typeof module.FinloopAIPage>) => <PageReady><module.FinloopAIPage {...props} /></PageReady>,
+})));
+const FAIPage = lazy(() => import('./pages/FAIPage').then(module => ({
+  default: (props: ComponentProps<typeof module.FAIPage>) => <PageReady><module.FAIPage {...props} /></PageReady>,
+})));
+const NewsDetailPage = lazy(() => import('./pages/NewsPage').then(module => ({
+  default: (props: ComponentProps<typeof module.NewsDetailPage>) => <PageReady><module.NewsDetailPage {...props} /></PageReady>,
+})));
+const NewsPage = lazy(() => import('./pages/NewsPage').then(module => ({
+  default: (props: ComponentProps<typeof module.NewsPage>) => <PageReady><module.NewsPage {...props} /></PageReady>,
+})));
+const ResourcesRedirect = lazy(() => import('./pages/NewsPage').then(module => ({
+  default: (props: ComponentProps<typeof module.ResourcesRedirect>) => <PageReady><module.ResourcesRedirect {...props} /></PageReady>,
+})));
+const AboutPage = lazy(() => import('./pages/AboutPage').then(module => ({
+  default: (props: ComponentProps<typeof module.AboutPage>) => <PageReady><module.AboutPage {...props} /></PageReady>,
+})));
+const FDEAIPage = lazy(() => import('./pages/FDEAIPage').then(module => ({
+  default: (props: ComponentProps<typeof module.FDEAIPage>) => <PageReady><module.FDEAIPage {...props} /></PageReady>,
+})));
+const SupportPage = lazy(() => import('./pages/SupportPage').then(module => ({
+  default: (props: ComponentProps<typeof module.SupportPage>) => <PageReady><module.SupportPage {...props} /></PageReady>,
+})));
+const TechnologyPlatformPage = lazy(() => import('./pages/TechnologyPlatformPage').then(module => ({
+  default: (props: ComponentProps<typeof module.TechnologyPlatformPage>) => <PageReady><module.TechnologyPlatformPage {...props} /></PageReady>,
+})));
+const CareersPage = lazy(() => import('./pages/CareersPage').then(module => ({
+  default: (props: ComponentProps<typeof module.CareersPage>) => <PageReady><module.CareersPage {...props} /></PageReady>,
+})));
+const WhiteLabelAppPage = lazy(() => import('./pages/WhiteLabelAppPage').then(module => ({
+  default: (props: ComponentProps<typeof module.WhiteLabelAppPage>) => <PageReady><module.WhiteLabelAppPage {...props} /></PageReady>,
+})));
+const GoalSolutionPage = lazy(() => import('./pages/GoalSolutionPage').then(module => ({
+  default: (props: ComponentProps<typeof module.GoalSolutionPage>) => <PageReady><module.GoalSolutionPage {...props} /></PageReady>,
+})));
+const InstitutionalWealthSolutionPage = lazy(() => import('./pages/InstitutionalWealthSolutionPage').then(module => ({
+  default: (props: ComponentProps<typeof module.InstitutionalWealthSolutionPage>) => <PageReady><module.InstitutionalWealthSolutionPage {...props} /></PageReady>,
+})));
+const ProfessionalWealthSolutionPage = lazy(() => import('./pages/ProfessionalWealthSolutionPage').then(module => ({
+  default: (props: ComponentProps<typeof module.ProfessionalWealthSolutionPage>) => <PageReady><module.ProfessionalWealthSolutionPage {...props} /></PageReady>,
+})));
+const CorporateTreasurySolutionPage = lazy(() => import('./pages/CorporateTreasurySolutionPage').then(module => ({
+  default: (props: ComponentProps<typeof module.CorporateTreasurySolutionPage>) => <PageReady><module.CorporateTreasurySolutionPage {...props} /></PageReady>,
+})));
+const WhiteLabelEmbeddedSolutionPage = lazy(() => import('./pages/WhiteLabelEmbeddedSolutionPage').then(module => ({
+  default: (props: ComponentProps<typeof module.WhiteLabelEmbeddedSolutionPage>) => <PageReady><module.WhiteLabelEmbeddedSolutionPage {...props} /></PageReady>,
+})));
+
+const navigationEntry = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined;
+if (navigationEntry?.type === 'reload') {
+  history.scrollRestoration = 'manual';
+  if (window.location.hash) {
+    history.replaceState(history.state, '', window.location.pathname + window.location.search);
+  }
+  window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  window.addEventListener('pageshow', () => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    history.scrollRestoration = 'auto';
+  }, { once: true });
+}
 
 const aiItems = [
   ['星路通', '面向金融专业人员的 AI 工作台'],
@@ -291,7 +403,7 @@ const mainMarkup = `
     <section class="contact section-pad" id="contact">
       <div class="section-inner contact-layout">
         <div class="contact-copy"><h2>探索适合您业务的财富科技解决方案</h2><p>无论您正在构建机构财富平台、企业现金管理服务、嵌入式投资能力还是数字资产业务，星路团队都可以与您共同探索适合的解决方案。</p></div>
-        <div class="contact-actions"><a class="button button-accent" href="mailto:CS@finloop.hk">预约咨询 <i data-lucide="mail"></i></a><a class="button button-ghost-light" href="tel:+85230088996">联系我们</a><small>CS@finloop.hk · (852) 3008 8996</small></div>
+        <div class="contact-actions"><a class="button button-ghost-light" href="tel:+85230088996">联系我们</a></div>
       </div>
     </section>
   </main>

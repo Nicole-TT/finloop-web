@@ -41,9 +41,9 @@ export function HomeLogoWall() {
         position === index || (last && position >= count)
           ? (value + count) % logos.length : value));
       batch.slot = last ? 0 : index + 1;
-      timer = window.setTimeout(advance, last ? 3850 : 180);
+      timer = window.setTimeout(advance, last ? 1350 : 180);
     };
-    timer = window.setTimeout(advance, sequence.current.slot === 0 ? 3500 : 180);
+    timer = window.setTimeout(advance, sequence.current.slot === 0 ? 1000 : 180);
     return () => { observer.disconnect(); window.clearTimeout(timer); };
   }, [paused, reducedMotion]);
 

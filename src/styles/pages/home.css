@@ -650,10 +650,10 @@ body:has(.hero-scroll-scene) .site-header:not(.menu-open) .menu-button {
 .home-ai-inner { position: relative; z-index: 1; }
 .home-ai-blue-glow { position: absolute; width: 2262px; max-width: none; top: -626px; left: calc(50% - 754px); pointer-events: none; }
 .home-ai-cyan-glow { position: absolute; width: 1257px; max-width: none; top: -434px; left: calc(50% + 83px); pointer-events: none; mix-blend-mode: plus-lighter; }
-.home-ai-heading { display: flex; justify-content: space-between; align-items: flex-end; gap: 40px; margin-bottom: 76px; }
+.home-ai-heading { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; gap: 32px; margin-bottom: 76px; }
 .home-ai-heading .ai-copy { max-width: 870px; margin: 0; }
 .home-ai-heading h2 { max-width: 870px; margin: 0; font-size: clamp(32px, 2.5vw, 48px); line-height: 1.3; font-weight: 500; }
-.home-ai-heading .ai-copy p { max-width: 592px; margin: 23px 0 0; color: #9c9c9c; font-size: 16px; line-height: 1.5; }
+.home-ai-heading .ai-copy p { max-width: 592px; margin: 23px auto 0; color: #9c9c9c; font-size: 16px; line-height: 1.5; }
 .home-ai-heading > a { flex-shrink: 0; min-width: 182px; min-height: 44px; border-radius: 32px; }
 .home-ai-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--ai-card-gap); }
 .home-ai-card { position: relative; isolation: isolate; display: block; min-height: 422px; padding: 40px 42px; overflow: hidden; border: 1px solid rgba(255,255,255,.2); transition: border-color .25s ease, background .25s ease; border-radius: var(--ai-card-radius); background: linear-gradient(161deg, rgba(255,255,255,.05), rgba(153,153,153,.05)); }
@@ -688,7 +688,7 @@ body:has(.hero-scroll-scene) .site-header:not(.menu-open) .menu-button {
   .home-logo-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
 @media (max-width: 680px) {
-  .home-ai-heading { align-items: flex-start; flex-direction: column; gap: 28px; margin-bottom: 40px; }
+  .home-ai-heading { align-items: center; flex-direction: column; gap: 28px; margin-bottom: 40px; }
   .home-ai-cards { grid-template-columns: 1fr; }
   .home-ai-card { min-height: 360px; }
   .home-ai-network { max-height: 210px; object-fit: contain; }

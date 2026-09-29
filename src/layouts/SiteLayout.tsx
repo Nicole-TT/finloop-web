@@ -1,5 +1,5 @@
 import { isEnglish, t } from '../i18n';
-import { useEffect } from 'react';
+import { Suspense, useEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { MobileDrawer, SiteFooter, SiteHeader } from '../components/PageRegions';
 import { FinloopAssistantProvider } from '../components/FinloopAssistant';
@@ -113,7 +113,7 @@ export function SiteLayout({ headerMarkup, mobileDrawerMarkup, footerMarkup, ini
       <a className="skip-link" href="#main">{t('跳至主要内容')}</a>
       <SiteHeader html={headerMarkup} />
       <MobileDrawer html={mobileDrawerMarkup} />
-      <Outlet />
+      <Suspense fallback={<main id="main" style={{ minHeight: '60vh', display: 'grid', placeItems: 'center', padding: '120px 24px' }}><p role="status">{isEnglish ? 'Loading…' : '正在加载…'}</p></main>}><Outlet /></Suspense>
       <SiteFooter html={footerMarkup} />
     </FinloopAssistantProvider>
   );

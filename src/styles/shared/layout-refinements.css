@@ -91,12 +91,13 @@ body:has(.hero) .site-header:not(.scrolled):not(.menu-open) .nav-link[aria-expan
 }
 
 .hero {
+  --hero-background-image: url('/assets/home-hero-hong-kong-desktop.webp');
   position: relative;
   height: clamp(640px, 100svh, 1080px);
   min-height: 640px;
   max-height: 1080px;
   padding: 118px var(--edge) 72px;
-  background: #6f91b0 url('/assets/home-hero-hong-kong-new.png') center bottom / cover no-repeat;
+  background: #6f91b0 var(--hero-background-image) center bottom / cover no-repeat;
   color: var(--white);
   isolation: isolate;
   overflow: hidden;
@@ -891,4 +892,8 @@ body:has(.hero) .site-header:not(.scrolled):not(.menu-open) .nav-link[aria-expan
     align-items: stretch;
     flex-direction: column;
   }
+}
+
+@media (max-width: 680px) {
+  .hero { --hero-background-image: url('/assets/home-hero-hong-kong-mobile.webp'); }
 }

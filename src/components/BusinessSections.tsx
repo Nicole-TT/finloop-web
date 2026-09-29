@@ -12,6 +12,10 @@ function HeroIcon({ icon }: { icon: IconNode }) {
   </svg>;
 }
 
+const heroBackgroundSrc = window.matchMedia('(max-width: 680px)').matches
+  ? '/assets/home-hero-hong-kong-mobile.webp'
+  : '/assets/home-hero-hong-kong-desktop.webp';
+
 const assetContent: Record<string, [string, string, string, string]> = {
   cash: ['企业流动性与现金管理', '连接多币种货币基金与机构运营流程，支持企业与金融机构进行现金配置、申赎和资产查看。', 'USD · HKD · CNH', '产品范围与规则以上线时核验信息为准'],
   fund: ['连接全球公募基金产品', '将基金产品、客户适当性、交易、持仓和运营连接在同一业务链路中。', 'GLOBAL FUNDS', '覆盖多类基金产品与管理人'],
@@ -87,13 +91,27 @@ function MetricsVideoReveal({ reduced }: { reduced: boolean }) {
     const scene = sceneRef.current;
     const video = videoRef.current;
     if (!scene || !video) return;
+    const preloadObserver = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting || playing) return;
+      if (!video.getAttribute('src')) {
+        video.src = '/assets/home-metrics-video.mp4';
+        video.load();
+      }
+      preloadObserver.disconnect();
+    }, { rootMargin: '300px 0px' });
+    preloadObserver.observe(video);
     const observer = new IntersectionObserver(([entry]) => {
       setVisible(entry.isIntersecting);
-      if (entry.isIntersecting && !playing) void video.play().catch(() => {});
+      if (entry.isIntersecting && !playing && video.getAttribute('src')) void video.play().catch(() => {});
       else video.pause();
     }, { threshold: .05 });
     observer.observe(video);
-    return () => { observer.disconnect(); video.pause(); };
+    const playWhenReady = () => {
+      const bounds = video.getBoundingClientRect();
+      if (!playing && bounds.top < window.innerHeight && bounds.bottom > 0) void video.play().catch(() => {});
+    };
+    video.addEventListener('canplay', playWhenReady);
+    return () => { observer.disconnect(); preloadObserver.disconnect(); video.removeEventListener('canplay', playWhenReady); video.pause(); };
   }, [playing]);
 
   return <section ref={sceneRef} className={`hero-video-reveal${reduced ? ' is-reduced' : ''}`} aria-label={t('首页品牌影片')}>
@@ -103,7 +121,7 @@ function MetricsVideoReveal({ reduced }: { reduced: boolean }) {
         animate={{ opacity: reduced || visible ? 1 : 0 }}
         transition={{ opacity: { duration: reduced ? 0 : .65, ease: 'easeOut' } }}
         style={reduced ? undefined : { y, scale }}>
-        <video ref={videoRef} src="/assets/home-metrics-video.mp4" muted loop playsInline autoPlay preload="metadata" aria-label={t('Finloop 品牌影片')} />
+        <video ref={videoRef} poster="/assets/home-metrics-poster.jpg" muted loop playsInline preload="none" aria-label={t('Finloop 品牌影片')} />
         {!playing && <div className="hero-video-caption">
           <h2>Who Are We</h2>
           <button type="button" className="hero-video-play" onClick={() => setPlaying(true)}>
@@ -192,6 +210,10 @@ export function HeroSection() {
     if (!video || reduceMotion) return;
     let playing = false;
     const sync = (value: number) => {
+      if (value > .8 && !video.getAttribute('src')) {
+        video.src = '/assets/home-dot-animation.webm';
+        video.load();
+      }
       const shouldPlay = value > 1;
       if (shouldPlay === playing) return;
       playing = shouldPlay;
@@ -257,7 +279,7 @@ export function HeroSection() {
       }, 1000);
     };
     const background = new Image();
-    background.src = '/assets/home-hero-hong-kong-new.png';
+    background.src = heroBackgroundSrc;
     background.decode().then(playEntrance, playEntrance);
     reveal.set(0);
     hero.dataset.headerProgress = '0';
@@ -458,7 +480,7 @@ export function HeroSection() {
   return (
     <div className={`hero-scroll-scene${reduceMotion ? ' hero-scroll-static' : ''}`}>
     <section ref={heroRef} className="hero hero-scroll-stage" data-entrance-visible={reduceMotion || entranceVisible ? 'true' : 'false'} data-header-theme="inverse" aria-label={t('香港城市与财富科技平台')}>
-      {!reduceMotion && <motion.video ref={dotVideoRef} className="hero-dot-background" src="/assets/home-dot-animation.webm" muted loop playsInline preload="auto" aria-hidden="true" style={{ opacity: logoLift }} />}
+      {!reduceMotion && <motion.video ref={dotVideoRef} className="hero-dot-background" muted loop playsInline preload="none" aria-hidden="true" style={{ opacity: logoLift }} />}
       <svg className="hero-logo-background" aria-hidden="true" width="100%" height="100%">
         <defs>
           <clipPath id={logoClipId} clipPathUnits="userSpaceOnUse"><path ref={logoPathRef} d={heroLogoPath} /></clipPath>
@@ -469,7 +491,7 @@ export function HeroSection() {
           </linearGradient>
         </defs>
         <g ref={logoImageRef}>
-          <motion.image href="/assets/home-hero-hong-kong-new.png" width="100%" height="100%" preserveAspectRatio="xMidYMax slice" style={{ filter: backgroundBlur }} />
+          <motion.image href={heroBackgroundSrc} width="100%" height="100%" preserveAspectRatio="xMidYMax slice" style={{ filter: backgroundBlur }} />
           <motion.rect x={gradientX} width={gradientWidth} height="100%" fill={`url(#${logoGradientId})`} style={{ opacity: gradientOpacity }} />
           <motion.rect width="100%" height="100%" fill="#121212" style={{ opacity: blackOpacity }} />
         </g>
