@@ -1,3 +1,4 @@
+import { t, translateNode } from '../i18n';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { BriefcaseBusiness, createIcons, Network, ShieldCheck, WalletCards } from 'lucide';
@@ -60,7 +61,7 @@ const faq = [
 ];
 
 function Heading({ title, copy }: { title: string; copy?: string }) {
-  return <header className="goal-head goal-head-plain"><div><h2>{title}</h2>{copy && <p>{copy}</p>}</div></header>;
+  return <header className="goal-head goal-head-plain"><div><h2>{translateNode(title)}</h2>{translateNode(copy && <p>{translateNode(copy)}</p>)}</div></header>;
 }
 
 export function InstitutionalWealthSolutionPage() {
@@ -73,26 +74,26 @@ export function InstitutionalWealthSolutionPage() {
 
   return <main className="goal-page iw-page iw-v3" id="main">
     <section className="goal-hero iw-hero" data-header-theme="inverse"><div className="goal-shell">
-      <p className="goal-eyebrow">机构财富管理解决方案</p>
-      <h1>让财富业务高效协同增长</h1>
-      <p className="goal-intro">为EAM、家族办公室、私人银行等专业金融投资机构，提供客户管理、投资组合、多品类金融产品的专业交易及管理能力，构建适合自身业务模式的财富管理体系。</p>
-      <div className="goal-hero-actions"><Link className="button button-accent" to="/contact">联系我们</Link></div>
+      <p className="goal-eyebrow">{t("机构财富管理解决方案")}</p>
+      <h1>{t("让财富业务高效协同增长")}</h1>
+      <p className="goal-intro">{t("为EAM、家族办公室、私人银行等专业金融投资机构，提供客户管理、投资组合、多品类金融产品的专业交易及管理能力，构建适合自身业务模式的财富管理体系。")}</p>
+      <div className="goal-hero-actions"><Link className="button button-accent" to="/contact">{t("联系我们")}</Link></div>
     </div></section>
 
-    <section className="goal-section" id="challenges"><div className="goal-shell"><header className="iw-challenge-head"><h2>破解财富业务增长中的复杂问题</h2><p>从分散的客户与资产信息，到多产品接入和持续运营，为每一个业务问题配置对应能力。</p></header><div className="iw-challenges">{challenges.map(([title, copy, image]) => <article key={title}><img src={image} alt="" /><div><h3>{title}</h3><p>{copy}</p></div></article>)}</div></div></section>
+    <section className="goal-section" id="challenges"><div className="goal-shell"><header className="iw-challenge-head"><h2>{t("破解财富业务增长中的复杂问题")}</h2><p>{t("从分散的客户与资产信息，到多产品接入和持续运营，为每一个业务问题配置对应能力。")}</p></header><div className="iw-challenges">{translateNode(challenges.map(([title, copy, image]) => <article key={title}><img src={image} alt="" /><div><h3>{translateNode(title)}</h3><p>{translateNode(copy)}</p></div></article>))}</div></div></section>
 
-    <section className="goal-section" id="trust"><div className="goal-shell"><Heading title="支撑机构财富业务的专业基础" copy="信任来自真实的产品、交易、基础设施、运营和合规能力，而不是未经核验的数字承诺。" /><div className="iw-proof">{proof.map(([icon, title, copy]) => <article key={title}><i data-lucide={icon} aria-hidden="true" /><h3>{title}</h3><p>{copy}</p></article>)}</div></div></section>
+    <section className="goal-section" id="trust"><div className="goal-shell"><Heading title={t("支撑机构财富业务的专业基础")} copy="信任来自真实的产品、交易、基础设施、运营和合规能力，而不是未经核验的数字承诺。" /><div className="iw-proof">{translateNode(proof.map(([icon, title, copy]) => <article key={title}><i data-lucide={icon} aria-hidden="true" /><h3>{translateNode(title)}</h3><p>{translateNode(copy)}</p></article>))}</div></div></section>
 
-    <section className="goal-section iw-integrated" id="capabilities"><div className="goal-shell"><header className="iw-integrated-head"><div><h2>打通财富管理全链路</h2><p>从客户与账户、投资组合，到全品类产品、专业交易和持续运营，星路通过 FinEAM、Web Portal 及统一中后台与金融基础设施，为专业机构构建可按需组合的一体化财富管理能力。</p></div></header><div className="iw-capability-tabs" role="tablist" aria-label="财富管理能力">{integratedCapabilities.map((item, i) => <button key={item.title} id={`capability-tab-${i}`} role="tab" aria-selected={activeCapability === i} aria-controls="capability-panel" onClick={() => setActiveCapability(i)}>{item.title}</button>)}</div><article className="iw-capability-panel" id="capability-panel" role="tabpanel" aria-labelledby={`capability-tab-${activeCapability}`}><figure><img src={capability.image} alt={capability.alt} /></figure><div className="iw-capability-copy"><h3>{capability.heading}</h3><p>{capability.copy}</p><div className="iw-capability-items">{capability.items.map(x => <span key={x}>{x}</span>)}</div><footer>{capability.systems.map(x => <b key={x}>{x}</b>)}</footer></div></article></div></section>
+    <section className="goal-section iw-integrated" id="capabilities"><div className="goal-shell"><header className="iw-integrated-head"><div><h2>{t("打通财富管理全链路")}</h2><p>{t("从客户与账户、投资组合，到全品类产品、专业交易和持续运营，星路通过 FinEAM、Web Portal 及统一中后台与金融基础设施，为专业机构构建可按需组合的一体化财富管理能力。")}</p></div></header><div className="iw-capability-tabs" role="tablist" aria-label={t("财富管理能力")}>{translateNode(integratedCapabilities.map((item, i) => <button key={item.title} id={`capability-tab-${i}`} role="tab" aria-selected={activeCapability === i} aria-controls="capability-panel" onClick={() => setActiveCapability(i)}>{translateNode(item.title)}</button>))}</div><article className="iw-capability-panel" id="capability-panel" role="tabpanel" aria-labelledby={`capability-tab-${activeCapability}`}><figure><img src={capability.image} alt={t(capability.alt)} /></figure><div className="iw-capability-copy"><h3>{translateNode(capability.heading)}</h3><p>{translateNode(capability.copy)}</p><div className="iw-capability-items">{translateNode(capability.items.map(x => <span key={x}>{translateNode(x)}</span>))}</div><footer>{translateNode(capability.systems.map(x => <b key={x}>{translateNode(x)}</b>))}</footer></div></article></div></section>
 
-    <section className="goal-section" id="platforms"><div className="goal-shell"><Heading title="平台与基础设施支撑" copy="根据机构业务需求，可由不同平台独立或组合支撑；平台是能力载体，不是方案分类依据。" /><div className="iw-platform-cards">{platforms.map(item => <article key={item.name}><div><small>{item.type}</small><h3>{item.name}</h3><strong>{item.position}</strong>{item.href && <Link to={item.href} target={item.href === 'https://fineam.com.hk/' ? '_blank' : undefined} rel={item.href === 'https://fineam.com.hk/' ? 'noopener noreferrer' : undefined}>了解 {item.name} →</Link>}</div><figure aria-hidden="true" /></article>)}</div></div></section>
+    <section className="goal-section" id="platforms"><div className="goal-shell"><Heading title={t("平台与基础设施支撑")} copy="根据机构业务需求，可由不同平台独立或组合支撑；平台是能力载体，不是方案分类依据。" /><div className="iw-platform-cards">{translateNode(platforms.map(item => <article key={item.name}><div><small>{translateNode(item.type)}</small><h3>{translateNode(item.name)}</h3><strong>{translateNode(item.position)}</strong>{translateNode(item.href && <Link to={item.href} target={item.href === 'https://fineam.com.hk/' ? '_blank' : undefined} rel={item.href === 'https://fineam.com.hk/' ? 'noopener noreferrer' : undefined}>{t("了解")}{translateNode(item.name)} →</Link>)}</div><figure aria-hidden="true" /></article>))}</div></div></section>
 
-    <section className="goal-section" id="delivery"><div className="goal-shell"><Heading title="我们的服务流程链路" copy="从业务规划、方案配置与系统连接，到测试上线和持续运营，推动机构财富管理方案真正落地。" /><ol className="goal-timeline iw-delivery">{delivery.map(([title, copy], i) => <li key={title}><span>0{i + 1}</span><div><h3>{title}</h3><p>{copy}</p></div></li>)}</ol></div></section>
+    <section className="goal-section" id="delivery"><div className="goal-shell"><Heading title={t("我们的服务流程链路")} copy="从业务规划、方案配置与系统连接，到测试上线和持续运营，推动机构财富管理方案真正落地。" /><ol className="goal-timeline iw-delivery">{translateNode(delivery.map(([title, copy], i) => <li key={title}><span>0{translateNode(i + 1)}</span><div><h3>{translateNode(title)}</h3><p>{translateNode(copy)}</p></div></li>))}</ol></div></section>
 
-    <section className="goal-section iw-customer-case" id="case"><div className="goal-shell"><Heading title="客户案例" copy="从真实业务场景理解机构如何连接客户、投资与持续服务。" /><article className="iw-case-study"><header><small>{customerCase.label}</small><h3>{customerCase.title}</h3><p>{customerCase.intro}</p></header><div>{customerCase.items.map(([title, copy], i) => <section key={title}><span>0{i + 1}</span><h4>{title}</h4><p>{copy}</p></section>)}</div></article></div></section>
+    <section className="goal-section iw-customer-case" id="case"><div className="goal-shell"><Heading title={t("客户案例")} copy="从真实业务场景理解机构如何连接客户、投资与持续服务。" /><article className="iw-case-study"><header><small>{translateNode(customerCase.label)}</small><h3>{translateNode(customerCase.title)}</h3><p>{translateNode(customerCase.intro)}</p></header><div>{translateNode(customerCase.items.map(([title, copy], i) => <section key={title}><span>0{translateNode(i + 1)}</span><h4>{translateNode(title)}</h4><p>{translateNode(copy)}</p></section>))}</div></article></div></section>
 
-    <section className="goal-section goal-soft" id="faq"><div className="goal-shell"><Heading title="常见问题" /><div className="goal-faq">{faq.map(([q, a]) => <details key={q}><summary>{q}<span>+</span></summary><p>{a}</p></details>)}</div></div></section>
+    <section className="goal-section goal-soft" id="faq"><div className="goal-shell"><Heading title={t("常见问题")} /><div className="goal-faq">{translateNode(faq.map(([q, a]) => <details key={q}><summary>{translateNode(q)}<span>+</span></summary><p>{translateNode(a)}</p></details>))}</div></div></section>
 
-    <section className="goal-cta"><div className="goal-shell"><div className="iw-cta-copy"><h2>构建适合你的机构财富业务</h2><p>从客户财富管理到多资产产品与专业交易，根据你的业务基础、产品范围和现有系统，组合适合的财富管理能力。</p></div><div><Link className="button button-light" to="/contact">咨询机构财富解决方案</Link></div></div></section>
+    <section className="goal-cta"><div className="goal-shell"><div className="iw-cta-copy"><h2>{t("构建适合你的机构财富业务")}</h2><p>{t("从客户财富管理到多资产产品与专业交易，根据你的业务基础、产品范围和现有系统，组合适合的财富管理能力。")}</p></div><div><Link className="button button-light" to="/contact">{t("咨询机构财富解决方案")}</Link></div></div></section>
   </main>;
 }

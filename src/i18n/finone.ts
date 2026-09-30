@@ -1,4 +1,4 @@
-import { isEnglish } from './index';
+import { isEnglish, t } from './index';
 
 const en: Record<string, string> = {
   "更快上线新业务": "Launch new services faster",
@@ -185,4 +185,4 @@ const en: Record<string, string> = {
   "Finloop 将财富科技平台建立在专业金融业务、合规流程与机构级技术基础之上，帮助机构在清晰的业务边界与权限控制下开展金融服务。": "Finloop builds wealth technology on financial expertise, compliance workflows and institutional technology, helping institutions deliver services within clear business boundaries and access controls."
 };
 
-export const translateFinOne = (text: string) => isEnglish ? en[text] ?? text : text;
+export const translateFinOne = (text: string) => isEnglish ? en[text] ?? t(text) : t(text);

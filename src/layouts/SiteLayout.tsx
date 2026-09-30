@@ -1,4 +1,4 @@
-import { isEnglish, t } from '../i18n';
+import { isEnglish, t, stripLocale, translateNode } from '../i18n';
 import { Suspense, useEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { MobileDrawer, SiteFooter, SiteHeader } from '../components/PageRegions';
@@ -33,7 +33,7 @@ export function SiteLayout({ headerMarkup, mobileDrawerMarkup, footerMarkup, ini
     const navItems = document.querySelectorAll<HTMLElement>('.desktop-nav > .nav-link');
 
     navItems.forEach((item) => {
-      const href = item.getAttribute('href')?.replace(/^\/en(?=\/|$)/, '');
+      const href = stripLocale(item.getAttribute('href') || '');
       const itemSection = item.dataset.menu || href?.split('/').filter(Boolean)[0];
       const isActive = itemSection === activeSection;
 
@@ -94,20 +94,67 @@ export function SiteLayout({ headerMarkup, mobileDrawerMarkup, footerMarkup, ini
       if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
       const target = event.target as Element | null;
       const anchor = target?.closest<HTMLAnchorElement>('a[href^="/"]');
-      if (!anchor || anchor.target === '_blank') return;
+      if (!anchor || anchor.target === '_blank' || anchor.hasAttribute('data-language') || anchor.getAttribute('href')?.startsWith('//')) return;
       event.preventDefault();
-      navigate((anchor.getAttribute('href') || '/').replace(/^\/en(?=\/|$)/, '') || '/');
+      navigate(stripLocale(anchor.getAttribute('href') || '/'));
     }
 
+    function closeLanguages() {
+      document.querySelectorAll<HTMLElement>('.language-switcher').forEach(menu => {
+        menu.querySelector('button')?.setAttribute('aria-expanded', 'false');
+        const options = menu.querySelector<HTMLElement>('.language-options');
+        if (options) options.hidden = true;
+      });
+    }
     function switchLanguage(event: MouseEvent) {
       const target = event.target as Element | null;
-      if (!target?.closest('.language-button')) return;
-      const path = window.location.pathname.replace(/^\/en(?=\/|$)/, '') || '/';
-      window.location.assign(`${isEnglish ? path : `/en${path}`}${window.location.search}${window.location.hash}`);
+      const choice = target?.closest<HTMLAnchorElement>('[data-language]');
+      if (choice) {
+        event.preventDefault();
+        const path = stripLocale(window.location.pathname);
+        window.location.assign(`${choice.dataset.language}${path}${window.location.search}${window.location.hash}`);
+        return;
+      }
+      const button = target?.closest<HTMLButtonElement>('.language-button');
+      const wasOpen = button?.getAttribute('aria-expanded') === 'true';
+      closeLanguages();
+      if (button && !wasOpen) {
+        button.setAttribute('aria-expanded', 'true');
+        const options = document.getElementById(button.getAttribute('aria-controls')!);
+        if (options) options.hidden = false;
+      }
+    }
+    function languageKeys(event: KeyboardEvent) {
+      const target = event.target as HTMLElement;
+      const menu = target.closest('.language-switcher');
+      if (!menu) return;
+      const button = menu.querySelector<HTMLButtonElement>('button')!;
+      const options = menu.querySelector<HTMLElement>('.language-options')!;
+      const links = [...options.querySelectorAll<HTMLAnchorElement>('a')];
+      if (event.key === 'Escape') { closeLanguages(); button.focus(); }
+      if (['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) {
+        event.preventDefault();
+        options.hidden = false;
+        button.setAttribute('aria-expanded', 'true');
+        const current = links.indexOf(target as HTMLAnchorElement);
+        const index = event.key === 'Home' ? 0 : event.key === 'End' ? links.length - 1 : event.key === 'ArrowDown' ? (current + 1) % links.length : (current - 1 + links.length) % links.length;
+        links[index]?.focus();
+      }
+    }
+    function languageBlur(event: FocusEvent) {
+      const target = event.target as Element | null;
+      if (!target?.closest('.language-switcher')) closeLanguages();
     }
     document.addEventListener('click', switchLanguage);
     document.addEventListener('click', handleInternalLink);
-    return () => { document.removeEventListener('click', handleInternalLink); document.removeEventListener('click', switchLanguage); };
+    document.addEventListener('keydown', languageKeys);
+    document.addEventListener('focusin', languageBlur);
+    return () => {
+      document.removeEventListener('click', handleInternalLink);
+      document.removeEventListener('click', switchLanguage);
+      document.removeEventListener('keydown', languageKeys);
+      document.removeEventListener('focusin', languageBlur);
+    };
   }, [navigate]);
 
   return (
@@ -115,7 +162,7 @@ export function SiteLayout({ headerMarkup, mobileDrawerMarkup, footerMarkup, ini
       <a className="skip-link" href="#main">{t('跳至主要内容')}</a>
       <SiteHeader html={headerMarkup} />
       <MobileDrawer html={mobileDrawerMarkup} />
-      <Suspense fallback={<main id="main" style={{ minHeight: '60vh', display: 'grid', placeItems: 'center', padding: '120px 24px' }}><p role="status">{isEnglish ? 'Loading…' : '正在加载…'}</p></main>}><Outlet /></Suspense>
+      <Suspense fallback={<main id="main" style={{ minHeight: '60vh', display: 'grid', placeItems: 'center', padding: '120px 24px' }}><p role="status">{translateNode(t('正在加载…'))}</p></main>}><Outlet /></Suspense>
       <SiteFooter html={footerMarkup} />
     </FinloopAssistantProvider>
   );

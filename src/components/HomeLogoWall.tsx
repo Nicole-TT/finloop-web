@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
-import { isEnglish, t } from '../i18n';
+import { isEnglish, t, translateNode } from '../i18n';
 
 const logos = [
   ['taikang.svg', '泰康资产'], ['bny.png', 'BNY'], ['aberdeen.svg', 'aberdeen Investments'],
@@ -50,23 +50,23 @@ export function HomeLogoWall() {
   return <section id="ecosystem" className="home-logo-wall section-pad">
     <div className="section-inner">
       <header className="home-logo-heading">
-        <h2>{isEnglish ? 'They all trust us' : '他们都信赖我们'}</h2>
+        <h2>{translateNode(isEnglish ? 'Together, towards new possibilities' : '与同行者，共赴新可能')}</h2>
         <p>{t('携手金融机构与生态伙伴，共同拓展财富服务的更多可能。')}</p>
       </header>
       <ul ref={row} className="home-logo-grid" tabIndex={0}
         onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}
-        onFocus={() => setPaused(true)} onBlur={() => setPaused(false)} aria-label={isEnglish ? 'Finloop ecosystem' : 'Finloop 生态'}>
-        {visible.map((logoIndex, index) => <li key={index}>
+        onFocus={() => setPaused(true)} onBlur={() => setPaused(false)} aria-label={t(isEnglish ? 'Finloop ecosystem' : 'Finloop 生态')}>
+        {translateNode(visible.map((logoIndex, index) => <li key={index}>
           <AnimatePresence initial={false} mode="sync">
             <motion.span key={logos[logoIndex][0]} className="home-logo-slot"
               initial={{ opacity: 0, y: 24, filter: 'blur(8px)' }}
               animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
               exit={{ opacity: 0, y: -24, filter: 'blur(8px)' }}
               transition={{ duration: reducedMotion ? 0 : .35 }}>
-              <img src={`/assets/home-figma/${logos[logoIndex][0]}`} alt={logos[logoIndex][1]} loading="lazy" />
+              <img src={`/assets/home-figma/${logos[logoIndex][0]}`} alt={t(logos[logoIndex][1])} loading="lazy" />
             </motion.span>
           </AnimatePresence>
-        </li>)}
+        </li>))}
       </ul>
     </div>
   </section>;

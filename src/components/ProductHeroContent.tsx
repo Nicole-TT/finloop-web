@@ -1,3 +1,4 @@
+import { translateNode } from '../i18n';
 import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -19,12 +20,12 @@ export function ProductHeroContent({
   children,
 }: ProductHeroContentProps) {
   return <div className={`${className} product-hero-copy`.trim()}>
-    <p className="product-hero-category">{category}</p>
-    <h1>{title}</h1>
-    <p className="product-hero-description">{description}</p>
+    <p className="product-hero-category">{translateNode(category)}</p>
+    <h1>{translateNode(title)}</h1>
+    <p className="product-hero-description">{translateNode(description)}</p>
     <div className="product-hero-actions">
-      <Link className="button button-accent" to="/contact">{ctaLabel}</Link>
+      <Link className="button button-accent" to="/contact">{translateNode(ctaLabel)}</Link>
     </div>
-    {children}
+    {translateNode(children)}
   </div>;
 }

@@ -1,5 +1,9 @@
 // Shared and homepage English copy. Chinese source text is the lookup key.
 export const en: Record<string, string> = {
+  "谁是我们": "Who Are We",
+  "星路金融科技控股有限公司是复星财富控股打造的 AI 驱动全球财富科技平台，融合 Web2 与 Web3 能力，为金融机构、企业及生态伙伴提供财富管理、数字资产与企业智能化解决方案。\n\n星路科技连接全球优质金融产品与服务资源，覆盖现金管理、基金、债券、结构性产品、保险及数字资产等领域，已服务超过 250 家银行、券商、支付平台、家族办公室及其他金融机构。\n\n依托财富管理平台、RWA 技术平台及自研金融 AI 能力，星路科技持续推动金融服务向智能化、数字化与开放生态演进，帮助合作伙伴提升运营效率、拓展产品能力，并连接全球财富管理新机遇。": "Finloop Finance Technology Holdings Limited is an AI-powered global wealth technology platform built by Fosun Wealth Holdings. Combining Web2 and Web3 capabilities, it provides wealth management, digital asset and enterprise intelligence solutions for financial institutions, enterprises and ecosystem partners.\n\nFinloop connects high-quality financial products and service resources worldwide across cash management, funds, bonds, structured products, insurance and digital assets, and has served more than 250 banks, brokers, payment platforms, family offices and other financial institutions.\n\nBuilt on wealth management platforms, RWA technology and proprietary financial AI capabilities, Finloop continues to advance financial services through intelligent, digital and open ecosystems, helping partners improve operational efficiency, expand product capabilities and connect with new opportunities in global wealth management.",
+
+  "查看品牌影片": "See the Video",
   "金融产品": "Products",
   "金融平台": "Platforms",
   "解决方案": "Solutions",

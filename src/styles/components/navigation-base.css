@@ -496,3 +496,14 @@
   justify-content: space-between;
   gap: 14px;
 }
+
+/* Language choices stay readable over both light and inverse headers. */
+.language-switcher { position: relative; flex-shrink: 0; }
+.language-switcher .language-button { gap: 6px; }
+.language-switcher .language-button svg:last-child { width: 14px; height: 14px; }
+.language-options { position: absolute; top: calc(100% + 12px); right: 0; z-index: 120; min-width: 156px; padding: 6px; background: #fff; color: #102a43; border: 1px solid #e0e7ed; border-radius: 12px; box-shadow: 0 12px 32px #102a4320; }
+.language-options[hidden] { display: none; }
+.language-options a { display: block; padding: 11px 14px; border-radius: 7px; font-size: 14px; white-space: nowrap; }
+.language-options a:hover, .language-options a:focus-visible { background: #f0f6fd; }
+.language-options a[aria-current] { color: var(--blue, #087ef4); background: #edf5ff; font-weight: 600; }
+.drawer-bottom .language-options { top: auto; bottom: calc(100% + 12px); left: 0; right: auto; }

@@ -1,3 +1,4 @@
+import { t, translateNode } from '../i18n';
 import type { CSSProperties } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -20,19 +21,19 @@ const plans = [
 ];
 
 function CapabilityVisual({ title, items }: { title: string; items: string[] }) {
-  return <figure className="pwi-visual" aria-label={`${title} 能力结构`}><strong>{title}</strong><div>{items.map((item, index) => <span key={item}><i>0{index + 1}</i>{item}</span>)}</div></figure>;
+  return <figure className="pwi-visual" aria-label={t(`${title} 能力结构`)}><strong>{translateNode(title)}</strong><div>{translateNode(items.map((item, index) => <span key={item}><i>0{translateNode(index + 1)}</i>{translateNode(item)}</span>))}</div></figure>;
 }
 
 export function ProfessionalWealthSolutionPage() {
   return <main className="pwi-page" id="main">
-    <section className="pwi-hero" data-header-theme="inverse"><div className="pwi-shell pwi-hero-grid"><div><h1>从单一财富能力，<br />到完整专业财富管理平台</h1><p>面向基金、资管、财富管理、EAM、保险及数字资产等专业机构，根据牌照、业务模式与机构规模灵活建设客户、产品、交易、资产管理及运营能力。</p><div className="pwi-actions"><a className="button button-accent" href="#capabilities">探索适合您的能力</a><Link to="/contact">联系我们</Link></div></div><div className="pwi-hero-map" aria-label="专业财富管理平台能力图"><strong>PROFESSIONAL<br />WEALTH</strong>{['客户', '产品', '交易', '资产', '运营', 'AI / RWA'].map((item, index) => <span key={item} style={{ '--index': index } as CSSProperties}>{item}</span>)}</div></div></section>
+    <section className="pwi-hero" data-header-theme="inverse"><div className="pwi-shell pwi-hero-grid"><div><h1>{t("从单一财富能力，")}<br />{t("到完整专业财富管理平台")}</h1><p>{t("面向基金、资管、财富管理、EAM、保险及数字资产等专业机构，根据牌照、业务模式与机构规模灵活建设客户、产品、交易、资产管理及运营能力。")}</p><div className="pwi-actions"><a className="button button-accent" href="#capabilities">{t("探索适合您的能力")}</a><Link to="/contact">{t("联系我们")}</Link></div></div><div className="pwi-hero-map" aria-label={t("专业财富管理平台能力图")}><strong>PROFESSIONAL<br />WEALTH</strong>{translateNode(['客户', '产品', '交易', '资产', '运营', 'AI / RWA'].map((item, index) => <span key={item} style={{ '--index': index } as CSSProperties}>{translateNode(item)}</span>))}</div></div></section>
 
-    <section className="pwi-intro" id="capabilities"><div className="pwi-shell"><h2>按业务目标，组合专业财富能力</h2><p>从面向客户的数字渠道，到专业投顾、产品分销、财富中后台、数字资产与 AI，选择当前所需能力，并为后续业务扩展保留空间。</p></div></section>
+    <section className="pwi-intro" id="capabilities"><div className="pwi-shell"><h2>{t("按业务目标，组合专业财富能力")}</h2><p>{t("从面向客户的数字渠道，到专业投顾、产品分销、财富中后台、数字资产与 AI，选择当前所需能力，并为后续业务扩展保留空间。")}</p></div></section>
 
-    <div className="pwi-capabilities">{capabilities.map((item, index) => <section className={`pwi-capability${index % 2 ? ' reverse' : ''}`} key={item.title}><div className="pwi-shell pwi-capability-grid"><div className="pwi-capability-copy"><h2>{item.title}</h2><p>{item.copy}</p><div className="pwi-tags">{item.items.map(value => <span key={value}>{value}</span>)}</div><div className="pwi-links">{item.links.map(([label, href]) => <Link to={href} target={href === 'https://fineam.com.hk/' ? '_blank' : undefined} rel={href === 'https://fineam.com.hk/' ? 'noopener noreferrer' : undefined} key={label}>{label} <span>→</span></Link>)}</div></div><CapabilityVisual title={item.visualTitle} items={item.visualItems} /></div></section>)}</div>
+    <div className="pwi-capabilities">{translateNode(capabilities.map((item, index) => <section className={`pwi-capability${index % 2 ? ' reverse' : ''}`} key={item.title}><div className="pwi-shell pwi-capability-grid"><div className="pwi-capability-copy"><h2>{translateNode(item.title)}</h2><p>{translateNode(item.copy)}</p><div className="pwi-tags">{translateNode(item.items.map(value => <span key={value}>{translateNode(value)}</span>))}</div><div className="pwi-links">{translateNode(item.links.map(([label, href]) => <Link to={href} target={href === 'https://fineam.com.hk/' ? '_blank' : undefined} rel={href === 'https://fineam.com.hk/' ? 'noopener noreferrer' : undefined} key={label}>{translateNode(label)} <span>→</span></Link>))}</div></div><CapabilityVisual title={t(item.visualTitle)} items={item.visualItems} /></div></section>))}</div>
 
-    <section className="pwi-plans"><div className="pwi-shell"><header><h2>根据业务模式与规模灵活组合</h2><p>不同机构无需从同一个起点开始。基于现有渠道、系统和团队，选择更适合的建设方式。</p></header><div className="pwi-plan-grid">{plans.map(plan => <article key={plan.title}><h3>{plan.title}</h3><p>{plan.copy}</p><div>{plan.stack.map((item, index) => <span key={item}>{index > 0 && <i>＋</i>}{item}</span>)}</div></article>)}</div></div></section>
+    <section className="pwi-plans"><div className="pwi-shell"><header><h2>{t("根据业务模式与规模灵活组合")}</h2><p>{t("不同机构无需从同一个起点开始。基于现有渠道、系统和团队，选择更适合的建设方式。")}</p></header><div className="pwi-plan-grid">{translateNode(plans.map(plan => <article key={plan.title}><h3>{translateNode(plan.title)}</h3><p>{translateNode(plan.copy)}</p><div>{translateNode(plan.stack.map((item, index) => <span key={item}>{translateNode(index > 0 && <i>＋</i>)}{translateNode(item)}</span>))}</div></article>))}</div></div></section>
 
-    <section className="pwi-cta"><div className="pwi-shell"><div><h2>构建适合您的专业财富平台</h2><p>从现有业务与系统出发，与 Finloop 团队共同规划下一步能力组合。</p></div><Link className="button button-light" to="/contact">联系我们</Link></div></section>
+    <section className="pwi-cta"><div className="pwi-shell"><div><h2>{t("构建适合您的专业财富平台")}</h2><p>{t("从现有业务与系统出发，与 Finloop 团队共同规划下一步能力组合。")}</p></div><Link className="button button-light" to="/contact">{t("联系我们")}</Link></div></section>
   </main>;
 }

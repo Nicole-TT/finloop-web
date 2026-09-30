@@ -1,3 +1,4 @@
+import { t, translateNode } from '../i18n';
 import { Link } from 'react-router-dom';
 
 const capabilities = [
@@ -22,19 +23,19 @@ function EmbedVisual({ kind, core }: { kind: string; core: string }) {
     core: ['用户前端', 'FinOne', '产品 · 订单 · 运营'],
     ai: ['客户场景', 'AI', '知识 · 服务 · 运营'],
   };
-  return <figure className={`psf-visual ${kind}`} aria-label={`${core} 接入结构`}><div className="psf-visual-line" />{labels[kind].map((label, index) => <div className={index === 1 ? 'active' : ''} key={label}><small>0{index + 1}</small><strong>{index === 1 ? core : label}</strong>{index === 1 && <span>{label}</span>}</div>)}</figure>;
+  return <figure className={`psf-visual ${kind}`} aria-label={t(`${core} 接入结构`)}><div className="psf-visual-line" />{translateNode(labels[kind].map((label, index) => <div className={index === 1 ? 'active' : ''} key={label}><small>0{translateNode(index + 1)}</small><strong>{translateNode(index === 1 ? core : label)}</strong>{translateNode(index === 1 && <span>{translateNode(label)}</span>)}</div>))}</figure>;
 }
 
 export function PlatformSolutionPage() {
   return <main className="psf-page" id="main">
-    <section className="psf-hero" data-header-theme="inverse"><div className="psf-shell psf-hero-grid"><div><h1>将财富服务嵌入<br />您已有的平台</h1><p>面向支付、跨境支付及拥有自有用户体系的平台机构，无需独立建设完整财富基础设施，即可增加现金管理、投资与财富服务。</p><div className="psf-actions"><a className="button button-accent" href="#capabilities">探索嵌入方式</a><Link to="/contact">联系我们</Link></div></div><div className="psf-hero-device" aria-label="财富服务嵌入平台示意"><div className="psf-device-shell"><small>YOUR PLATFORM</small><strong>原有用户体验</strong><span>支付 · 账户 · 用户</span><div className="psf-entry">WEALTH ENTRY <b>→</b></div></div><div className="psf-wealth-layer"><small>EMBEDDED</small><strong>Wealth</strong><span>产品 · 投资 · 资产服务</span></div></div></div></section>
+    <section className="psf-hero" data-header-theme="inverse"><div className="psf-shell psf-hero-grid"><div><h1>{t("将财富服务嵌入")}<br />{t("您已有的平台")}</h1><p>{t("面向支付、跨境支付及拥有自有用户体系的平台机构，无需独立建设完整财富基础设施，即可增加现金管理、投资与财富服务。")}</p><div className="psf-actions"><a className="button button-accent" href="#capabilities">{t("探索嵌入方式")}</a><Link to="/contact">{t("联系我们")}</Link></div></div><div className="psf-hero-device" aria-label={t("财富服务嵌入平台示意")}><div className="psf-device-shell"><small>YOUR PLATFORM</small><strong>{t("原有用户体验")}</strong><span>{t("支付 · 账户 · 用户")}</span><div className="psf-entry">WEALTH ENTRY <b>→</b></div></div><div className="psf-wealth-layer"><small>EMBEDDED</small><strong>Wealth</strong><span>{t("产品 · 投资 · 资产服务")}</span></div></div></div></section>
 
-    <section className="psf-intro" id="capabilities"><div className="psf-shell"><h2>从一个入口，延伸完整财富服务</h2><p>根据平台现有技术能力与上线目标，选择标准嵌入、模块化 H5 或 API 原生集成，并通过统一中台持续运营。</p></div></section>
+    <section className="psf-intro" id="capabilities"><div className="psf-shell"><h2>{t("从一个入口，延伸完整财富服务")}</h2><p>{t("根据平台现有技术能力与上线目标，选择标准嵌入、模块化 H5 或 API 原生集成，并通过统一中台持续运营。")}</p></div></section>
 
-    <div className="psf-capabilities">{capabilities.map((item, index) => <section className={`psf-capability${index % 2 ? ' reverse' : ''}`} key={item.title}><div className="psf-shell psf-capability-grid"><div className="psf-copy"><h2>{item.title}</h2><p>{item.copy}</p><div className="psf-tags">{item.items.map(value => <span key={value}>{value}</span>)}</div><div className="psf-links">{item.links.map(([label, href]) => <Link to={href} key={label}>{label} <span>→</span></Link>)}</div></div><EmbedVisual kind={item.kind} core={item.core} /></div></section>)}</div>
+    <div className="psf-capabilities">{translateNode(capabilities.map((item, index) => <section className={`psf-capability${index % 2 ? ' reverse' : ''}`} key={item.title}><div className="psf-shell psf-capability-grid"><div className="psf-copy"><h2>{translateNode(item.title)}</h2><p>{translateNode(item.copy)}</p><div className="psf-tags">{translateNode(item.items.map(value => <span key={value}>{translateNode(value)}</span>))}</div><div className="psf-links">{translateNode(item.links.map(([label, href]) => <Link to={href} key={label}>{translateNode(label)} <span>→</span></Link>))}</div></div><EmbedVisual kind={item.kind} core={item.core} /></div></section>))}</div>
 
-    <section className="psf-plans"><div className="psf-shell"><header><h2>根据平台基础选择接入方式</h2><p>接入深度取决于现有产品体验、技术团队与业务验证阶段，无需采用相同的建设路径。</p></header><div className="psf-plan-grid">{plans.map(plan => <article key={plan.title}><h3>{plan.title}</h3><p>{plan.copy}</p><div>{plan.stack.map((item, index) => <span key={item}>{index > 0 && <i>＋</i>}{item}</span>)}</div></article>)}</div></div></section>
+    <section className="psf-plans"><div className="psf-shell"><header><h2>{t("根据平台基础选择接入方式")}</h2><p>{t("接入深度取决于现有产品体验、技术团队与业务验证阶段，无需采用相同的建设路径。")}</p></header><div className="psf-plan-grid">{translateNode(plans.map(plan => <article key={plan.title}><h3>{translateNode(plan.title)}</h3><p>{translateNode(plan.copy)}</p><div>{translateNode(plan.stack.map((item, index) => <span key={item}>{translateNode(index > 0 && <i>＋</i>)}{translateNode(item)}</span>))}</div></article>))}</div></div></section>
 
-    <section className="psf-cta"><div className="psf-shell"><div><h2>把财富服务带入<br />您已有的用户场景</h2><p>与 Finloop 团队讨论适合现有平台、技术架构与业务阶段的接入方式。</p></div><Link className="button button-light" to="/contact">联系我们</Link></div></section>
+    <section className="psf-cta"><div className="psf-shell"><div><h2>{t("把财富服务带入")}<br />{t("您已有的用户场景")}</h2><p>{t("与 Finloop 团队讨论适合现有平台、技术架构与业务阶段的接入方式。")}</p></div><Link className="button button-light" to="/contact">{t("联系我们")}</Link></div></section>
   </main>;
 }

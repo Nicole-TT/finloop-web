@@ -1,3 +1,4 @@
+import { t, translateNode } from '../i18n';
 import { Link } from 'react-router-dom';
 import { ProductHeroContent } from '../components/ProductHeroContent';
 import { PlatformCasesSection } from '../components/PlatformProofSections';
@@ -33,39 +34,39 @@ const capabilityVisuals = [
 function CapabilityVisual({ index }: { index: number }) {
   const [left, core, right, bottomLeft, bottomRight] = capabilityVisuals[index];
   return <div className={`fai-cap-visual fai-cap-visual-${index + 1}`} aria-hidden="true">
-    <div className="fai-cap-visual-top"><span>{left}</span><i/><span>{right}</span></div>
-    <strong><small>0{index + 1}</small>{core}</strong>
-    <div className="fai-cap-visual-bottom"><span>{bottomLeft}</span><span>{bottomRight}</span></div>
+    <div className="fai-cap-visual-top"><span>{translateNode(left)}</span><i/><span>{translateNode(right)}</span></div>
+    <strong><small>0{translateNode(index + 1)}</small>{translateNode(core)}</strong>
+    <div className="fai-cap-visual-bottom"><span>{translateNode(bottomLeft)}</span><span>{translateNode(bottomRight)}</span></div>
   </div>;
 }
 
 export function FAIPage() {
   return <main className="fai-page" id="main">
     <section className="fai-hero product-hero-standard" data-header-theme="inverse"><div className="fai-shell fai-hero-grid">
-      <ProductHeroContent className="fai-hero-copy" category="FinWork · 企业 AI 工作平台" title="让 AI 员工协同完成企业任务" description="连接企业知识、数据、业务系统与专业 Skills，统一创建、编排和管理 AI 员工，让不同智能能力进入可执行、可追踪的业务流程。" ctaLabel="预约产品演示"/>
-      <div className="fai-org" aria-label="FinWork 组织企业 AI 能力示意图"><div className="fai-org-inputs"><span>企业知识</span><span>业务数据</span><span>企业系统</span></div><i aria-hidden="true"/><strong>FinWork<small>ENTERPRISE AI PLATFORM</small></strong><i aria-hidden="true"/><div className="fai-org-resources"><span>AI Employees</span><span>Skills</span><span>Workflow</span></div><footer><span>研究</span><span>分析</span><span>运营</span><span>客服</span><span>营销</span></footer></div>
+      <ProductHeroContent className="fai-hero-copy" category="FinWork · 企业 AI 工作平台" title={t("让 AI 员工协同完成企业任务")} description="连接企业知识、数据、业务系统与专业 Skills，统一创建、编排和管理 AI 员工，让不同智能能力进入可执行、可追踪的业务流程。" ctaLabel="预约产品演示"/>
+      <div className="fai-org" aria-label={t("FinWork 组织企业 AI 能力示意图")}><div className="fai-org-inputs"><span>{t("企业知识")}</span><span>{t("业务数据")}</span><span>{t("企业系统")}</span></div><i aria-hidden="true"/><strong>FinWork<small>ENTERPRISE AI PLATFORM</small></strong><i aria-hidden="true"/><div className="fai-org-resources"><span>AI Employees</span><span>Skills</span><span>Workflow</span></div><footer><span>{t("研究")}</span><span>{t("分析")}</span><span>{t("运营")}</span><span>{t("客服")}</span><span>{t("营销")}</span></footer></div>
     </div></section>
 
-    <section className="fai-section fai-problems"><div className="fai-shell"><header className="fai-head"><h2>企业 AI 建设，难在能力分散与缺乏治理</h2></header><div className="fai-problem-grid">{problems.map(([n,t,c], index)=><article key={n}><div className={`fai-problem-visual visual-${index + 1}`} aria-hidden="true"><span>{n}</span><i/><i/><strong>{['AI','DATA','FLOW','CONTROL'][index]}</strong></div><div className="fai-problem-copy"><h3>{t}</h3><p>{c}</p></div></article>)}</div></div></section>
+    <section className="fai-section fai-problems"><div className="fai-shell"><header className="fai-head"><h2>{t("企业 AI 建设，难在能力分散与缺乏治理")}</h2></header><div className="fai-problem-grid">{translateNode(problems.map(([n,t,c], index)=><article key={n}><div className={`fai-problem-visual visual-${index + 1}`} aria-hidden="true"><span>{translateNode(n)}</span><i/><i/><strong>{translateNode(['AI','DATA','FLOW','CONTROL'][index])}</strong></div><div className="fai-problem-copy"><h3>{translateNode(t)}</h3><p>{translateNode(c)}</p></div></article>))}</div></div></section>
 
-    <section className="fai-section fai-how"><div className="fai-shell"><header className="fai-head"><h2>把模型能力组装成可执行的企业工作流</h2><p>每一层都可被企业配置、复用和管理，最终从 Prompt → Answer 升级为 Task → Process → Result。</p></header><div className="fai-flow">{workflow.map(([t,c],i)=><article key={t}><span>{String(i+1).padStart(2,'0')}</span><h3>{t}</h3><p>{c}</p></article>)}</div></div></section>
+    <section className="fai-section fai-how"><div className="fai-shell"><header className="fai-head"><h2>{t("把模型能力组装成可执行的企业工作流")}</h2><p>{t("每一层都可被企业配置、复用和管理，最终从 Prompt → Answer 升级为 Task → Process → Result。")}</p></header><div className="fai-flow">{translateNode(workflow.map(([t,c],i)=><article key={t}><span>{translateNode(String(i+1).padStart(2,'0'))}</span><h3>{translateNode(t)}</h3><p>{translateNode(c)}</p></article>))}</div></div></section>
 
-    <section className="fai-section fai-capabilities" id="capabilities"><div className="fai-shell"><header className="fai-head"><h2>从 AI 员工到组织治理，在一个平台持续运营</h2><p>统一连接 AI 员工、Skills、工作流、知识数据与权限治理，让企业 AI 能力能够被配置、复用、追踪并持续优化。</p></header><div className="fai-cap-list">{capabilities.map(([n,en,t,c], index)=><article key={n}><div className="fai-cap-copy"><div className="fai-cap-meta"><span>{n}</span><small>{en}</small></div><h3>{t}</h3><p>{c}</p></div><CapabilityVisual index={index}/></article>)}</div></div></section>
+    <section className="fai-section fai-capabilities" id="capabilities"><div className="fai-shell"><header className="fai-head"><h2>{t("从 AI 员工到组织治理，在一个平台持续运营")}</h2><p>{t("统一连接 AI 员工、Skills、工作流、知识数据与权限治理，让企业 AI 能力能够被配置、复用、追踪并持续优化。")}</p></header><div className="fai-cap-list">{translateNode(capabilities.map(([n,en,t,c], index)=><article key={n}><div className="fai-cap-copy"><div className="fai-cap-meta"><span>{translateNode(n)}</span><small>{translateNode(en)}</small></div><h3>{translateNode(t)}</h3><p>{translateNode(c)}</p></div><CapabilityVisual index={index}/></article>))}</div></div></section>
 
-    <section className="fai-section fai-govern"><div className="fai-shell"><header className="fai-head"><h2>把 AI 从个人能力，变成组织能力</h2><p>连接团队成员、AI 资源与统一治理，让 AI 能力成为可分配、可共享、可持续优化的企业数字资产。</p></header><div className="fai-govern-map">
-      <section className="fai-govern-people"><small>组织成员</small><h3>团队与成员</h3><p>围绕企业组织结构管理成员及其 AI 使用边界。</p><ul>{['成员','团队','角色','权限'].map(item=><li key={item}>{item}</li>)}</ul></section>
+    <section className="fai-section fai-govern"><div className="fai-shell"><header className="fai-head"><h2>{t("把 AI 从个人能力，变成组织能力")}</h2><p>{t("连接团队成员、AI 资源与统一治理，让 AI 能力成为可分配、可共享、可持续优化的企业数字资产。")}</p></header><div className="fai-govern-map">
+      <section className="fai-govern-people"><small>{t("组织成员")}</small><h3>{t("团队与成员")}</h3><p>{t("围绕企业组织结构管理成员及其 AI 使用边界。")}</p><ul>{translateNode(['成员','团队','角色','权限'].map(item=><li key={item}>{translateNode(item)}</li>))}</ul></section>
       <i>×</i>
-      <section className="primary fai-govern-resources"><small>AI 资源</small><h3>AI 资源统一分配</h3><p>将不同 AI 能力组合后，分配给对应业务团队。</p><div className="fai-team-allocations">{[
+      <section className="primary fai-govern-resources"><small>{t("AI 资源")}</small><h3>{t("AI 资源统一分配")}</h3><p>{t("将不同 AI 能力组合后，分配给对应业务团队。")}</p><div className="fai-team-allocations">{translateNode([
         ['投资团队','研究智能体','文档技能','投研知识库'],
         ['销售团队','产品智能体','内容技能','产品知识库'],
         ['运营团队','运营智能体','数据技能','业务数据'],
-      ].map(([team,...resources])=><article key={team}><strong>{team}</strong><div>{resources.map(resource=><span key={resource}>{resource}</span>)}</div></article>)}</div><footer>智能体 / AI 员工 · 技能 · 知识 · 工作流</footer></section>
+      ].map(([team,...resources])=><article key={team}><strong>{translateNode(team)}</strong><div>{translateNode(resources.map(resource=><span key={resource}>{translateNode(resource)}</span>))}</div></article>))}</div><footer>{t("智能体 / AI 员工 · 技能 · 知识 · 工作流")}</footer></section>
       <i>×</i>
-      <section className="fai-govern-control"><small>组织治理</small><h3>统一治理</h3><p>让管理员持续了解 AI 的使用过程与结果。</p><ol>{['谁在使用什么 AI','使用了哪些企业资源','执行了哪些任务','产生了什么结果','是否符合组织权限'].map(item=><li key={item}>{item}</li>)}</ol></section>
+      <section className="fai-govern-control"><small>{t("组织治理")}</small><h3>{t("统一治理")}</h3><p>{t("让管理员持续了解 AI 的使用过程与结果。")}</p><ol>{translateNode(['谁在使用什么 AI','使用了哪些企业资源','执行了哪些任务','产生了什么结果','是否符合组织权限'].map(item=><li key={item}>{translateNode(item)}</li>))}</ol></section>
     </div></div></section>
 
-    <PlatformCasesSection sectionClass="fai-section" shellClass="fai-shell" title="他们如何用 FinWork 构建企业 AI 工作体系" copy="了解企业如何连接知识、数据、AI 员工与工作流，让 AI 能力进入可执行、可管理的日常任务。" cases={[{mark:'AI',name:'典型企业 AI 应用场景',type:'场景示例 · 非特定客户案例',copy:'围绕企业知识、文档数据与重复任务，将分散的 AI 工具组织为统一的工作体系。',details:[['原有方式','不同团队分别使用模型和工具，企业知识、能力与任务流程难以统一沉淀。'],['FinWork 应用','统一连接知识数据、AI 员工、Skills 与工作流，并按团队和任务进行配置。'],['工作变化','让 AI 从个人工具进入可复用、可追踪并可持续治理的企业工作流程。']]},{mark:'+',name:'真实客户案例',type:'待客户授权',copy:'待补充客户名称、应用场景、上线范围、工作流程变化与已确认的业务结果。',pending:true}]} />
+    <PlatformCasesSection sectionClass="fai-section" shellClass="fai-shell" title={t("他们如何用 FinWork 构建企业 AI 工作体系")} copy="了解企业如何连接知识、数据、AI 员工与工作流，让 AI 能力进入可执行、可管理的日常任务。" cases={[{mark:'AI',name:'典型企业 AI 应用场景',type:'场景示例 · 非特定客户案例',copy:'围绕企业知识、文档数据与重复任务，将分散的 AI 工具组织为统一的工作体系。',details:[['原有方式','不同团队分别使用模型和工具，企业知识、能力与任务流程难以统一沉淀。'],['FinWork 应用','统一连接知识数据、AI 员工、Skills 与工作流，并按团队和任务进行配置。'],['工作变化','让 AI 从个人工具进入可复用、可追踪并可持续治理的企业工作流程。']]},{mark:'+',name:'真实客户案例',type:'待客户授权',copy:'待补充客户名称、应用场景、上线范围、工作流程变化与已确认的业务结果。',pending:true}]} />
 
-    <section className="fai-cta"><div className="fai-shell"><h2>开始构建企业自己的 AI 工作体系</h2><p>从 AI 员工、Skills 到企业工作流，在统一平台中构建、管理并持续运营企业 AI 能力。</p><div><Link className="button button-light" to="/contact">咨询 FinWork →</Link><Link to="/solutions/fde-ai">了解企业 AI 解决方案</Link></div></div></section>
+    <section className="fai-cta"><div className="fai-shell"><h2>{t("开始构建企业自己的 AI 工作体系")}</h2><p>{t("从 AI 员工、Skills 到企业工作流，在统一平台中构建、管理并持续运营企业 AI 能力。")}</p><div><Link className="button button-light" to="/contact">{t("咨询 FinWork →")}</Link><Link to="/solutions/fde-ai">{t("了解企业 AI 解决方案")}</Link></div></div></section>
   </main>;
 }

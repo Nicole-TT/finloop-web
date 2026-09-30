@@ -17,3 +17,10 @@ html:lang(en) .product-node strong { white-space: normal; }
 @media (min-width: 1201px) {
   html:lang(en) .hero h1 { max-width: none; white-space: nowrap; }
 }
+
+html:lang(en) :is(h1,h2,h3,h4,p,button,a,label) { overflow-wrap: break-word; }
+html:lang(en) :is(.asset-tab,.financial-tab,.product-tab) { white-space: normal; }
+html:lang(en) :is(.product-hero-copy,.bfi-hero-copy) { min-width: 0; }
+html:lang(en) .product-hero-copy h1 { line-height: 1.12; }
+html:lang(en) .hero-ai-suggestions { flex-wrap: wrap; }
+html:lang(en) .hero-ai-suggestions button { white-space: normal; }

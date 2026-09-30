@@ -1,3 +1,4 @@
+import { t, translateNode, localizedHref } from '../i18n';
 import React, { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { useReducedMotion } from 'motion/react';
@@ -118,7 +119,7 @@ const pad = (value: number) => String(value).padStart(2, '0');
 
 function Icon({ icon }: { icon: IconNode }) {
   return <svg width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
-    {icon[2]?.map(([tag, attrs], index) => React.createElement(tag, { ...attrs, key: index }))}
+    {translateNode(icon[2]?.map(([tag, attrs], index) => React.createElement(tag, { ...attrs, key: index })))}
   </svg>;
 }
 
@@ -156,8 +157,8 @@ export function NewsPage() {
       <section className="news-hero" data-header-theme="inverse">
         <div className="news-shell">
           <div className="news-hero-head">
-            <h1>新闻资讯</h1>
-            <p>从行业趋势到公司进展，持续记录机构财富科技的演进与 Finloop 的实践。</p>
+            <h1>{t("新闻资讯")}</h1>
+            <p>{t("从行业趋势到公司进展，持续记录机构财富科技的演进与 Finloop 的实践。")}</p>
           </div>
           <NewsFeature items={featuredNews} />
         </div>
@@ -187,7 +188,7 @@ function NewsFeature({ items }: { items: ListedNews[] }) {
       className="news-feature"
       role="region"
       aria-roledescription="carousel"
-      aria-label="精选资讯"
+      aria-label={t("精选资讯")}
       style={{ '--feature-count': items.length } as CSSProperties}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
@@ -195,34 +196,34 @@ function NewsFeature({ items }: { items: ListedNews[] }) {
       onBlur={event => { if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setPaused(false); }}
     >
       <div className="news-feature-track" aria-live={autoplay ? 'off' : 'polite'}>
-        {items.map((item, index) => {
+        {translateNode(items.map((item, index) => {
           const isActive = index === active;
           const [topic] = metaParts(item.meta);
           return (
-            <div className={`news-feature-slide${isActive ? ' is-active' : ''}`} key={item.slug} role="group" aria-roledescription="slide" aria-label={`${index + 1} / ${items.length}`}>
-              <button className="news-feature-tab" type="button" onClick={() => setActive(index)} aria-label={`查看精选：${item.title}`}>
+            <div className={`news-feature-slide${isActive ? ' is-active' : ''}`} key={item.slug} role="group" aria-roledescription="slide" aria-label={t(`${index + 1} / ${items.length}`)}>
+              <button className="news-feature-tab" type="button" onClick={() => setActive(index)} aria-label={t(`查看精选：${item.title}`)}>
               </button>
               <div className="news-feature-panel">
                 <Link className="news-feature-media" to={newsHref(item)} tabIndex={-1} aria-hidden="true">
                   <NewsCover item={item} sizes="(max-width: 800px) calc(100vw - 72px), 44vw" decorative eager={index === 0} />
                 </Link>
                 <div className="news-feature-copy">
-                  <div className="news-meta"><span className="news-chip">{topic}</span><span>{newsDate(item)}</span></div>
-                  <h2><Link to={newsHref(item)} tabIndex={-1}>{item.title}</Link></h2>
-                  <p>{item.description}</p>
-                  <Link className="news-pill news-pill-light" to={newsHref(item)} aria-label={`阅读全文：${item.title}`}>阅读全文<Icon icon={ArrowUpRight} /></Link>
+                  <div className="news-meta"><span className="news-chip">{translateNode(topic)}</span><span>{translateNode(newsDate(item))}</span></div>
+                  <h2><Link to={newsHref(item)} tabIndex={-1}>{translateNode(item.title)}</Link></h2>
+                  <p>{translateNode(item.description)}</p>
+                  <Link className="news-pill news-pill-light" to={newsHref(item)} aria-label={t(`阅读全文：${item.title}`)}>{t("阅读全文")}<Icon icon={ArrowUpRight} /></Link>
                 </div>
               </div>
             </div>
           );
-        })}
+        }))}
       </div>
       <div className="news-feature-controls">
-        <p className="news-feature-count"><span>{pad(active + 1)}</span> / {pad(items.length)}</p>
+        <p className="news-feature-count"><span>{translateNode(pad(active + 1))}</span> / {translateNode(pad(items.length))}</p>
         <span className="news-feature-progress" key={`${active}-${autoplay}`} data-running={autoplay || undefined} style={{ '--feature-interval': `${featureInterval}ms` } as CSSProperties} aria-hidden="true" />
         <div className="news-feature-arrows">
-          <button type="button" onClick={() => go(-1)} aria-label="上一条精选"><Icon icon={ChevronLeft} /></button>
-          <button type="button" onClick={() => go(1)} aria-label="下一条精选"><Icon icon={ChevronRight} /></button>
+          <button type="button" onClick={() => go(-1)} aria-label={t("上一条精选")}><Icon icon={ChevronLeft} /></button>
+          <button type="button" onClick={() => go(1)} aria-label={t("下一条精选")}><Icon icon={ChevronRight} /></button>
         </div>
       </div>
     </div>
@@ -230,7 +231,7 @@ function NewsFeature({ items }: { items: ListedNews[] }) {
 }
 
 function ModuleTitle({ id, category }: { id: string; category: NewsCategory }) {
-  return <h2 id={id}>{categoryCopy[category].title}</h2>;
+  return <h2 id={id}>{translateNode(categoryCopy[category].title)}</h2>;
 }
 
 function CompanyNews({ items }: { items: ListedNews[] }) {
@@ -263,22 +264,22 @@ function CompanyNews({ items }: { items: ListedNews[] }) {
         <div className="news-module-head">
           <div>
             <ModuleTitle id="news-company-title" category="company" />
-            <p>{categoryCopy.company.description}</p>
+            <p>{translateNode(categoryCopy.company.description)}</p>
           </div>
-          <div className="news-filter" role="group" aria-label="按业务类型筛选公司动态">
-            {[['all', '全部'], ...types.map(value => [value, value])].map(([value, label]) => (
-              <button key={value} type="button" className={value === type ? 'active' : undefined} aria-pressed={value === type} onClick={() => selectType(value)}>{label}</button>
-            ))}
+          <div className="news-filter" role="group" aria-label={t("按业务类型筛选公司动态")}>
+            {translateNode([['all', '全部'], ...types.map(value => [value, value])].map(([value, label]) => (
+              <button key={value} type="button" className={value === type ? 'active' : undefined} aria-pressed={value === type} onClick={() => selectType(value)}>{translateNode(label)}</button>
+            )))}
           </div>
         </div>
         <div className="news-grid" ref={gridRef} key={type}>
-          {filtered.slice(0, visibleCount).map((item, index) => <NewsCard item={item} index={index} key={item.slug} />)}
+          {translateNode(filtered.slice(0, visibleCount).map((item, index) => <NewsCard item={item} index={index} key={item.slug} />))}
         </div>
-        {visibleCount < filtered.length && (
+        {translateNode(visibleCount < filtered.length && (
           <div className="news-more">
-            <button className="news-pill news-pill-dark" type="button" onClick={loadMore}>加载更多<span>{filtered.length - visibleCount}</span></button>
+            <button className="news-pill news-pill-dark" type="button" onClick={loadMore}>{t("加载更多")}<span>{translateNode(filtered.length - visibleCount)}</span></button>
           </div>
-        )}
+        ))}
       </div>
     </section>
   );
@@ -294,19 +295,19 @@ function InsightList({ items }: { items: ListedNews[] }) {
       <div className="news-shell news-insights-layout">
         <div className="news-insights-head">
           <ModuleTitle id="news-insights-title" category="insights" />
-          <p>{categoryCopy.insights.description}</p>
-          {!expanded && items.length > insightLimit && (
-            <button className="news-pill news-pill-outline" type="button" onClick={() => setExpanded(true)}>查看全部行业洞察<Icon icon={Plus} /></button>
-          )}
+          <p>{translateNode(categoryCopy.insights.description)}</p>
+          {translateNode(!expanded && items.length > insightLimit && (
+            <button className="news-pill news-pill-outline" type="button" onClick={() => setExpanded(true)}>{t("查看全部行业洞察")}<Icon icon={Plus} /></button>
+          ))}
         </div>
         <div className="news-insight-list" ref={listRef}>
-          {shown.map(item => (
+          {translateNode(shown.map(item => (
             <Link className="news-insight-row" to={newsHref(item)} key={item.slug} data-reveal>
-              <h3><span>{item.title}</span></h3>
-              <span className="news-insight-topic">{metaParts(item.meta)[0]}</span>
+              <h3><span>{translateNode(item.title)}</span></h3>
+              <span className="news-insight-topic">{translateNode(metaParts(item.meta)[0])}</span>
               <span className="news-arrow" aria-hidden="true"><Icon icon={ArrowRight} /><Icon icon={ArrowRight} /></span>
             </Link>
-          ))}
+          )))}
         </div>
       </div>
     </section>
@@ -319,10 +320,10 @@ function NewsCard({ item, index }: { item: ListedNews; index: number }) {
   return (
     <Link className="news-card" to={newsHref(item)} data-reveal style={{ '--reveal-index': index % 3 } as CSSProperties}>
       <NewsCover item={item} sizes={cardSizes} decorative />
-      <div className="news-meta"><span className="news-chip">{item.type ?? topic}</span></div>
-      <h3><span>{item.title}</span></h3>
-      <p>{item.description}</p>
-      <span className="news-card-foot">{newsDate(item)}</span>
+      <div className="news-meta"><span className="news-chip">{translateNode(item.type ?? topic)}</span></div>
+      <h3><span>{translateNode(item.title)}</span></h3>
+      <p>{translateNode(item.description)}</p>
+      <span className="news-card-foot">{translateNode(newsDate(item))}</span>
       <span className="news-notch" aria-hidden="true"><Icon icon={ArrowRight} /><Icon icon={ArrowRight} /></span>
     </Link>
   );
@@ -334,7 +335,7 @@ function NewsCover({ item, sizes, className = '', decorative = false, eager = fa
 
   return (
     <div className={`news-cover news-media-${item.visual} ${className}`.trim()}>
-      {cover ? (
+      {translateNode(cover ? (
         <img
           className={loaded ? 'is-loaded' : undefined}
           src={cover.src}
@@ -342,13 +343,13 @@ function NewsCover({ item, sizes, className = '', decorative = false, eager = fa
           sizes={cover.srcSet ? sizes : undefined}
           width={cover.width}
           height={cover.height}
-          alt={decorative ? '' : cover.alt}
+          alt={t(decorative ? '' : cover.alt)}
           loading={eager ? 'eager' : 'lazy'}
           decoding="async"
           style={cover.focus ? { objectPosition: cover.focus } : undefined}
           onLoad={() => setLoaded(true)}
         />
-      ) : <NewsVisual type={item.visual} />}
+      ) : <NewsVisual type={item.visual} />)}
     </div>
   );
 }
@@ -395,17 +396,17 @@ function NewsArticle({ item }: { item: ListedNews }) {
     <main className="news-detail-page" id="main">
       <header className="news-detail-head">
         <div className="news-shell">
-          <Link className="news-back" to={`/resources/${item.category}`}><Icon icon={ArrowLeft} />返回</Link>
+          <Link className="news-back" to={`/resources/${item.category}`}><Icon icon={ArrowLeft} />{t("返回")}</Link>
           <div className="news-detail-title">
-            <h1>{item.title}</h1>
-            <p>{item.description}</p>
+            <h1>{translateNode(item.title)}</h1>
+            <p>{translateNode(item.description)}</p>
           </div>
           <div className="news-detail-byline">
             <div className="news-detail-author">
               <span aria-hidden="true">FL</span>
-              <p><strong>Finloop 星路科技</strong><small>{categoryTitle} · {topic}</small></p>
+              <p><strong>{t("Finloop 星路科技")}</strong><small>{translateNode(categoryTitle)} · {translateNode(topic)}</small></p>
             </div>
-            <p className="news-detail-date"><span>{detail}</span><strong>约 {readMinutes} 分钟阅读</strong></p>
+            <p className="news-detail-date"><span>{translateNode(detail)}</span><strong>{t("约")}{translateNode(readMinutes)} {t("分钟阅读")}</strong></p>
           </div>
           <NewsCover item={item} className="news-detail-cover" sizes="(max-width: 800px) calc(100vw - 40px), min(calc(100vw - 128px), 1600px)" eager />
         </div>
@@ -413,38 +414,38 @@ function NewsArticle({ item }: { item: ListedNews }) {
 
       <div className="news-shell news-detail-layout">
         <aside className="news-detail-aside">
-          <nav className="news-toc" aria-label="文章目录">
-            <span>目录</span>
-            {item.sections.map((section, index) => (
-              <a key={section.title} href={`#news-section-${index + 1}`} className={index === activeSection ? 'active' : undefined} aria-current={index === activeSection ? 'location' : undefined}>{section.title}</a>
-            ))}
+          <nav className="news-toc" aria-label={t("文章目录")}>
+            <span>{t("目录")}</span>
+            {translateNode(item.sections.map((section, index) => (
+              <a key={section.title} href={localizedHref(`#news-section-${index + 1}`)} className={index === activeSection ? 'active' : undefined} aria-current={index === activeSection ? 'location' : undefined}>{translateNode(section.title)}</a>
+            )))}
           </nav>
           <div className="news-share">
-            <span>分享本文</span>
-            <button type="button" onClick={copyLink} aria-label="复制文章链接"><Icon icon={copied ? Check : Link2} /></button>
-            <span className="news-share-status" role="status">{copied ? '已复制链接' : ''}</span>
+            <span>{t("分享本文")}</span>
+            <button type="button" onClick={copyLink} aria-label={t("复制文章链接")}><Icon icon={copied ? Check : Link2} /></button>
+            <span className="news-share-status" role="status">{translateNode(copied ? '已复制链接' : '')}</span>
           </div>
         </aside>
         <article className="news-detail-body" ref={bodyRef}>
-          {item.sections.map((section, index) => (
+          {translateNode(item.sections.map((section, index) => (
             <section id={`news-section-${index + 1}`} key={section.title}>
-              <h2>{section.title}</h2>
-              {section.paragraphs.map(paragraph => <p key={paragraph}>{paragraph}</p>)}
-              {section.images && <NewsFigure images={section.images} />}
+              <h2>{translateNode(section.title)}</h2>
+              {translateNode(section.paragraphs.map(paragraph => <p key={paragraph}>{translateNode(paragraph)}</p>))}
+              {translateNode(section.images && <NewsFigure images={section.images} />)}
             </section>
-          ))}
-          <div className="news-detail-disclaimer"><strong>内容说明</strong><p>本文根据项目现有资料整理，仅用于官网内容展示，不构成投资建议、产品要约或对任何服务范围的承诺。相关业务与事实信息以正式发布及适用主体确认为准。</p></div>
+          )))}
+          <div className="news-detail-disclaimer"><strong>{t("内容说明")}</strong><p>{t("本文根据项目现有资料整理，仅用于官网内容展示，不构成投资建议、产品要约或对任何服务范围的承诺。相关业务与事实信息以正式发布及适用主体确认为准。")}</p></div>
         </article>
       </div>
 
       <section className="news-related" aria-labelledby="news-related-title">
         <div className="news-shell">
           <div className="news-related-head">
-            <h2 id="news-related-title">继续阅读</h2>
-            <Link to={`/resources/${item.category}`}>查看全部{categoryTitle}<Icon icon={ArrowRight} /></Link>
+            <h2 id="news-related-title">{t("继续阅读")}</h2>
+            <Link to={`/resources/${item.category}`}>{t("查看全部")}{translateNode(categoryTitle)}<Icon icon={ArrowRight} /></Link>
           </div>
           <div className="news-grid" ref={relatedRef}>
-            {related.map((entry, index) => <NewsCard item={entry} index={index} key={entry.slug} />)}
+            {translateNode(related.map((entry, index) => <NewsCard item={entry} index={index} key={entry.slug} />))}
           </div>
         </div>
       </section>
@@ -455,7 +456,7 @@ function NewsArticle({ item }: { item: ListedNews }) {
 function NewsFigure({ images }: { images: NewsImage[] }) {
   return (
     <figure className={`news-figure${images.length > 1 ? ' is-group' : ''}`} style={{ '--figure-ratio': `${images[0].width} / ${images[0].height}` } as CSSProperties}>
-      {images.map(image => <img key={image.src} src={image.src} srcSet={image.srcSet} sizes={image.srcSet ? '(max-width: 800px) calc(100vw - 40px), 720px' : undefined} width={image.width} height={image.height} alt={image.alt} loading="lazy" decoding="async" />)}
+      {translateNode(images.map(image => <img key={image.src} src={image.src} srcSet={image.srcSet} sizes={image.srcSet ? '(max-width: 800px) calc(100vw - 40px), 720px' : undefined} width={image.width} height={image.height} alt={t(image.alt)} loading="lazy" decoding="async" />))}
     </figure>
   );
 }
@@ -463,10 +464,10 @@ function NewsFigure({ images }: { images: NewsImage[] }) {
 function NewsVisual({ type }: { type: string }) {
   return (
     <div className="news-art" aria-hidden="true">
-      <span className="news-art-label">FINLOOP / {type.replace('-', ' ').toUpperCase()}</span>
+      <span className="news-art-label">FINLOOP / {translateNode(type.replace('-', ' ').toUpperCase())}</span>
       <i className="news-art-line line-a" /><i className="news-art-line line-b" />
       <b className="news-art-orbit orbit-a" /><b className="news-art-orbit orbit-b" />
-      <strong>{type === 'series-a' ? 'A' : type === 'award' ? '01' : type === 'hongkong' ? 'HK' : type === 'web5' ? 'W5' : 'FL'}</strong>
+      <strong>{translateNode(type === 'series-a' ? 'A' : type === 'award' ? '01' : type === 'hongkong' ? 'HK' : type === 'web5' ? 'W5' : 'FL')}</strong>
     </div>
   );
 }

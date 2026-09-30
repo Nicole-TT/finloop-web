@@ -1,3 +1,4 @@
+import { t, translateNode, localizedHref } from '../i18n';
 import {
   createContext,
   FormEvent,
@@ -9,7 +10,7 @@ import {
 } from 'react';
 import { readAssistantStream, readPartialAnswer } from '../data/finloopAssistantStream';
 import { Link, useLocation } from 'react-router-dom';
-import { assistantPages, parseAssistantReply } from '../data/finloopAssistantKnowledge';
+import { parseAssistantReply, type AssistantLink } from '../data/finloopAssistantKnowledge';
 
 type AssistantMode = 'hidden' | 'modal' | 'sidebar';
 
@@ -17,7 +18,7 @@ type AssistantExchange = {
   id: number;
   question: string;
   body: string;
-  links: string[];
+  links: AssistantLink[];
   status: 'pending' | 'complete' | 'error';
 };
 
@@ -164,8 +165,8 @@ export function FinloopAssistantProvider({ children }: { children: ReactNode }) 
 
   return (
     <FinloopAssistantContext.Provider value={{ ask, hasConversation, isLoading }}>
-      {children}
-      {mode === 'modal' && (
+      {translateNode(children)}
+      {translateNode(mode === 'modal' && (
         <div className="finloop-assistant-overlay" onMouseDown={event => {
           if (event.target === event.currentTarget) setMode('hidden');
         }}>
@@ -183,9 +184,9 @@ export function FinloopAssistantProvider({ children }: { children: ReactNode }) 
             onRetry={question => void ask(question)}
           />
         </div>
-      )}
+      ))}
 
-      {mode === 'sidebar' && (
+      {translateNode(mode === 'sidebar' && (
         <AssistantPanel
           mode="sidebar"
           exchanges={exchanges}
@@ -198,19 +199,19 @@ export function FinloopAssistantProvider({ children }: { children: ReactNode }) 
           isLoading={isLoading}
             onRetry={question => void ask(question)}
         />
-      )}
+      ))}
 
-      {mode === 'hidden' && showFloatingLauncher && (
+      {translateNode(mode === 'hidden' && showFloatingLauncher && (
         <button
           className="finloop-assistant-floating"
           type="button"
-          aria-label={hasConversation ? '继续向 Finloop AI 提问' : '向 Finloop AI 提问'}
+          aria-label={t(hasConversation ? '继续向 Finloop AI 提问' : '向 Finloop AI 提问')}
           onClick={() => setMode('sidebar')}
         >
           <span className="finloop-assistant-floating-icon" aria-hidden="true"><img src="/assets/ai-icon.svg" alt="" /></span>
           <strong>Ask AI</strong>
         </button>
-      )}
+      ))}
     </FinloopAssistantContext.Provider>
   );
 }
@@ -251,57 +252,56 @@ function AssistantPanel({
       className={`finloop-assistant-panel finloop-assistant-${mode}`}
       role={isModal ? 'dialog' : 'complementary'}
       aria-modal={isModal ? true : undefined}
-      aria-label="Finloop AI 对话"
+      aria-label={t("Finloop AI 对话")}
     >
       <header className="finloop-assistant-head">
         <div>
           <span><i aria-hidden="true" />Finloop AI</span>
-          <small>业务助手</small>
+          <small>{t("业务助手")}</small>
         </div>
-        <nav aria-label="对话窗口操作">
-          {isModal ? (
-            <button type="button" onClick={onMinimize} aria-label="收起至页面右侧边栏">收起至侧边栏</button>
+        <nav aria-label={t("对话窗口操作")}>
+          {translateNode(isModal ? (
+            <button type="button" onClick={onMinimize} aria-label={t("收起至页面右侧边栏")}>{t("收起至侧边栏")}</button>
           ) : onExpand ? (
-            <button type="button" onClick={onExpand} aria-label="展开沉浸式对话">展开</button>
-          ) : null}
-          <button className="finloop-assistant-close" type="button" onClick={onClose} aria-label="关闭并收起对话">×</button>
+            <button type="button" onClick={onExpand} aria-label={t("展开沉浸式对话")}>{t("展开")}</button>
+          ) : null)}
+          <button className="finloop-assistant-close" type="button" onClick={onClose} aria-label={t("关闭并收起对话")}>×</button>
         </nav>
       </header>
 
       <div className="finloop-assistant-conversation">
         <div className="finloop-assistant-intro">
-          <h2>Finloop AI 能为您做什么？</h2>
-          <p>从业务目标出发，快速了解适合您的金融产品、平台与解决方案。</p>
+          <h2>{t("Finloop AI 能为您做什么？")}</h2>
+          <p>{t("从业务目标出发，快速了解适合您的金融产品、平台与解决方案。")}</p>
         </div>
         <div className="finloop-assistant-messages" ref={messagesRef} aria-live="polite">
         <div className="finloop-assistant-message is-assistant">
           <b>Finloop AI</b>
-          <p>您想了解哪类财富科技能力？我可以帮您快速找到对应的产品与解决方案。</p>
+          <p>{t("您想了解哪类财富科技能力？我可以帮您快速找到对应的产品与解决方案。")}</p>
         </div>
-        {exchanges.map(exchange => (
+        {translateNode(exchanges.map(exchange => (
           <div className="finloop-assistant-exchange" key={exchange.id}>
             <div className="finloop-assistant-message is-user"><p>{exchange.question}</p></div>
             <div className="finloop-assistant-message is-assistant">
               <b>Finloop AI</b>
-              <p role={exchange.status === 'error' ? 'alert' : undefined}>{exchange.body || (exchange.status === 'pending' ? '正在思考…' : '')}</p>
-              {exchange.status === 'pending' && exchange.body && <small className="finloop-assistant-streaming">正在回答…</small>}
-              {exchange.status === 'complete' && exchange.links.length > 0 && <nav className="finloop-assistant-links" aria-label="相关官网页面">
-                {exchange.links.map(href => {
-                  const page = assistantPages.find(item => item.href === href)!;
+              <p role={exchange.status === 'error' ? 'alert' : undefined}>{exchange.body || (exchange.status === 'pending' ? t('正在思考…') : '')}</p>
+              {translateNode(exchange.status === 'pending' && exchange.body && <small className="finloop-assistant-streaming">{t("正在回答…")}</small>)}
+              {translateNode(exchange.status === 'complete' && exchange.links.length > 0 && <nav className="finloop-assistant-links" aria-label={t("相关官网页面")}>
+                {translateNode(exchange.links.map(({ href, label }) => {
                   return href.startsWith('https://')
-                    ? <a key={href} href={href} target="_blank" rel="noopener noreferrer">{page.title} <span aria-hidden="true">↗</span><span className="sr-only">（新窗口打开）</span></a>
-                    : <Link key={href} to={href}>{page.title} <span aria-hidden="true">→</span></Link>;
-                })}
-              </nav>}
-              {exchange.status === 'error' && <button className="finloop-assistant-detail" type="button" disabled={isLoading} onClick={() => onRetry(exchange.question)}>重试</button>}
+                    ? <a key={href} href={localizedHref(href)} target="_blank" rel="noopener noreferrer">{label} <span aria-hidden="true">↗</span><span className="sr-only">{t("（新窗口打开）")}</span></a>
+                    : <Link key={href} to={href}>{label} <span aria-hidden="true">→</span></Link>;
+                }))}
+              </nav>)}
+              {translateNode(exchange.status === 'error' && <button className="finloop-assistant-detail" type="button" disabled={isLoading} onClick={() => onRetry(exchange.question)}>{t("重试")}</button>)}
             </div>
           </div>
-        ))}
+        )))}
         </div>
       </div>
 
       <form className="finloop-assistant-form" autoComplete="off" onSubmit={submitDraft}>
-        <label className="sr-only" htmlFor={`finloop-assistant-input-${mode}`}>继续输入您的业务问题</label>
+        <label className="sr-only" htmlFor={`finloop-assistant-input-${mode}`}>{t("继续输入您的业务问题")}</label>
         <input
           ref={inputRef}
           autoComplete="off"
@@ -311,9 +311,9 @@ function AssistantPanel({
           id={`finloop-assistant-input-${mode}`}
           value={draft}
           onChange={event => setDraft(event.target.value)}
-          placeholder="继续输入您的业务问题…"
+          placeholder={t("继续输入您的业务问题…")}
         />
-        <button type="submit" aria-label="发送问题" disabled={isLoading || !draft.trim()}>↑</button>
+        <button type="submit" aria-label={t("发送问题")} disabled={isLoading || !draft.trim()}>↑</button>
       </form>
     </section>
   );

@@ -1,3 +1,4 @@
+import { t, translateNode } from '../i18n';
 import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { Link } from 'react-router-dom';
@@ -151,24 +152,24 @@ function ProductShowcase({ product }: { product: FinancialProduct }) {
 
   return <section className="product-showcase" aria-labelledby="product-showcase-title">
     <header className="product-showcase-head">
-      <div><h3 id="product-showcase-title">{product.name}产品展示</h3><p>以下产品、币种及收益率均为虚拟 Demo 数据，仅用于界面演示，不代表实际在售产品、历史表现或收益承诺。</p></div>
-      <Link className="product-showcase-more" to="/contact?type=product">更多产品 <span aria-hidden="true">↗</span></Link>
+      <div><h3 id="product-showcase-title">{translateNode(product.name)}{t("产品展示")}</h3><p>{t("以下产品、币种及收益率均为虚拟 Demo 数据，仅用于界面演示，不代表实际在售产品、历史表现或收益承诺。")}</p></div>
+      <Link className="product-showcase-more" to="/contact?type=product">{t("更多产品")}<span aria-hidden="true">↗</span></Link>
     </header>
-    <div className="product-showcase-track" id={`showcase-${product.id}`} ref={trackRef} role="region" aria-label={`${product.name}示例产品，可横向滚动`} tabIndex={0}
+    <div className="product-showcase-track" id={`showcase-${product.id}`} ref={trackRef} role="region" aria-label={t(`${product.name}示例产品，可横向滚动`)} tabIndex={0}
       onKeyDown={event => { if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') { event.preventDefault(); move(event.key === 'ArrowLeft' ? -1 : 1); } }}>
-      {items.map(([name, strategy, currency], index) => <article className="product-showcase-card" key={name}>
-        <div className="product-showcase-card-top"><span>{product.name}</span><small>示例 {String(index + 1).padStart(2, '0')}</small></div>
-        <h4>{name}</h4><p>{strategy}</p>
-        <div className="product-showcase-metric"><span>示例收益率</span>
-          {masked && index % 2 === 1 ? <strong aria-label="虚拟收益率，数值已隐藏"><span className="product-showcase-masked"><span aria-hidden="true">••.••</span></span>%</strong> : <strong>{showcaseDemoReturns[product.id][index]}%</strong>}
-          <small>虚拟数据 · 仅供 Demo 展示</small>
+      {translateNode(items.map(([name, strategy, currency], index) => <article className="product-showcase-card" key={name}>
+        <div className="product-showcase-card-top"><span>{translateNode(product.name)}</span><small>{t("示例")}{translateNode(String(index + 1).padStart(2, '0'))}</small></div>
+        <h4>{translateNode(name)}</h4><p>{translateNode(strategy)}</p>
+        <div className="product-showcase-metric"><span>{t("示例收益率")}</span>
+          {translateNode(masked && index % 2 === 1 ? <strong aria-label={t("虚拟收益率，数值已隐藏")}><span className="product-showcase-masked"><span aria-hidden="true">••.••</span></span>%</strong> : <strong>{translateNode(showcaseDemoReturns[product.id][index])}%</strong>)}
+          <small>{t("虚拟数据 · 仅供 Demo 展示")}</small>
         </div>
-        <dl><div><dt>示例币种</dt><dd>{currency}</dd></div><div><dt>{masked ? '认购起点' : '产品资料'}</dt><dd>{masked ? <span className="product-showcase-masked" aria-label="金额已隐藏"><span aria-hidden="true">•••,•••</span></span> : '待提供'}</dd></div></dl>
-      </article>)}
+        <dl><div><dt>{t("示例币种")}</dt><dd>{translateNode(currency)}</dd></div><div><dt>{translateNode(masked ? '认购起点' : '产品资料')}</dt><dd>{translateNode(masked ? <span className="product-showcase-masked" aria-label={t("金额已隐藏")}><span aria-hidden="true">•••,•••</span></span> : '待提供')}</dd></div></dl>
+      </article>))}
     </div>
-    <footer className="product-showcase-footer"><span aria-live="polite">{position.start + 1}–{position.end} / {items.length}</span><div>
-      <button type="button" aria-label="上一款产品" aria-controls={`showcase-${product.id}`} disabled={position.atStart} onClick={() => move(-1)}><i data-lucide="chevron-left" aria-hidden="true" /></button>
-      <button type="button" aria-label="下一款产品" aria-controls={`showcase-${product.id}`} disabled={position.atEnd} onClick={() => move(1)}><i data-lucide="chevron-right" aria-hidden="true" /></button>
+    <footer className="product-showcase-footer"><span aria-live="polite">{translateNode(position.start + 1)}–{translateNode(position.end)} / {translateNode(items.length)}</span><div>
+      <button type="button" aria-label={t("上一款产品")} aria-controls={`showcase-${product.id}`} disabled={position.atStart} onClick={() => move(-1)}><i data-lucide="chevron-left" aria-hidden="true" /></button>
+      <button type="button" aria-label={t("下一款产品")} aria-controls={`showcase-${product.id}`} disabled={position.atEnd} onClick={() => move(1)}><i data-lucide="chevron-right" aria-hidden="true" /></button>
     </div></footer>
   </section>;
 }
@@ -247,35 +248,35 @@ export function FinancialProductsPage() {
   return (
     <main className="product-page" id="main">
       <section className="product-hero" data-header-theme="inverse">
-        <img className="product-hero-image" src="/assets/financial-products-universe.png" alt="抽象的多资产连接网络与财富产品宇宙" />
+        <img className="product-hero-image" src="/assets/financial-products-universe.png" alt={t("抽象的多资产连接网络与财富产品宇宙")} />
         <div className="product-hero-scrim" />
         <div className="product-hero-content">
           <div className="product-hero-copy">
-            <h1>连接多元财富产品</h1>
-            <p>覆盖传统财富与数字资产产品，为金融机构、财富管理机构和企业客户提供多元化的产品供给。</p>
+            <h1>{t("连接多元财富产品")}</h1>
+            <p>{t("覆盖传统财富与数字资产产品，为金融机构、财富管理机构和企业客户提供多元化的产品供给。")}</p>
           </div>
         </div>
       </section>
 
       <section className="product-shelf" id="product-shelf">
         <div className="product-shelf-head">
-          <h2>覆盖多元投资需求的财富产品货架</h2>
-          <p>选择产品类别，查看产品定位、覆盖范围与能力边界。从传统财富到数字资产，产品、访问交易能力和平台技术保持清晰分层。</p>
+          <h2>{t("覆盖多元投资需求的财富产品货架")}</h2>
+          <p>{t("选择产品类别，查看产品定位、覆盖范围与能力边界。从传统财富到数字资产，产品、访问交易能力和平台技术保持清晰分层。")}</p>
         </div>
         <div className="product-browser">
-          <div className="product-tabs" role="tablist" aria-label="金融产品类别">
-            {products.map((product, index) => {
-              return <button id={`product-tab-${product.id}`} key={product.id} role="tab" tabIndex={active.id === product.id ? 0 : -1} aria-selected={active.id === product.id} aria-controls={`panel-${product.id}`} onClick={() => { const currentIndex = products.findIndex(item => item.id === active.id); setTransitionDirection(index >= currentIndex ? 1 : -1); setActive(product); }} onKeyDown={(event) => handleTabKeyDown(event, index)}><i data-lucide={product.icon} aria-hidden="true" /><b>{product.name}</b><i data-lucide="chevron-right" aria-hidden="true" /></button>;
-            })}
+          <div className="product-tabs" role="tablist" aria-label={t("金融产品类别")}>
+            {translateNode(products.map((product, index) => {
+              return <button id={`product-tab-${product.id}`} key={product.id} role="tab" tabIndex={active.id === product.id ? 0 : -1} aria-selected={active.id === product.id} aria-controls={`panel-${product.id}`} onClick={() => { const currentIndex = products.findIndex(item => item.id === active.id); setTransitionDirection(index >= currentIndex ? 1 : -1); setActive(product); }} onKeyDown={(event) => handleTabKeyDown(event, index)}><i data-lucide={product.icon} aria-hidden="true" /><b>{translateNode(product.name)}</b><i data-lucide="chevron-right" aria-hidden="true" /></button>;
+            }))}
           </div>
           <AnimatePresence mode="wait" initial={false} custom={transitionDirection}>
             <motion.article className="product-detail" key={active.id} id={`panel-${active.id}`} role="tabpanel" aria-labelledby={`product-tab-${active.id}`} style={{ '--product-background': productBackgrounds[active.id] } as React.CSSProperties & { '--product-background': string }} custom={transitionDirection} variants={productPanelVariants} initial={reduceMotion ? false : 'enter'} animate="center" exit={reduceMotion ? undefined : 'exit'} transition={{ duration: reduceMotion ? 0 : .36, ease: [.22, 1, .36, 1] }}>
               <div className="product-detail-copy">
                 <div className="product-selling-stage">
-                  {productSellingPoints[active.id].map((point, index) => <section className="product-selling-point" key={point.title}>
-                    <div className="product-selling-text"><span className="product-category-label">{active.name}</span><strong>{point.title}</strong><p>{point.copy}</p>{active.id === 'rwa' && index === 1 && <Link className="product-rwa-link" to="/products/finrwa">了解 FinRWA →</Link>}</div>
+                  {translateNode(productSellingPoints[active.id].map((point, index) => <section className="product-selling-point" key={point.title}>
+                    <div className="product-selling-text"><span className="product-category-label">{translateNode(active.name)}</span><strong>{translateNode(point.title)}</strong><p>{translateNode(point.copy)}</p>{translateNode(active.id === 'rwa' && index === 1 && <Link className="product-rwa-link" to="/products/finrwa">{t("了解 FinRWA →")}</Link>)}</div>
                     <div className="product-detail-image" aria-hidden="true"><div className="product-detail-image-frame" style={{ backgroundImage: productFeatureImages[active.id][index] }} /></div>
-                  </section>)}
+                  </section>))}
                 </div>
               </div>
             </motion.article>
@@ -286,32 +287,32 @@ export function FinancialProductsPage() {
 
       <section className="web-bridge">
         <div className="web-bridge-inner">
-          <div className="web-bridge-copy"><h2>从传统财富产品延伸至数字资产</h2><p>让传统财富与数字资产产品在同一机构业务体系中连接。</p></div>
-          <div className="web-column"><span>WEB2</span><h3>传统财富产品</h3><p>现金管理 · 公募基金 · 私募基金 · 债券 · 结构性产品 · 保险</p></div>
+          <div className="web-bridge-copy"><h2>{t("从传统财富产品延伸至数字资产")}</h2><p>{t("让传统财富与数字资产产品在同一机构业务体系中连接。")}</p></div>
+          <div className="web-column"><span>WEB2</span><h3>{t("传统财富产品")}</h3><p>{t("现金管理 · 公募基金 · 私募基金 · 债券 · 结构性产品 · 保险")}</p></div>
           <div className="web-core"><small>WEB5</small><strong>FINLOOP</strong><i data-lucide="move-right" aria-hidden="true" /></div>
-          <div className="web-column"><span>WEB3</span><h3>数字资产产品</h3><p>Virtual Assets · Tokenized Funds · RWA</p></div>
+          <div className="web-column"><span>WEB3</span><h3>{t("数字资产产品")}</h3><p>Virtual Assets · Tokenized Funds · RWA</p></div>
         </div>
       </section>
 
       <section className="why-products">
-        <div className="why-products-head"><h2>为什么通过星路连接财富产品</h2><p>从供给广度到业务落地，为机构产品采购与财富业务提供持续支撑。</p></div>
-        <div className="why-product-grid">{[
+        <div className="why-products-head"><h2>{t("为什么通过星路连接财富产品")}</h2><p>{t("从供给广度到业务落地，为机构产品采购与财富业务提供持续支撑。")}</p></div>
+        <div className="why-product-grid">{translateNode([
           ['01', '丰富产品供给', '8000+ 财富产品，覆盖传统财富与数字资产。'],
           ['02', '多资产类别', '从现金管理到私募市场与 RWA，回应不同配置需求。'],
           ['03', '全球产品生态', '连接基金管理机构、银行、发行机构与数字资产生态。'],
           ['04', '跨境财富能力', '覆盖全球基金、多币种产品及跨境财富场景。'],
           ['05', '交易与技术支撑', '让产品继续进入账户、交易、清结算、资产与报告流程。'],
-        ].map(([number, title, copy]) => <article key={number}><span>{number}</span><h3>{title}</h3><p>{copy}</p></article>)}</div>
+        ].map(([number, title, copy]) => <article key={number}><span>{translateNode(number)}</span><h3>{translateNode(title)}</h3><p>{translateNode(copy)}</p></article>))}</div>
         <div className="why-products-lifecycle">
-          <div><h3>不止连接产品，更连接完整财富业务</h3><p>产品不是简单进入产品库，而是继续进入交易、资产和运营流程。</p></div>
-          <ol>{lifecycle.map(([item, icon], index) => <li key={item}><span>0{index + 1}</span><i data-lucide={icon} aria-hidden="true" /><strong>{item}</strong></li>)}</ol>
+          <div><h3>{t("不止连接产品，更连接完整财富业务")}</h3><p>{t("产品不是简单进入产品库，而是继续进入交易、资产和运营流程。")}</p></div>
+          <ol>{translateNode(lifecycle.map(([item, icon], index) => <li key={item}><span>0{translateNode(index + 1)}</span><i data-lucide={icon} aria-hidden="true" /><strong>{translateNode(item)}</strong></li>))}</ol>
         </div>
       </section>
 
       <section className="product-cta">
         <div className="product-cta-inner">
-          <div><h2>构建适合您客户的财富产品货架</h2><p>无论您希望拓展传统财富产品、另类投资还是数字资产，Finloop 可以根据机构业务模式连接产品供给与财富科技能力。</p></div>
-          <div className="product-cta-actions"><Link className="button button-light" to="/contact">预约咨询 <i data-lucide="arrow-right" /></Link></div>
+          <div><h2>{t("构建适合您客户的财富产品货架")}</h2><p>{t("无论您希望拓展传统财富产品、另类投资还是数字资产，Finloop 可以根据机构业务模式连接产品供给与财富科技能力。")}</p></div>
+          <div className="product-cta-actions"><Link className="button button-light" to="/contact">{t("预约咨询")}<i data-lucide="arrow-right" /></Link></div>
         </div>
       </section>
     </main>

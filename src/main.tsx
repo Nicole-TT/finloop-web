@@ -1,4 +1,4 @@
-import { isEnglish, t } from './i18n';
+import { isEnglish, t, localePrefix, languageMenu, translateNode } from './i18n';
 import { HomeLogoWall } from './components/HomeLogoWall';
 import { animate } from 'motion';
 import { createRoot } from 'react-dom/client';
@@ -40,7 +40,7 @@ import { SiteLayout } from './layouts/SiteLayout';
 
 function PageReady({ children }: { children: ReactNode }) {
   useEffect(() => { window.dispatchEvent(new Event('finloop:route-change')); }, []);
-  return <>{children}</>;
+  return <>{translateNode(children)}</>;
 }
 
 const NotFoundPage = lazy(() => import('./pages/SectionPage').then(module => ({
@@ -233,7 +233,7 @@ const headerMarkup = `
         <button class="nav-link nav-trigger" data-menu="about" aria-expanded="false">关于星路 <i data-lucide="chevron-down"></i></button>
       </nav>
       <div class="header-actions">
-        <button class="language-button" aria-label="切换语言"><i data-lucide="globe-2"></i><span>简</span></button>
+        ${languageMenu("header-language-options")}
         <a class="button button-accent header-cta" href="/contact">联系我们</a>
         <button class="menu-button" aria-label="打开菜单" aria-expanded="false"><i data-lucide="menu"></i></button>
       </div>
@@ -270,7 +270,7 @@ const mobileDrawerMarkup = `
     <nav class="mobile-nav" aria-label="移动端导航">
       ${mobileNavGroups.map(([title, path, items]) => `<div class="mobile-group"><button aria-expanded="false">${title}<i data-lucide="chevron-down"></i></button><div>${path ? `<a href="${path}">查看全部</a>` : ''}${title === '解决方案' ? mobileSolutionLinks : items.map(item => `<a href="${mobileItemHref(title, item, path)}"${item === 'FinTaaS' || item === 'FinEAM' || item === '加入我们' ? ' target="_blank" rel="noopener noreferrer"' : ''}>${item}</a>`).join('')}</div></div>`).join('')}
     </nav>
-    <div class="drawer-bottom"><button class="language-button"><i data-lucide="globe-2"></i> 简体中文</button><a class="button button-accent" href="/contact">预约咨询 <i data-lucide="arrow-right"></i></a></div>
+    <div class="drawer-bottom">${languageMenu("drawer-language-options")}<a class="button button-accent" href="/contact">预约咨询 <i data-lucide="arrow-right"></i></a></div>
   </div>
 `;
 
@@ -450,7 +450,7 @@ const aiPageItems = aiItems.map(([title, description]) => ({ title, description 
 
 function App() {
   return (
-    <BrowserRouter basename={isEnglish ? "/en" : "/"}>
+    <BrowserRouter basename={localePrefix || "/"}>
       <Routes>
         <Route element={<SiteLayout headerMarkup={headerMarkup} mobileDrawerMarkup={mobileDrawerMarkup} footerMarkup={footerMarkup} initializeShell={initializePage} />}>
           <Route index element={<HomePage />} />

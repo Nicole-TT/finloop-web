@@ -1,3 +1,4 @@
+import { t, translateNode } from '../i18n';
 import { Link } from 'react-router-dom';
 
 const capabilities = [
@@ -17,19 +18,19 @@ const plans = [
 ];
 
 function TreasuryVisual({ kind, core, items }: { kind: string; core: string; items: string[] }) {
-  return <figure className={`cif-visual ${kind}`} aria-label={`${core} 企业投资能力结构`}><div className="cif-core"><small>ENTERPRISE</small><strong>{core}</strong></div><div className="cif-steps">{items.map((item, index) => <span key={item}><i>0{index + 1}</i>{item}</span>)}</div></figure>;
+  return <figure className={`cif-visual ${kind}`} aria-label={t(`${core} 企业投资能力结构`)}><div className="cif-core"><small>ENTERPRISE</small><strong>{translateNode(core)}</strong></div><div className="cif-steps">{translateNode(items.map((item, index) => <span key={item}><i>0{translateNode(index + 1)}</i>{translateNode(item)}</span>))}</div></figure>;
 }
 
 export function EnterpriseSolutionPage() {
   return <main className="cif-page" id="main">
-    <section className="cif-hero" data-header-theme="inverse"><div className="cif-shell cif-hero-grid"><div><h1>让企业自有资金得到<br />更高效的管理与投资</h1><p>面向企业、集团公司及法团专业投资者，连接现金管理与多元财富产品，并通过企业级账户、权限及资产管理能力提升资金使用效率。</p><div className="cif-actions"><a className="button button-accent" href="#capabilities">探索企业理财方案</a><Link to="/contact">联系我们</Link></div></div><div className="cif-hero-board" aria-label="企业资金与投资管理示意"><header><small>CORPORATE TREASURY</small><strong>企业资金全景</strong><span>账户 · 权限 · 投资 · 资产</span></header><div>{[['可用资金','CASH'],['现金管理','LIQUIDITY'],['多资产投资','INVESTMENT'],['资产与报表','ASSETS']].map(([title, label], index) => <article className={index === 1 ? 'active' : ''} key={title}><small>{label}</small><strong>{title}</strong></article>)}</div></div></div></section>
+    <section className="cif-hero" data-header-theme="inverse"><div className="cif-shell cif-hero-grid"><div><h1>{t("让企业自有资金得到")}<br />{t("更高效的管理与投资")}</h1><p>{t("面向企业、集团公司及法团专业投资者，连接现金管理与多元财富产品，并通过企业级账户、权限及资产管理能力提升资金使用效率。")}</p><div className="cif-actions"><a className="button button-accent" href="#capabilities">{t("探索企业理财方案")}</a><Link to="/contact">{t("联系我们")}</Link></div></div><div className="cif-hero-board" aria-label={t("企业资金与投资管理示意")}><header><small>CORPORATE TREASURY</small><strong>{t("企业资金全景")}</strong><span>{t("账户 · 权限 · 投资 · 资产")}</span></header><div>{translateNode([['可用资金','CASH'],['现金管理','LIQUIDITY'],['多资产投资','INVESTMENT'],['资产与报表','ASSETS']].map(([title, label], index) => <article className={index === 1 ? 'active' : ''} key={title}><small>{translateNode(label)}</small><strong>{translateNode(title)}</strong></article>))}</div></div></div></section>
 
-    <section className="cif-intro" id="capabilities"><div className="cif-shell"><h2>围绕企业资金，建立连续的投资管理能力</h2><p>从短期流动性管理和产品选择，到企业账户、内部权限、Treasury 集成与 AI 辅助，让资金信息与投资流程保持连接。</p></div></section>
+    <section className="cif-intro" id="capabilities"><div className="cif-shell"><h2>{t("围绕企业资金，建立连续的投资管理能力")}</h2><p>{t("从短期流动性管理和产品选择，到企业账户、内部权限、Treasury 集成与 AI 辅助，让资金信息与投资流程保持连接。")}</p></div></section>
 
-    <div className="cif-capabilities">{capabilities.map((item, index) => <section className={`cif-capability${index % 2 ? ' reverse' : ''}`} key={item.title}><div className="cif-shell cif-capability-grid"><div className="cif-copy"><h2>{item.title}</h2><p>{item.copy}</p><div className="cif-tags">{item.items.map(value => <span key={value}>{value}</span>)}</div><div className="cif-links">{item.links.map(([label, href]) => <Link to={href} key={label}>{label} <span>→</span></Link>)}</div></div><TreasuryVisual kind={item.kind} core={item.core} items={item.visual} /></div></section>)}</div>
+    <div className="cif-capabilities">{translateNode(capabilities.map((item, index) => <section className={`cif-capability${index % 2 ? ' reverse' : ''}`} key={item.title}><div className="cif-shell cif-capability-grid"><div className="cif-copy"><h2>{translateNode(item.title)}</h2><p>{translateNode(item.copy)}</p><div className="cif-tags">{translateNode(item.items.map(value => <span key={value}>{translateNode(value)}</span>))}</div><div className="cif-links">{translateNode(item.links.map(([label, href]) => <Link to={href} key={label}>{translateNode(label)} <span>→</span></Link>))}</div></div><TreasuryVisual kind={item.kind} core={item.core} items={item.visual} /></div></section>))}</div>
 
-    <section className="cif-plans"><div className="cif-shell"><header><h2>根据企业投资复杂度灵活组合</h2><p>从单一投资账户、持续理财和集团级管理，到真实资产代币化，按业务目标选择对应方案。</p></header><div className="cif-plan-grid">{plans.map(plan => <article key={plan.title}><h3>{plan.title}</h3><p>{plan.copy}</p><div>{plan.stack.map((item, index) => <span key={item}>{index > 0 && <i>＋</i>}{item}</span>)}</div></article>)}</div></div></section>
+    <section className="cif-plans"><div className="cif-shell"><header><h2>{t("根据企业投资复杂度灵活组合")}</h2><p>{t("从单一投资账户、持续理财和集团级管理，到真实资产代币化，按业务目标选择对应方案。")}</p></header><div className="cif-plan-grid">{translateNode(plans.map(plan => <article key={plan.title}><h3>{translateNode(plan.title)}</h3><p>{translateNode(plan.copy)}</p><div>{translateNode(plan.stack.map((item, index) => <span key={item}>{translateNode(index > 0 && <i>＋</i>)}{translateNode(item)}</span>))}</div></article>))}</div></div></section>
 
-    <section className="cif-cta"><div className="cif-shell"><div><h2>让企业资金管理与投资<br />进入同一条业务链路</h2><p>与 Finloop 团队讨论适合企业资金规模、流动性需求与系统基础的理财方案。</p></div><Link className="button button-light" to="/contact">联系我们</Link></div></section>
+    <section className="cif-cta"><div className="cif-shell"><div><h2>{t("让企业资金管理与投资")}<br />{t("进入同一条业务链路")}</h2><p>{t("与 Finloop 团队讨论适合企业资金规模、流动性需求与系统基础的理财方案。")}</p></div><Link className="button button-light" to="/contact">{t("联系我们")}</Link></div></section>
   </main>;
 }

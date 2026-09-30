@@ -1,4 +1,4 @@
-import { t, localizedHref } from '../i18n';
+import { t, localizedHref, translateNode } from '../i18n';
 import React, { useEffect, useId, useRef, useState } from 'react';
 import logoSource from '../../public/assets/finloop-logo.svg?raw';
 import RotatingEarth from './ui/wireframe-dotted-globe';
@@ -8,7 +8,7 @@ import { RefreshCw, type IconNode } from 'lucide';
 
 function HeroIcon({ icon }: { icon: IconNode }) {
   return <svg width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
-    {icon[2]?.map(([tag, attrs], index) => React.createElement(tag, { ...attrs, key: index }))}
+    {translateNode(icon[2]?.map(([tag, attrs], index) => React.createElement(tag, { ...attrs, key: index })))}
   </svg>;
 }
 
@@ -67,7 +67,7 @@ function HeroMetric({ item, index, progress, reduced }: { item: string[]; index:
   const count = useTransform(progress, [start, 2.1], [0, target], { ease: value => 1 - (1 - value) ** 3 });
   const formattedCount = useTransform(count, value => `${Math.round(value).toLocaleString('en-US')}${suffix}`);
   return <motion.article style={reduced ? undefined : { opacity, y }}>
-    <strong aria-label={`${item[0]} ${item[1]}`.trim()}><motion.span aria-hidden="true" style={{ fontVariantNumeric: 'tabular-nums' }}>{reduced ? item[0] : formattedCount}</motion.span> {item[1] && <small aria-hidden="true">{item[1]}</small>}</strong>
+    <strong aria-label={t(`${item[0]} ${item[1]}`.trim())}><motion.span aria-hidden="true" style={{ fontVariantNumeric: 'tabular-nums' }}>{translateNode(reduced ? item[0] : formattedCount)}</motion.span> {translateNode(item[1] && <small aria-hidden="true">{translateNode(item[1])}</small>)}</strong>
     <h3>{t(item[2])}</h3><p>{t(item[3])}</p>
   </motion.article>;
 }
@@ -122,17 +122,17 @@ function MetricsVideoReveal({ reduced }: { reduced: boolean }) {
         transition={{ opacity: { duration: reduced ? 0 : .65, ease: 'easeOut' } }}
         style={reduced ? undefined : { y, scale }}>
         <video ref={videoRef} poster="/assets/home-metrics-poster.jpg" muted loop playsInline preload="none" aria-label={t('Finloop 品牌影片')} />
-        {!playing && <div className="hero-video-caption">
-          <h2>Who Are We</h2>
+        {translateNode(!playing && <div className="hero-video-caption">
+          <h2>{t("谁是我们")}</h2>
           <button type="button" className="hero-video-play" onClick={() => setPlaying(true)}>
-            See the Video <span aria-hidden="true">▶</span>
+            {t("查看品牌影片")} <span aria-hidden="true">▶</span>
           </button>
-        </div>}
-        {playing && <iframe className="hero-video-player"
+        </div>)}
+        {translateNode(playing && <iframe className="hero-video-player"
           src="https://www.youtube.com/embed/fRr7gAOQd64?si=olmwZExwJjahmg9k&autoplay=1&playsinline=1"
-          title="Finloop brand video"
+          title={t("Finloop 品牌影片")}
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          referrerPolicy="strict-origin-when-cross-origin" allowFullScreen />}
+          referrerPolicy="strict-origin-when-cross-origin" allowFullScreen />)}
       </motion.div>
     </div>
   </section>;
@@ -480,7 +480,7 @@ export function HeroSection() {
   return (
     <div className={`hero-scroll-scene${reduceMotion ? ' hero-scroll-static' : ''}`}>
     <section ref={heroRef} className="hero hero-scroll-stage" data-entrance-visible={reduceMotion || entranceVisible ? 'true' : 'false'} data-header-theme="inverse" aria-label={t('香港城市与财富科技平台')}>
-      {!reduceMotion && <motion.video ref={dotVideoRef} className="hero-dot-background" muted loop playsInline preload="none" aria-hidden="true" style={{ opacity: logoLift }} />}
+      {translateNode(!reduceMotion && <motion.video ref={dotVideoRef} className="hero-dot-background" muted loop playsInline preload="none" aria-hidden="true" style={{ opacity: logoLift }} />)}
       <svg className="hero-logo-background" aria-hidden="true" width="100%" height="100%">
         <defs>
           <clipPath id={logoClipId} clipPathUnits="userSpaceOnUse"><path ref={logoPathRef} d={heroLogoPath} /></clipPath>
@@ -497,10 +497,10 @@ export function HeroSection() {
         </g>
       </svg>
       <div className="hero-digital-scan" aria-hidden="true">
-        <div className="hero-digital-field">{Array.from({ length: 240 }, (_, index) => {
+        <div className="hero-digital-field">{translateNode(Array.from({ length: 240 }, (_, index) => {
           const codes = index % 3 === 0 ? ['01', '10', '11', '00', '01'] : index % 3 === 1 ? ['10', '00', '01', '11', '10'] : ['001', '110', '010', '101', '001'];
-          return <span key={index}><b style={{ animationDelay: `${-(index % 11) * .27}s` }}>{codes.map((code, row) => <i key={row}>{code}</i>)}</b></span>;
-        })}</div>
+          return <span key={index}><b style={{ animationDelay: `${-(index % 11) * .27}s` }}>{translateNode(codes.map((code, row) => <i key={row}>{translateNode(code)}</i>))}</b></span>;
+        }))}</div>
       </div>
       <motion.div ref={chatBackdropRef} className="hero-ai-chat-backdrop" aria-hidden="true" style={{ opacity: chatBackdropOpacity }} />
       <motion.div className="hero-grid" style={{ opacity: contentOpacity }}>
@@ -510,18 +510,18 @@ export function HeroSection() {
           <motion.div ref={chatRef} onUpdate={alignChatBackdrop} className="hero-ai-chat" aria-label={t('Finloop AI 业务助手')} variants={heroEntranceItem}>
             <div className="hero-ai-chat-background" aria-hidden="true" />
             <form autoComplete="off" onSubmit={event => { event.preventDefault(); submitQuestion(question); }}><label className="sr-only" htmlFor="hero-ai-question">{t('输入您的业务问题')}</label><input id="hero-ai-question" name="finloop-business-question" autoComplete="off" autoCorrect="off" autoCapitalize="off" spellCheck={false} value={question} onChange={event => setQuestion(event.target.value)} placeholder={t('请输入您的角色或您的业务问题，我们为你快速解决')} /><button type="submit" aria-label={t('发送问题')} disabled={isLoading || !question.trim()}><img src="/assets/ai-icon.svg" alt=""/><span>Ask AI</span></button></form>
-            <div className="hero-ai-chat-footer"><div ref={suggestionsRef} className="hero-ai-suggestions" aria-label={t('示例问题')}>{heroSuggestionBatches[suggestionBatch].map(item => <button type="button" key={t(item)} onClick={() => submitQuestion(t(item))}>{t(item)}</button>)}</div></div>
+            <div className="hero-ai-chat-footer"><div ref={suggestionsRef} className="hero-ai-suggestions" aria-label={t('示例问题')}>{translateNode(heroSuggestionBatches[suggestionBatch].map(item => <button type="button" key={t(item)} onClick={() => submitQuestion(t(item))}>{t(item)}</button>))}</div></div>
           </motion.div>
           <div className="hero-ai-tools">
             <button className="hero-ai-shuffle" type="button" onClick={() => setSuggestionBatch(current => (current + 1) % heroSuggestionBatches.length)}><HeroIcon icon={RefreshCw} />{t('换一批')}</button>
           </div>
         </motion.div>
       </motion.div>
-      {!reduceMotion && <div className="hero-metrics metric-grid" id="metrics" aria-label={t('Finloop 业务数据')}>
-        {heroMetrics.map((item, index) => <HeroMetric key={t(item[2])} item={item} index={index} progress={reveal} reduced={false} />)}
-      </div>}
+      {translateNode(!reduceMotion && <div className="hero-metrics metric-grid" id="metrics" aria-label={t('Finloop 业务数据')}>
+        {translateNode(heroMetrics.map((item, index) => <HeroMetric key={t(item[2])} item={item} index={index} progress={reveal} reduced={false} />))}
+      </div>)}
     </section>
-    {reduceMotion && <div className="metrics metric-grid" id="metrics">{heroMetrics.map((item, index) => <HeroMetric key={t(item[2])} item={item} index={index} progress={reveal} reduced />)}</div>}
+    {translateNode(reduceMotion && <div className="metrics metric-grid" id="metrics">{translateNode(heroMetrics.map((item, index) => <HeroMetric key={t(item[2])} item={item} index={index} progress={reveal} reduced />))}</div>)}
     <MetricsVideoReveal reduced={Boolean(reduceMotion)} />
     </div>
   );
@@ -542,7 +542,7 @@ export function CoverageSection() {
       <div className="product-universe" data-active={activeAsset}>
         <ProductGlobe />
         <div className="product-nodes" aria-label={t('金融产品类别')}>
-          {assetTabs.map(([id, label], index) => (
+          {translateNode(assetTabs.map(([id, label], index) => (
             <button
               type="button"
               key={id}
@@ -558,7 +558,7 @@ export function CoverageSection() {
               <strong>{t(label)}</strong>
               <div><p>{t(assetContent[id][1])}</p><small>{t(assetContent[id][2])}</small></div>
             </button>
-          ))}
+          )))}
         </div>
       </div>
     </section>
@@ -649,10 +649,10 @@ export function SolutionsSection({ groups }: { groups: SolutionGroup[] }) {
             <p>{t(activeGroup?.description)}</p>
           </div>
           <div className="solution-mode-tabs" role="tablist" aria-label={t('解决方案分类方式')}>
-            {groups.map(group => <button key={group.id} type="button" role="tab" aria-selected={group.id === activeGroupId} onClick={() => setActiveGroupId(group.id)}>{t(group.label)}</button>)}
+            {translateNode(groups.map(group => <button key={group.id} type="button" role="tab" aria-selected={group.id === activeGroupId} onClick={() => setActiveGroupId(group.id)}>{t(group.label)}</button>))}
           </div>
           <div className="solution-accordion">
-            {items.map(([id, name, desc]) => {
+            {translateNode(items.map(([id, name, desc]) => {
               const isActive = activeId === id;
               return (
                 <article
@@ -666,7 +666,7 @@ export function SolutionsSection({ groups }: { groups: SolutionGroup[] }) {
                     onClick={() => setActiveId(id)}
                   >
                     <strong>{t(name)}</strong>
-                    <i aria-hidden="true">{isActive ? '−' : '+'}</i>
+                    <i aria-hidden="true">{translateNode(isActive ? '−' : '+')}</i>
                   </button>
                   <div className="solution-option-detail" id={`solution-detail-${id}`} aria-hidden={!isActive}>
                     <p>{t(desc)}</p>
@@ -674,7 +674,7 @@ export function SolutionsSection({ groups }: { groups: SolutionGroup[] }) {
                   </div>
                 </article>
               );
-            })}
+            }))}
           </div>
         </div>
         <figure className="solution-media">
