@@ -1,6 +1,17 @@
 import { isEnglish, t } from './index';
 
 const en: Record<string, string> = {
+  "全品类的产品管理": "Product Management Across All Asset Classes",
+  "统一的订单管理与交易流程": "Unified Order Management and Trading Workflows",
+  "AI 产品尽调": "AI Product Due Diligence",
+  "让AI完成产品KYP": "Let AI Handle Product KYP",
+  "AI 业务专家": "AI Business Expert",
+  "让 AI 业务专家帮助完成专业的工作": "Let AI Business Experts Help with Professional Tasks",
+  "AI 运营": "AI Operations",
+  "AIOps让运营更高效": "Improve Operational Efficiency with AIOps",
+  "AI 产品尽调工作台": "AI Product Due Diligence Workspace",
+  "AI 业务专家工作台": "AI Business Expert Workspace",
+  "AI 运营工作台": "AI Operations Workspace",
   "更快上线新业务": "Launch new services faster",
   "复用账户、产品、交易与运营能力，支持债券、基金、交易及 AI 等业务按需扩展，减少从零建设和外部系统衔接": "Reuse account, product, trading and operational capabilities to extend into bonds, funds, trading and AI as needed, reducing development from scratch and external integrations.",
   "完整业务闭环 · 提升自主运营能力": "End-to-end workflows · Greater operational independence",

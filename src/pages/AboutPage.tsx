@@ -5,26 +5,81 @@ import { companyNewsPreview, NewsCard } from './NewsPage';
 import { motion, useScroll, useTransform } from 'motion/react';
 
 const journey = [
-  ['2024.06', '业务起航', '星路科技正式启航，与多家香港头部机构签约。'],
-  ['2024.12', '行业活动', '主办「Finloop 2025 财富管理高峰论坛」，香港特区政府财库局副局长等出席。'],
-  ['2025.03', '奖项荣誉', '获经济通 ET Net「2024 金融科技大奖」——杰出一站式数智化财富管理平台。'],
-  ['2025.04', '政府认可', '入选香港特区政府引进重点企业办公室（OASES）重点企业伙伴，并入驻数码港。'],
-  ['2025.07', '战略发布', '发布 Web5 战略，推出一站式 RWA 平台 FinRWA Platform（FRP）。'],
-  ['2025.07', '融资投资', '完成近千万美元 A 轮融资，Solana Foundation 等机构参投。'],
-  ['2025.09', '业务节点', '携手 BNY 投资管理推出即时流动性方案「利即达」（FinCycle）。'],
-  ['2025.11', '奖项荣誉', '荣获香港资讯及通讯科技奖金融科技类别大奖，并在新兴解决方案组别中斩获金奖。'],
-  ['2025.12', '战略发布', '发布 FinRWA Platform 2.0，主办「Web5 生态」行业峰会。'],
-  ['2026.02', '奖项荣誉', 'ITA 首届 RWA 全球峰会：香港最佳 RWA 金融科技机构。'],
-  ['2026.03', '业务节点', 'FUIDL 于香港合规持牌平台 EX.IO 首发上架。'],
-  ['2026.05', '奖项荣誉', 'I&M 专业投资大奖：年度最佳金融科技公司。'],
-  ['2026.05', '业务节点', 'FUIDL 首进新加坡，上架 CapBridge、1exchange。'],
-  ['2026.06', '奖项荣誉', 'HKMA/HKT 环球创新奖：Excellence Award 及最佳金融科技创新奖。'],
-  ['2026.07', '业务节点', 'FUIDL 上架 Bybit，份额可作平台交易抵押品。'],
-  ['2026.08', '业务节点', '成为受监管港元稳定币 HKDAP 首批认可分销商（Anchorpoint 发行）。'],
-  ['2026.08', '业务节点', 'FUIDL 上线 Conflux 网络，RWA 货架完成全面对接。'],
-  ['2026.09', '业务节点', '成为 Aberdeen 全球私募市场策略代币化分销商。'],
-  ['2026.09', '融资投资', '完成超千万美元 A+ 轮战略融资，获汇丰、People’s Capital 参投。'],
-  ['2026.09', '产品发布', '推出企业一站式财富管理服务「星企通」（Finterprise）。'],
+  [
+    "2024.06",
+    "星路科技正式启航",
+    "与多家香港头部机构签约，开启财富科技业务。"
+  ],
+  [
+    "2024.12",
+    "主办财富管理高峰论坛",
+    "举办「Finloop 2025 财富管理高峰论坛」，香港特区政府财库局副局长等出席。"
+  ],
+  [
+    "2025.04",
+    "入选 OASES 重点企业伙伴",
+    "获香港特区政府引进重点企业办公室认可，成为重点企业伙伴。"
+  ],
+  [
+    "2025.07",
+    "发布 Web5 战略与 FinRWA 平台",
+    "融合 Web2 与 Web3 能力，推出一站式 RWA 技术、发行及分销平台 FRP。"
+  ],
+  [
+    "2025.07",
+    "完成近千万美元 A 轮融资",
+    "Solana Foundation 等机构参投，支持 RWA 业务体系建设。"
+  ],
+  [
+    "2025.09",
+    "携手 BNY 投资管理推出利即达",
+    "共同推出即时流动性方案 FinCycle，拓展现金管理服务。"
+  ],
+  [
+    "2025.12",
+    "FinRWA Platform 升级至 2.0",
+    "发布 FRP 2.0，并主办「Web5 生态」行业峰会。"
+  ],
+  [
+    "2026.03",
+    "FUIDL 在香港首发上架",
+    "星路美元即时数字流动性代币于香港合规持牌平台 EX.IO 上架。"
+  ],
+  [
+    "2026.05",
+    "FUIDL 进入新加坡市场",
+    "通过 CapBridge 开展一级分销，并于 1exchange 提供二级市场交易。"
+  ],
+  [
+    "2026.07",
+    "FUIDL 上架 Bybit",
+    "份额可用作平台交易抵押品，由 ByCustody 提供托管。"
+  ],
+  [
+    "2026.08",
+    "成为 HKDAP 首批认可分销商",
+    "加入 Anchorpoint 发行的港元稳定币 HKDAP 分销网络，提供合规分销渠道及流动性支持。"
+  ],
+  [
+    "2026.08",
+    "FUIDL 上线 Conflux 网络",
+    "星路 RWA 产品货架与 Conflux 完成全面对接。"
+  ],
+  [
+    "2026.09",
+    "拓展 Aberdeen 代币化分销合作",
+    "成为 Aberdeen 全球私募市场策略的代币化分销商。"
+  ],
+  [
+    "2026.09",
+    "获汇丰参与 A+ 轮战略融资",
+    "完成超千万美元融资，汇丰与 People’s Capital 参投。"
+  ],
+  [
+    "2026.09",
+    "推出企业财富管理服务星企通",
+    "发布 Finterprise，为企业提供一站式财富管理服务。"
+  ]
 ];
 
 const leadershipProfiles = [
@@ -85,9 +140,9 @@ export function AboutPage() {
 
     <section className="about-leadership about-section"><div className="about-shell"><Heading index="07" title={t("匠心领航，聚力同行")} /><div className="leadership-grid">{leadershipProfiles.filter(profile => profile.name !== '韦家谟').map(profile=><article className="leadership-card" key={profile.id}><figure><img src={profile.image} alt={t(`${profile.name}彩色人像`)} /></figure><div className="leadership-card-copy"><div className="leadership-identity"><h3>{translateNode(profile.name)}</h3><p>{translateNode(profile.role)}</p></div><blockquote>{translateNode(profile.bio)}</blockquote></div></article>)}</div></div></section>
 
-    <section className="about-trust about-section" id="qualifications"><div className="about-shell"><Heading light index="08" title={t("以金融资质与行业认可，支撑机构级业务")} copy="Finloop 依托复星财富控股旗下持牌金融机构体系开展相关财富和金融科技业务，并持续获得香港政府、金融科技及专业投资行业的关注与认可。" /><div className="trust-grid"><article className="trust-license"><small>HONG KONG SFC</small><h3>{t("持牌金融基础")}</h3><p>{t("星路金融为香港证监会持牌法团。Finloop 依托复星财富控股旗下持牌金融机构体系，为机构财富、投资交易及相关金融服务提供合规基础设施支持。")}</p><div className="qualification-list"><div><b>Type 1</b><span>Dealing in Securities</span><small>{t("证券交易")}</small></div><div><b>Type 4</b><span>Advising on Securities</span><small>{t("就证券提供意见")}</small></div><div><b>Type 9</b><span>Asset Management</span><small>{t("资产管理")}</small></div></div><p className="regulatory-footprint">{t("Expanding Regulatory Footprint · 持续推进新加坡及东南亚市场的合规与牌照布局")}</p></article><div className="recognition-grid">{translateNode([['2026.09','汇丰战略投资','汇丰参与星路科技 A+ 轮战略融资，共同推动全球财富科技与企业财富管理发展','https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1000&q=82'],['2025.03','ET Net 2024 金融科技大奖','杰出一站式数智化财富管理平台','https://images.unsplash.com/photo-1598301257982-0cf014dabbcd?auto=format&fit=crop&w=1000&q=82'],['2025.11','Hong Kong ICT Awards 2025','金融科技类别大奖；新兴解决方案组别金奖','https://images.unsplash.com/photo-1578269174936-2709b6aeb913?auto=format&fit=crop&w=1000&q=82'],['2026.02','ITA 首届 RWA 全球峰会','香港最佳 RWA 金融科技机构','https://images.unsplash.com/photo-1567427017947-545c5f8d16ad?auto=format&fit=crop&w=1000&q=82'],['2026.05','I&M 专业投资大奖 2026','年度最佳金融科技公司（Fintech Company of the Year）','https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?auto=format&fit=crop&w=1000&q=82'],['2026.06','HKMA/HKT 环球创新奖 2025/26','Excellence Award；最佳金融科技创新奖','https://images.unsplash.com/photo-1567427017947-545c5f8d16ad?auto=format&fit=crop&w=1000&q=82']].map(x=><article key={x[1]}><img src={x[3]} alt={t("奖杯展示占位图")}/><div><span>{translateNode(x[0])}</span><strong>{translateNode(x[1])}</strong><p>{translateNode(x[2])}</p></div></article>))}</div></div></div></section>
+    <section className="about-trust about-section" id="qualifications"><div className="about-shell"><Heading light index="08" title={t("以金融资质与行业认可，支撑机构级业务")} copy="Finloop 依托复星财富控股旗下持牌金融机构体系开展相关财富和金融科技业务，并持续获得香港政府、金融科技及专业投资行业的关注与认可。" /><div className="trust-grid"><article className="trust-license"><h3>{t("持牌金融基础")}</h3><p>{t("星路金融为香港证监会持牌法团。Finloop 依托复星财富控股旗下持牌金融机构体系，为机构财富、投资交易及相关金融服务提供合规基础设施支持。")}</p><div className="qualification-list"><div><b>Type 1</b><span>Dealing in Securities</span><small>{t("证券交易")}</small></div><div><b>Type 4</b><span>Advising on Securities</span><small>{t("就证券提供意见")}</small></div><div><b>Type 9</b><span>Asset Management</span><small>{t("资产管理")}</small></div></div></article><div className="recognition-grid">{translateNode([['2026.09','汇丰战略投资','汇丰参与星路科技 A+ 轮战略融资，共同推动全球财富科技与企业财富管理发展','/assets/hsbc-logo.svg'],['2025.03','ET Net 2024 金融科技大奖','杰出一站式数智化财富管理平台','https://images.unsplash.com/photo-1598301257982-0cf014dabbcd?auto=format&fit=crop&w=1000&q=82'],['2025.11','Hong Kong ICT Awards 2025','金融科技类别大奖；新兴解决方案组别金奖','https://images.unsplash.com/photo-1578269174936-2709b6aeb913?auto=format&fit=crop&w=1000&q=82'],['2026.02','ITA 首届 RWA 全球峰会','香港最佳 RWA 金融科技机构','https://images.unsplash.com/photo-1567427017947-545c5f8d16ad?auto=format&fit=crop&w=1000&q=82'],['2026.05','I&M 专业投资大奖 2026','年度最佳金融科技公司（Fintech Company of the Year）','https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?auto=format&fit=crop&w=1000&q=82'],['2026.06','HKMA/HKT 环球创新奖 2025/26','Excellence Award；最佳金融科技创新奖','https://images.unsplash.com/photo-1567427017947-545c5f8d16ad?auto=format&fit=crop&w=1000&q=82']].map(x=><article key={x[1]}><img src={x[3]} alt={x[1] === "汇丰战略投资" ? "HSBC 汇丰 Logo" : t("奖杯展示占位图")}/><div><span>{translateNode(x[0])}</span><strong>{translateNode(x[1])}</strong><p>{translateNode(x[2])}</p></div></article>))}</div></div></div></section>
 
-    <section ref={journeySectionRef} className="about-journey about-section"><div className="about-shell"><Heading index="09" title={t("Finloop 发展里程碑")} copy="记录从财富业务基础、核心系统建设，到 Web5、RWA 与 AI 能力拓展的关键节点。" /><div className="about-journey-layout"><figure><img key={activeJourney} className="journey-feature-image" src={journeyImages[activeJourney % journeyImages.length]} alt={t("Finloop 重要发展节点")}/></figure><div className="journey-list"><motion.span className="journey-progress" style={{height:journeyProgress}} />{translateNode(orderedJourney.map((x,i)=><article className={i === activeJourney ? 'is-active' : ''} key={`${x[0]}-${i}`} data-journey-index={i} ref={node => { journeyRefs.current[i] = node; }} onMouseEnter={() => setActiveJourney(i)} onFocus={() => setActiveJourney(i)}><span>{translateNode(x[0])}</span><i>0{translateNode(String(orderedJourney.length-i))}</i><div><h3>{translateNode(x[1])}</h3><p>{translateNode(x[2])}</p></div></article>))}</div></div></div></section>
+    <section ref={journeySectionRef} className="about-journey about-section"><div className="about-shell"><Heading index="09" title={t("Finloop 发展里程碑")} copy="记录从财富业务基础、核心系统建设，到 Web5、RWA 与 AI 能力拓展的关键节点。" /><div className="about-journey-layout"><figure><img key={activeJourney} className="journey-feature-image" src={journeyImages[activeJourney % journeyImages.length]} alt={t("Finloop 重要发展节点")}/></figure><div className="journey-list"><motion.span className="journey-progress" style={{height:journeyProgress}} />{translateNode(orderedJourney.map((x,i)=><article className={i === activeJourney ? 'is-active' : ''} key={`${x[0]}-${i}`} data-journey-index={i} ref={node => { journeyRefs.current[i] = node; }} onMouseEnter={() => setActiveJourney(i)} onFocus={() => setActiveJourney(i)}><span>{translateNode(x[0])}</span><div><h3>{translateNode(x[1])}</h3><p>{translateNode(x[2])}</p></div></article>))}</div></div></div></section>
 
     <section className="about-news about-section" id="company-news"><div className="about-shell">
       <div className="about-news-header"><Heading index="10" title={t("公司动态")} /><Link to="/resources/company">{t("查看全部")} <span aria-hidden="true">↗</span></Link></div>
