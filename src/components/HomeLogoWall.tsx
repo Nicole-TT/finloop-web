@@ -3,12 +3,11 @@ import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { isEnglish, t, translateNode } from '../i18n';
 
 const logos = [
-  ['taikang.svg', '泰康资产'], ['bny.png', 'BNY'], ['aberdeen.svg', 'aberdeen Investments'],
-  ['fomopay.svg', 'FOMO Pay'], ['1exchange.svg', '1EXCHANGE'], ['exio.svg', 'EX.IO'], ['bifu.svg', 'BiFu'],
-  ['chinaamc.svg', '华夏基金（香港）'], ['osl.svg', 'OSL'], ['bybit.svg', 'BYBIT'], ['conflux.svg', 'CONFLUX'],
-  ['cicc.svg', '中金财富'], ['capbridge.svg', 'CAPBRIDGE'], ['marketnode.svg', 'MARKETNODE'],
-  ['tiger-research.svg', 'TIGER RESEARCH'], ['dowsure.png', 'dowsure'], ['worldfirst.png', '万里汇 WorldFirst'],
-  ['lupu.svg', '陆浦香港'], ['zhongtai.svg', '中泰证券'], ['energy.svg', '能科 ENERGY'], ['lotus.svg', 'LOTUS'],
+  ['taikang.png', '泰康资产'], ['bny.png', 'BNY'], ['aberdeen.png', 'aberdeen Investments'],
+  ['fomopay.png', 'FOMO Pay'], ['1exchange.png', '1EXCHANGE'], ['exio.png', 'EX.IO'], ['bifu.png', 'BiFu'],
+  ['chinaamc.png', '华夏基金（香港）'], ['osl.png', 'OSL'], ['bybit.png', 'BYBIT'], ['conflux.png', 'CONFLUX'],
+  ['cicc.png', '中金财富'], ['capbridge.png', 'CAPBRIDGE'], ['marketnode.png', 'MARKETNODE'],
+  ['tiger-research.png', 'TIGER RESEARCH'], ['energy.png', '能科 ENERGY'], ['lotus.png', 'LOTUS'],
 ];
 
 export function HomeLogoWall() {

@@ -2,20 +2,20 @@
 .site-header {
   height: 76px;
   --header-scroll-progress: 0;
-  background: rgba(255,255,255,calc(var(--header-scroll-progress) * .4));
+  background: rgba(255,255,255,calc(var(--header-scroll-progress) * .7));
   color: var(--ink);
   border-bottom: 0;
   backdrop-filter: blur(calc(var(--header-scroll-progress) * 14px));
 }
 
 .site-header.scrolled {
-  background: rgba(255,255,255,calc(var(--header-scroll-progress) * .4));
+  background: rgba(255,255,255,calc(var(--header-scroll-progress) * .7));
   backdrop-filter: blur(14px);
   box-shadow: none;
 }
 
 .site-header.menu-open {
-  background: rgba(255,255,255,calc(var(--header-scroll-progress) * .4));
+  background: rgba(255,255,255,calc(var(--header-scroll-progress) * .7));
   backdrop-filter: blur(calc(var(--header-scroll-progress) * 14px));
   box-shadow: none;
 }
