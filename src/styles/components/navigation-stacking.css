@@ -1,4 +1,10 @@
 /* Keep navigation and expanded menus above the embedded assistant. */
 body .site-header.site-header {
-  z-index: 2060;
+  z-index: 2201;
+}
+
+/* Backdrop must also cover sticky cards and the floating assistant. */
+body .mega-backdrop {
+  inset: 0;
+  z-index: 2200;
 }

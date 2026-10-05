@@ -17,8 +17,8 @@
   display: flex;
   justify-content: space-between;
   align-items: start;
-  padding-bottom: 60px;
-  border-bottom: 1px solid rgba(255, 255, 255, .16);
+  padding-bottom: 0;
+  border-bottom: 0;
 }
 
 .footer-brand img {

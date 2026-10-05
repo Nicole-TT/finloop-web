@@ -76,6 +76,8 @@ const news: Record<NewsCategory, NewsItem[]> = {
   ],
 };
 
+export const companyNewsPreview = news.company.slice(0, 3);
+
 function article(slug: string, title: string, description: string, meta: string, visual: string, sections: Array<[string, string]>): NewsItem {
   return {
     slug,
@@ -314,7 +316,7 @@ function InsightList({ items }: { items: ListedNews[] }) {
   );
 }
 
-function NewsCard({ item, index }: { item: ListedNews; index: number }) {
+export function NewsCard({ item, index }: { item: ListedNews; index: number }) {
   const [topic] = metaParts(item.meta);
 
   return (

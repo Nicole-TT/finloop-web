@@ -869,7 +869,7 @@ body:has(.hero) .site-header:not(.scrolled):not(.menu-open) .nav-link[aria-expan
   }
 
   .footer-top {
-    padding-bottom: 40px;
+    padding-bottom: 0;
   }
 
   .footer-directory {

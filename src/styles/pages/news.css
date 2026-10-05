@@ -1,5 +1,5 @@
 /* News and insights: shared tokens, list page and cards (detail page lives in news-detail.css) */
-.news-page,.news-detail-page{--news-surface:#f4f6f8;--news-line:#e2e7eb;--news-dark:#040d1a;background:#fff;color:var(--ink)}
+.news-page,.news-detail-page,.about-news{--news-surface:#f4f6f8;--news-line:#e2e7eb;--news-dark:#040d1a;background:#fff;color:var(--ink)}
 .news-shell{width:min(var(--max),calc(100% - var(--edge)*2));margin-inline:auto}
 
 /* Hero: large title + featured carousel */

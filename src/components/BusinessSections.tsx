@@ -123,7 +123,7 @@ function MetricsVideoReveal({ reduced }: { reduced: boolean }) {
         style={reduced ? undefined : { y, scale }}>
         <video ref={videoRef} poster="/assets/home-metrics-poster.jpg" muted loop playsInline preload="none" aria-label={t('Finloop 品牌影片')} />
         {translateNode(!playing && <div className="hero-video-caption">
-          <h2>{t("谁是我们")}</h2>
+          <h2>{t("我们是谁")}</h2>
           <button type="button" className="hero-video-play" onClick={() => setPlaying(true)}>
             {t("查看品牌影片")} <span aria-hidden="true">▶</span>
           </button>
