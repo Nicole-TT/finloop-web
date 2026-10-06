@@ -2,19 +2,8 @@ import { t, translateNode } from '../i18n';
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { companyNewsPreview, NewsCard } from './NewsPage';
-import { motion, useScroll, useTransform } from 'motion/react';
 
 const journey = [
-  [
-    "2024.06",
-    "星路科技正式启航",
-    "与多家香港头部机构签约，开启财富科技业务。"
-  ],
-  [
-    "2024.12",
-    "主办财富管理高峰论坛",
-    "举办「Finloop 2025 财富管理高峰论坛」，香港特区政府财库局副局长等出席。"
-  ],
   [
     "2025.04",
     "入选 OASES 重点企业伙伴",
@@ -31,11 +20,6 @@ const journey = [
     "Solana Foundation 等机构参投，支持 RWA 业务体系建设。"
   ],
   [
-    "2025.09",
-    "携手 BNY 投资管理推出利即达",
-    "共同推出即时流动性方案 FinCycle，拓展现金管理服务。"
-  ],
-  [
     "2025.12",
     "FinRWA Platform 升级至 2.0",
     "发布 FRP 2.0，并主办「Web5 生态」行业峰会。"
@@ -46,29 +30,9 @@ const journey = [
     "星路美元即时数字流动性代币于香港合规持牌平台 EX.IO 上架。"
   ],
   [
-    "2026.05",
-    "FUIDL 进入新加坡市场",
-    "通过 CapBridge 开展一级分销，并于 1exchange 提供二级市场交易。"
-  ],
-  [
-    "2026.07",
-    "FUIDL 上架 Bybit",
-    "份额可用作平台交易抵押品，由 ByCustody 提供托管。"
-  ],
-  [
     "2026.08",
     "成为 HKDAP 首批认可分销商",
     "加入 Anchorpoint 发行的港元稳定币 HKDAP 分销网络，提供合规分销渠道及流动性支持。"
-  ],
-  [
-    "2026.08",
-    "FUIDL 上线 Conflux 网络",
-    "星路 RWA 产品货架与 Conflux 完成全面对接。"
-  ],
-  [
-    "2026.09",
-    "拓展 Aberdeen 代币化分销合作",
-    "成为 Aberdeen 全球私募市场策略的代币化分销商。"
   ],
   [
     "2026.09",
@@ -99,23 +63,63 @@ const journeyImages = [
 
 export function AboutPage() {
   const [activeJourney, setActiveJourney] = useState(0);
+  const [passedJourney, setPassedJourney] = useState(-1);
   const journeyRefs = useRef<Array<HTMLElement | null>>([]);
-  const journeySectionRef = useRef<HTMLElement | null>(null);
+  const [journeyProgress, setJourneyProgress] = useState(0);
   const orderedJourney = [...journey].reverse();
-  const { scrollYProgress } = useScroll({ target: journeySectionRef, offset: ['start 70%', 'end 30%'] });
-  const journeyProgress = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
+  const showHsbcPhoto = orderedJourney[activeJourney][1] === "获汇丰参与 A+ 轮战略融资";
+  const showOasesPhoto = orderedJourney[activeJourney][1] === "入选 OASES 重点企业伙伴";
+  const nextJourneyImage = showHsbcPhoto ? "/assets/finloop_HSBC.png" : showOasesPhoto ? "/assets/award/OASES_partner.jpeg" : journeyImages[activeJourney % journeyImages.length];
+  const [displayedJourneyImage, setDisplayedJourneyImage] = useState(journeyImages[0]);
+  const displayedHsbcPhoto = displayedJourneyImage === "/assets/finloop_HSBC.png";
+  const displayedOasesPhoto = displayedJourneyImage === "/assets/award/OASES_partner.jpeg";
 
   useEffect(() => {
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const index = Number((entry.target as HTMLElement).dataset.journeyIndex);
-          if (!Number.isNaN(index)) setActiveJourney(index);
-        }
+    let cancelled = false;
+    const image = new Image();
+    image.src = nextJourneyImage;
+    image.decode().then(() => {
+      if (!cancelled) setDisplayedJourneyImage(nextJourneyImage);
+    }).catch(() => { /* Keep the current image if the replacement cannot load. */ });
+    return () => { cancelled = true; };
+  }, [nextJourneyImage]);
+
+  useEffect(() => {
+    let frame = 0;
+    const updateJourney = () => {
+      frame = 0;
+      const nodes = journeyRefs.current;
+      const first = nodes[0];
+      if (!first) return;
+      // Activate each milestone when its marker reaches the viewport midpoint.
+      const readingLine = window.innerHeight * 0.5;
+      let active = -1;
+      nodes.forEach((node, index) => {
+        if (node && node.getBoundingClientRect().top + 15 <= readingLine + 1) active = index;
       });
-    }, { rootMargin: '-35% 0px -45% 0px', threshold: 0 });
+      setActiveJourney(Math.max(0, active));
+      setPassedJourney(active);
+      const activeNode = nodes[active];
+      if (activeNode) {
+        setJourneyProgress(activeNode.getBoundingClientRect().top - first.getBoundingClientRect().top + 3);
+      } else {
+        setJourneyProgress(0);
+      }
+    };
+    const scheduleUpdate = () => {
+      if (!frame) frame = requestAnimationFrame(updateJourney);
+    };
+    const observer = new ResizeObserver(scheduleUpdate);
     journeyRefs.current.forEach(node => node && observer.observe(node));
-    return () => observer.disconnect();
+    window.addEventListener('scroll', scheduleUpdate, { passive: true });
+    window.addEventListener('resize', scheduleUpdate);
+    updateJourney();
+    return () => {
+      cancelAnimationFrame(frame);
+      observer.disconnect();
+      window.removeEventListener('scroll', scheduleUpdate);
+      window.removeEventListener('resize', scheduleUpdate);
+    };
   }, []);
 
   useEffect(() => {
@@ -140,9 +144,9 @@ export function AboutPage() {
 
     <section className="about-leadership about-section"><div className="about-shell"><Heading index="07" title={t("匠心领航，聚力同行")} /><div className="leadership-grid">{leadershipProfiles.filter(profile => profile.name !== '韦家谟').map(profile=><article className="leadership-card" key={profile.id}><figure><img src={profile.image} alt={t(`${profile.name}彩色人像`)} /></figure><div className="leadership-card-copy"><div className="leadership-identity"><h3>{translateNode(profile.name)}</h3><p>{translateNode(profile.role)}</p></div><blockquote>{translateNode(profile.bio)}</blockquote></div></article>)}</div></div></section>
 
-    <section className="about-trust about-section" id="qualifications"><div className="about-shell"><Heading light index="08" title={t("以金融资质与行业认可，支撑机构级业务")} copy="Finloop 依托复星财富控股旗下持牌金融机构体系开展相关财富和金融科技业务，并持续获得香港政府、金融科技及专业投资行业的关注与认可。" /><div className="trust-grid"><article className="trust-license"><h3>{t("持牌金融基础")}</h3><p>{t("星路金融为香港证监会持牌法团。Finloop 依托复星财富控股旗下持牌金融机构体系，为机构财富、投资交易及相关金融服务提供合规基础设施支持。")}</p><div className="qualification-list"><div><b>Type 1</b><span>Dealing in Securities</span><small>{t("证券交易")}</small></div><div><b>Type 4</b><span>Advising on Securities</span><small>{t("就证券提供意见")}</small></div><div><b>Type 9</b><span>Asset Management</span><small>{t("资产管理")}</small></div></div></article><div className="recognition-grid">{translateNode([['2026.09','汇丰战略投资','汇丰参与星路科技 A+ 轮战略融资，共同推动全球财富科技与企业财富管理发展','/assets/hsbc-logo.svg'],['2025.03','ET Net 2024 金融科技大奖','杰出一站式数智化财富管理平台','https://images.unsplash.com/photo-1598301257982-0cf014dabbcd?auto=format&fit=crop&w=1000&q=82'],['2025.11','Hong Kong ICT Awards 2025','金融科技类别大奖；新兴解决方案组别金奖','https://images.unsplash.com/photo-1578269174936-2709b6aeb913?auto=format&fit=crop&w=1000&q=82'],['2026.02','ITA 首届 RWA 全球峰会','香港最佳 RWA 金融科技机构','https://images.unsplash.com/photo-1567427017947-545c5f8d16ad?auto=format&fit=crop&w=1000&q=82'],['2026.05','I&M 专业投资大奖 2026','年度最佳金融科技公司（Fintech Company of the Year）','https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?auto=format&fit=crop&w=1000&q=82'],['2026.06','HKMA/HKT 环球创新奖 2025/26','Excellence Award；最佳金融科技创新奖','https://images.unsplash.com/photo-1567427017947-545c5f8d16ad?auto=format&fit=crop&w=1000&q=82']].map(x=><article key={x[1]}><img src={x[3]} alt={x[1] === "汇丰战略投资" ? "HSBC 汇丰 Logo" : t("奖杯展示占位图")}/><div><span>{translateNode(x[0])}</span><strong>{translateNode(x[1])}</strong><p>{translateNode(x[2])}</p></div></article>))}</div></div></div></section>
+    <section className="about-trust about-section" id="qualifications"><div className="about-shell"><Heading light index="08" title={t("以金融资质与行业认可，支撑机构级业务")} copy="Finloop 开展相关财富和金融科技业务，并持续获得香港政府、金融科技及专业投资行业的关注与认可。" /><div className="trust-grid"><article className="trust-license"><div className="trust-license-copy"><h3>{t("持牌金融基础")}</h3><p>{t("星路金融为香港证监会持牌法团，为机构财富、投资交易及相关金融服务提供合规基础设施支持。")}</p></div><div className="qualification-list"><div><i data-lucide="award" aria-hidden="true"/><b>{t("第 1 类")}</b><span>{t("证券交易")}</span></div><div><i data-lucide="award" aria-hidden="true"/><b>{t("第 4 类")}</b><span>{t("就证券提供意见")}</span></div><div><i data-lucide="award" aria-hidden="true"/><b>{t("第 9 类")}</b><span>{t("资产管理")}</span></div></div></article><div className="recognition-grid">{translateNode([['2025.03','ET Net 2024 金融科技大奖','杰出一站式数智化财富管理平台','/assets/award/Fintech_award.png'],['2025.04','OASES 重点企业','香港特区政府引进重点企业办公室相关重点企业','/assets/award/OASES.jpeg'],['2025.11','Hong Kong ICT Awards 2025','金融科技大奖 及 金融科技（新兴解决方案）金奖','/assets/award/ICT_award.jpeg'],['2026.02','ITA 首届 RWA 全球峰会','香港最佳 RWA 金融科技机构','/assets/award/ITA.jpeg'],['2026.05','I&M 专业投资大奖 2026','年度最佳金融科技公司（Fintech Company of the Year）','/assets/award/I&M.jpeg'],['2026.06','HKMA/HKT 环球创新奖 2025/26','Excellence Award 及 Best in Fintech Innovation Award','/assets/award/HKMA_HKT.jpeg']].map(x=><article key={x[1]}><img src={x[3]} alt={x[3].startsWith("/assets/award/") ? t(x[1]) : t("奖杯展示占位图")}/><div><strong>{translateNode(x[1])}</strong><p>{translateNode(x[2])}</p></div></article>))}</div></div></div></section>
 
-    <section ref={journeySectionRef} className="about-journey about-section"><div className="about-shell"><Heading index="09" title={t("Finloop 发展里程碑")} copy="记录从财富业务基础、核心系统建设，到 Web5、RWA 与 AI 能力拓展的关键节点。" /><div className="about-journey-layout"><figure><img key={activeJourney} className="journey-feature-image" src={journeyImages[activeJourney % journeyImages.length]} alt={t("Finloop 重要发展节点")}/></figure><div className="journey-list"><motion.span className="journey-progress" style={{height:journeyProgress}} />{translateNode(orderedJourney.map((x,i)=><article className={i === activeJourney ? 'is-active' : ''} key={`${x[0]}-${i}`} data-journey-index={i} ref={node => { journeyRefs.current[i] = node; }} onMouseEnter={() => setActiveJourney(i)} onFocus={() => setActiveJourney(i)}><span>{translateNode(x[0])}</span><div><h3>{translateNode(x[1])}</h3><p>{translateNode(x[2])}</p></div></article>))}</div></div></div></section>
+    <section className="about-journey about-section"><div className="about-shell"><Heading index="09" title={t("Finloop 发展里程碑")} copy="记录从财富业务基础、核心系统建设，到 Web5、RWA 与 AI 能力拓展的关键节点。" /><div className="about-journey-layout"><figure className={displayedHsbcPhoto ? "journey-hsbc-photo" : undefined}><img className="journey-feature-image" src={displayedJourneyImage} alt={displayedHsbcPhoto ? t("汇丰战略投资星路科技发布仪式") : displayedOasesPhoto ? t("入选 OASES 重点企业伙伴") : t("Finloop 重要发展节点")}/></figure><div className="journey-list"><span aria-hidden="true" className="journey-progress" style={{height:journeyProgress}} />{translateNode(orderedJourney.map((x,i)=><article className={i <= passedJourney ? 'is-passed' : ''} key={`${x[0]}-${i}`} data-journey-index={i} ref={node => { journeyRefs.current[i] = node; }}><span>{translateNode(x[0])}</span><div><h3>{translateNode(x[1])}</h3><p>{translateNode(x[2])}</p></div></article>))}</div></div></div></section>
 
     <section className="about-news about-section" id="company-news"><div className="about-shell">
       <div className="about-news-header"><Heading index="10" title={t("公司动态")} /><Link to="/resources/company">{t("查看全部")} <span aria-hidden="true">↗</span></Link></div>
