@@ -1,3 +1,4 @@
+import { ParticleWord } from "../components/ParticleWord";
 import { t, translateNode } from '../i18n';
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -61,6 +62,15 @@ const journeyImages = [
   'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1400&q=84',
 ];
 
+const milestoneImages: Record<string, string> = {
+  "完成近千万美元 A 轮融资": "/assets/milestone/Solana Foundation.png",
+  "推出企业财富管理服务星企通": "/assets/milestone/Finterprise.png",
+  "成为 HKDAP 首批认可分销商": "/assets/milestone/HKDAP.png",
+  "FUIDL 在香港首发上架": "/assets/milestone/FUIDL.png",
+  "FinRWA Platform 升级至 2.0": "/assets/milestone/FinRWA2-0.jpeg",
+  "发布 Web5 战略与 FinRWA 平台": "/assets/milestone/FinRWA1-0.jpeg",
+};
+
 export function AboutPage() {
   const [activeJourney, setActiveJourney] = useState(0);
   const [passedJourney, setPassedJourney] = useState(-1);
@@ -69,9 +79,10 @@ export function AboutPage() {
   const orderedJourney = [...journey].reverse();
   const showHsbcPhoto = orderedJourney[activeJourney][1] === "获汇丰参与 A+ 轮战略融资";
   const showOasesPhoto = orderedJourney[activeJourney][1] === "入选 OASES 重点企业伙伴";
-  const nextJourneyImage = showHsbcPhoto ? "/assets/finloop_HSBC.png" : showOasesPhoto ? "/assets/award/OASES_partner.jpeg" : journeyImages[activeJourney % journeyImages.length];
-  const [displayedJourneyImage, setDisplayedJourneyImage] = useState(journeyImages[0]);
+  const nextJourneyImage = showHsbcPhoto ? "/assets/finloop_HSBC.png" : showOasesPhoto ? "/assets/award/OASES_partner.jpeg" : milestoneImages[orderedJourney[activeJourney][1]] ?? journeyImages[activeJourney % journeyImages.length];
+  const [displayedJourneyImage, setDisplayedJourneyImage] = useState(nextJourneyImage);
   const displayedHsbcPhoto = displayedJourneyImage === "/assets/finloop_HSBC.png";
+  const displayedMilestoneTitle = Object.keys(milestoneImages).find(title => milestoneImages[title] === displayedJourneyImage);
   const displayedOasesPhoto = displayedJourneyImage === "/assets/award/OASES_partner.jpeg";
 
   useEffect(() => {
@@ -138,15 +149,15 @@ export function AboutPage() {
       </div>
     </section>
 
-    <section className="about-intro about-section"><div className="about-shell about-intro-grid"><div><span className="about-index">01</span><h2>{t("为机构财富业务而构建的金融科技公司")}</h2></div><div className="about-intro-copy"><p>{t("星路金融科技控股有限公司是复星财富控股打造的 AI 驱动全球财富科技平台，融合 Web2 与 Web3 能力，为金融机构、企业及生态伙伴提供财富管理、数字资产与企业智能化解决方案。\n\n星路科技连接全球优质金融产品与服务资源，覆盖现金管理、基金、债券、结构性产品、保险及数字资产等领域，已服务超过 250 家银行、券商、支付平台、家族办公室及其他金融机构。\n\n依托财富管理平台、RWA 技术平台及自研金融 AI 能力，星路科技持续推动金融服务向智能化、数字化与开放生态演进，帮助合作伙伴提升运营效率、拓展产品能力，并连接全球财富管理新机遇。")}</p></div></div></section>
+    <section className="about-intro about-section"><div className="about-shell about-intro-grid"><div><ParticleWord/><span className="about-index">01</span><h2>{t("为机构财富业务而构建的金融科技公司")}</h2></div><div className="about-intro-copy"><p>{t("星路金融科技控股有限公司是复星财富控股打造的 AI 驱动全球财富科技平台，融合 Web2 与 Web3 能力，为金融机构、企业及生态伙伴提供财富管理、数字资产与企业智能化解决方案。\n\n星路科技连接全球优质金融产品与服务资源，覆盖现金管理、基金、债券、结构性产品、保险及数字资产等领域，已服务超过 250 家银行、券商、支付平台、家族办公室及其他金融机构。\n\n依托财富管理平台、RWA 技术平台及自研金融 AI 能力，星路科技持续推动金融服务向智能化、数字化与开放生态演进，帮助合作伙伴提升运营效率、拓展产品能力，并连接全球财富管理新机遇。")}</p></div></div></section>
 
-    <section className="about-ecosystem about-section"><div className="about-shell"><Heading light index="06" title={t("连接全球机构金融与财富生态")} /><div className="ecosystem-flow"><div><small>{t("产品与金融来源")}</small><p>{t("全球银行")}</p><p>{t("基金与资产管理机构")}</p><p>{t("产品发行与数字资产生态")}</p></div><div className="ecosystem-core"><small>{t("星路科技")}</small><strong>{t("财富科技")}<br/>{t("交易基础设施")}<br/>{t("AI 与 RWA")}</strong><span>{t("连接 8000+ 财富管理产品")}</span></div><div><small>{t("机构客户")}</small><p>{t("银行与券商")}</p><p>{t("财富机构与数字平台")}</p><p>{t("数字资产机构与企业")}</p></div></div></div></section>
 
-    <section className="about-leadership about-section"><div className="about-shell"><Heading index="07" title={t("匠心领航，聚力同行")} /><div className="leadership-grid">{leadershipProfiles.filter(profile => profile.name !== '韦家谟').map(profile=><article className="leadership-card" key={profile.id}><figure><img src={profile.image} alt={t(`${profile.name}彩色人像`)} /></figure><div className="leadership-card-copy"><div className="leadership-identity"><h3>{translateNode(profile.name)}</h3><p>{translateNode(profile.role)}</p></div><blockquote>{translateNode(profile.bio)}</blockquote></div></article>)}</div></div></section>
 
-    <section className="about-trust about-section" id="qualifications"><div className="about-shell"><Heading light index="08" title={t("以金融资质与行业认可，支撑机构级业务")} copy="Finloop 开展相关财富和金融科技业务，并持续获得香港政府、金融科技及专业投资行业的关注与认可。" /><div className="trust-grid"><article className="trust-license"><div className="trust-license-copy"><h3>{t("持牌金融基础")}</h3><p>{t("星路金融为香港证监会持牌法团，为机构财富、投资交易及相关金融服务提供合规基础设施支持。")}</p></div><div className="qualification-list"><div><i data-lucide="award" aria-hidden="true"/><b>{t("第 1 类")}</b><span>{t("证券交易")}</span></div><div><i data-lucide="award" aria-hidden="true"/><b>{t("第 4 类")}</b><span>{t("就证券提供意见")}</span></div><div><i data-lucide="award" aria-hidden="true"/><b>{t("第 9 类")}</b><span>{t("资产管理")}</span></div></div></article><div className="recognition-grid">{translateNode([['2025.03','ET Net 2024 金融科技大奖','杰出一站式数智化财富管理平台','/assets/award/Fintech_award.png'],['2025.04','OASES 重点企业','香港特区政府引进重点企业办公室相关重点企业','/assets/award/OASES.jpeg'],['2025.11','Hong Kong ICT Awards 2025','金融科技大奖 及 金融科技（新兴解决方案）金奖','/assets/award/ICT_award.jpeg'],['2026.02','ITA 首届 RWA 全球峰会','香港最佳 RWA 金融科技机构','/assets/award/ITA.jpeg'],['2026.05','I&M 专业投资大奖 2026','年度最佳金融科技公司（Fintech Company of the Year）','/assets/award/I&M.jpeg'],['2026.06','HKMA/HKT 环球创新奖 2025/26','Excellence Award 及 Best in Fintech Innovation Award','/assets/award/HKMA_HKT.jpeg']].map(x=><article key={x[1]}><img src={x[3]} alt={x[3].startsWith("/assets/award/") ? t(x[1]) : t("奖杯展示占位图")}/><div><strong>{translateNode(x[1])}</strong><p>{translateNode(x[2])}</p></div></article>))}</div></div></div></section>
+    <section className="about-leadership about-section"><div className="about-shell"><Heading index="07" title={t("匠心领航，聚力同行")} copy="汇聚金融、科技与财富管理经验，携手推动产品创新与业务发展。" /><div className="leadership-grid">{leadershipProfiles.filter(profile => profile.name !== '韦家谟').map(profile=><article className="leadership-card" key={profile.id}><figure><img src={profile.image} alt={t(`${profile.name}彩色人像`)} /></figure><div className="leadership-card-copy"><div className="leadership-identity"><h3>{translateNode(profile.name)}</h3><p>{translateNode(profile.role)}</p></div><blockquote>{translateNode(profile.bio)}</blockquote></div></article>)}</div></div></section>
 
-    <section className="about-journey about-section"><div className="about-shell"><Heading index="09" title={t("Finloop 发展里程碑")} copy="记录从财富业务基础、核心系统建设，到 Web5、RWA 与 AI 能力拓展的关键节点。" /><div className="about-journey-layout"><figure className={displayedHsbcPhoto ? "journey-hsbc-photo" : undefined}><img className="journey-feature-image" src={displayedJourneyImage} alt={displayedHsbcPhoto ? t("汇丰战略投资星路科技发布仪式") : displayedOasesPhoto ? t("入选 OASES 重点企业伙伴") : t("Finloop 重要发展节点")}/></figure><div className="journey-list"><span aria-hidden="true" className="journey-progress" style={{height:journeyProgress}} />{translateNode(orderedJourney.map((x,i)=><article className={i <= passedJourney ? 'is-passed' : ''} key={`${x[0]}-${i}`} data-journey-index={i} ref={node => { journeyRefs.current[i] = node; }}><span>{translateNode(x[0])}</span><div><h3>{translateNode(x[1])}</h3><p>{translateNode(x[2])}</p></div></article>))}</div></div></div></section>
+    <section className="about-trust about-section" id="qualifications"><div className="about-shell"><Heading light index="08" title={t("以金融资质与行业认可，支撑机构级业务")} copy="Finloop 开展相关财富和金融科技业务，并持续获得香港政府、金融科技及专业投资行业的关注与认可。" /><div className="trust-grid"><article className="trust-license"><div className="trust-license-copy"><h3>{t("持牌金融基础")}</h3><p>{t("星路金融为香港证监会持牌法团，为机构财富、投资交易及相关金融服务提供合规基础设施支持。")}</p></div><div className="qualification-list"><div><i data-lucide="award" aria-hidden="true"/><b>{t("第 1 类")}</b><span>{t("证券交易")}</span></div><div><i data-lucide="award" aria-hidden="true"/><b>{t("第 4 类")}</b><span>{t("就证券提供意见")}</span></div><div><i data-lucide="award" aria-hidden="true"/><b>{t("第 9 类")}</b><span>{t("资产管理")}</span></div></div></article><div className="recognition-grid">{translateNode([['2025.03','ET Net 2024 金融科技大奖','杰出一站式数智化财富管理平台','/assets/award/Fintech_award.png'],['2025.04','OASES 重点企业','香港特区政府引进重点企业办公室重点企业','/assets/award/OASES.jpeg'],['2025.11','Hong Kong ICT Awards 2025','金融科技大奖 及 金融科技（新兴解决方案：虚拟资产，支付，区块链，及人工智慧应用）金奖','/assets/award/ICT_award.jpeg'],['2026.02','ITA 首届 RWA 全球峰会','香港最佳 RWA 金融科技机构','/assets/award/ITA.jpeg'],['2026.05','I&M 专业投资大奖 2026','年度最佳金融科技公司（Fintech Company of the Year）','/assets/award/I&M.jpeg'],['2026.06','HKMA/HKT 环球创新奖 2025/26','Excellence Award 及 Best in Fintech Innovation Award','/assets/award/HKMA_HKT.jpeg']].map(x=><article key={x[1]}><img src={x[3]} alt={x[3].startsWith("/assets/award/") ? t(x[1]) : t("奖杯展示占位图")}/><div><strong>{translateNode(x[1])}</strong><p>{translateNode(x[2])}</p></div></article>))}</div></div></div></section>
+
+    <section className="about-journey about-section"><div className="about-shell"><Heading index="09" title={t("Finloop 发展里程碑")} copy="记录从财富业务基础、核心系统建设，到 Web5、RWA 与 AI 能力拓展的关键节点。" /><div className="about-journey-layout"><figure className={displayedHsbcPhoto ? "journey-hsbc-photo" : undefined}><img className="journey-feature-image" src={displayedJourneyImage} alt={displayedHsbcPhoto ? t("汇丰战略投资星路科技发布仪式") : displayedOasesPhoto ? t("入选 OASES 重点企业伙伴") : t(displayedMilestoneTitle ?? "Finloop 重要发展节点")}/></figure><div className="journey-list"><span aria-hidden="true" className="journey-progress" style={{height:journeyProgress}} />{translateNode(orderedJourney.map((x,i)=><article className={i <= passedJourney ? 'is-passed' : ''} key={`${x[0]}-${i}`} data-journey-index={i} ref={node => { journeyRefs.current[i] = node; }}><span>{translateNode(x[0])}</span><div><h3>{translateNode(x[1])}</h3><p>{translateNode(x[2])}</p></div></article>))}</div></div></div></section>
 
     <section className="about-news about-section" id="company-news"><div className="about-shell">
       <div className="about-news-header"><Heading index="10" title={t("公司动态")} /><Link to="/resources/company">{t("查看全部")} <span aria-hidden="true">↗</span></Link></div>

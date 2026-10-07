@@ -505,8 +505,8 @@ export function HeroSection() {
       <motion.div ref={chatBackdropRef} className="hero-ai-chat-backdrop" aria-hidden="true" style={{ opacity: chatBackdropOpacity }} />
       <motion.div className="hero-grid" style={{ opacity: contentOpacity }}>
         <motion.div className="hero-copy" variants={heroEntrance} initial={reduceMotion ? false : "hidden"} animate={reduceMotion || entranceVisible ? "visible" : "hidden"}>
-          <motion.h1 variants={heroEntranceItem}>{t('AI 驱动的 Web5 财富科技平台')}</motion.h1>
-          <motion.p variants={heroEntranceItem}>{t('您想了解哪类财富科技能力？我可以帮您快速找到对应的产品与解决方案')}</motion.p>
+          <motion.h1 variants={heroEntranceItem}>{t('AI 开启财富管理新纪元')}</motion.h1>
+          <motion.p variants={heroEntranceItem}>{t('AI 驱动的一站式web5全球数智化财富管理平台')}</motion.p>
           <motion.div ref={chatRef} onUpdate={alignChatBackdrop} className="hero-ai-chat" aria-label={t('Finloop AI 业务助手')} variants={heroEntranceItem}>
             <div className="hero-ai-chat-background" aria-hidden="true" />
             <form autoComplete="off" onSubmit={event => { event.preventDefault(); submitQuestion(question); }}><label className="sr-only" htmlFor="hero-ai-question">{t('输入您的业务问题')}</label><input id="hero-ai-question" name="finloop-business-question" autoComplete="off" autoCorrect="off" autoCapitalize="off" spellCheck={false} value={question} onChange={event => setQuestion(event.target.value)} placeholder={t('请输入您的角色或您的业务问题，我们为你快速解决')} /><button type="submit" aria-label={t('发送问题')} disabled={isLoading || !question.trim()}><img src="/assets/ai-icon.svg" alt=""/><span>Ask AI</span></button></form>

@@ -60,15 +60,18 @@
 
 .footer-content {
   display: grid;
-  grid-template-columns: max-content minmax(0, 1fr);
+  grid-template-columns: minmax(0, 260px) minmax(0, 640px);
+  justify-content: space-between;
   gap: clamp(32px, 4vw, 72px);
   padding: 56px 0;
   border-bottom: 1px solid rgba(255, 255, 255, .16);
 }
 
 .footer-directory {
+  width: 100%;
+  min-width: 0;
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, max-content));
+  grid-template-columns: repeat(4, minmax(0, max-content));
   justify-content: space-between;
   gap: 36px;
   padding: 0;
@@ -134,3 +137,6 @@
   .footer-content { grid-template-columns: 1fr; gap: 32px; }
   .footer-content .footer-directory { padding: 0; }
 }
+
+.footer-stacked-groups{display:flex;flex-direction:column;gap:28px}
+.footer-directory .footer-ai-overview{margin-top:28px;color:#fff}

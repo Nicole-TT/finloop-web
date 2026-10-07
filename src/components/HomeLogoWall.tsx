@@ -7,8 +7,8 @@ const logos = [
   ['fomopay.png', 'FOMO Pay'], ['1exchange.png', '1EXCHANGE'], ['exio.png', 'EX.IO'], ['bifu.png', 'BiFu'],
   ['chinaamc.png', '华夏基金（香港）'], ['osl.png', 'OSL'], ['bybit.png', 'BYBIT'], ['conflux.png', 'CONFLUX'],
   ['cicc.png', '中金财富'], ['capbridge.png', 'CAPBRIDGE'], ['marketnode.png', 'MARKETNODE'],
-  ['tiger-research.png', 'TIGER RESEARCH'], ['lotus.png', 'LOTUS'], ['energy.png', '能科 ENERGY'],
-  ['MidasGoldResources.png', 'Midas Gold Resources'],
+  ['tiger-research.png', 'TIGER RESEARCH'], ['energy.png', '能科 ENERGY'], ['lotus.png', 'LOTUS'],
+  ['vobile.png', 'Vobile'],
 ];
 
 export function HomeLogoWall() {

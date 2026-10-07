@@ -52,7 +52,7 @@
 .recognition-grid article:hover>img{opacity:1;transform:scale(1)}
 .recognition-grid article:hover:after{opacity:1}
 .about-journey-layout{display:grid;grid-template-columns:.9fr 1.1fr;gap:64px;align-items:start;margin-top:58px}
-.about-journey-layout>figure{position:sticky;top:120px;height:650px;margin:0;overflow:hidden;border-radius:20px}
+.about-journey-layout>figure{position:sticky;top:120px;height:580px;margin:0;overflow:hidden;border-radius:20px}
 .about-journey-layout>figure:after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 35%,rgba(3,14,25,.72))}
 .about-journey-layout>figure img{width:100%;height:100%;object-fit:cover}
 
@@ -65,7 +65,7 @@
 .about-journey-layout .journey-list article:before{left:-34px;top:8px;background:#aebfca}
 .about-journey-layout .journey-list article.is-passed:before{background:var(--about-blue)}
 .about-journey-layout .journey-list article{cursor:default}.about-journey-layout .journey-list article>span,.about-journey-layout .journey-list article>div{opacity:.45;transition:opacity .35s ease}.about-journey-layout .journey-list article.is-passed>span,.about-journey-layout .journey-list article.is-passed>div{opacity:1}.about-journey-layout .journey-list article>span{color:var(--about-ink)}
-.leadership-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;margin-top:58px}.leadership-card{display:flex;min-height:0;overflow:hidden;flex-direction:column;border:1px solid #d8e1e7;border-radius:18px;background:#fff}.leadership-card figure{aspect-ratio:2116 / 2668;margin:0;background:#e8eef2}.leadership-card figure img{display:block;width:100%;height:auto;aspect-ratio:2116 / 2668;object-fit:contain}.leadership-card-copy{padding:22px}.leadership-card-copy .leadership-identity h3{margin:0;font-size:21px}.leadership-card-copy .leadership-identity p{margin:7px 0 0;color:var(--about-muted);font-size:12px}.leadership-card-copy blockquote{margin:22px 0 0;color:var(--about-muted);font-size:12px;line-height:1.8}@media(max-width:1100px){.leadership-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:800px){.leadership-grid{grid-template-columns:repeat(2,minmax(0,1fr));margin-top:38px}}@media(max-width:520px){.leadership-grid{grid-template-columns:1fr}}
+.leadership-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;margin-top:58px}.leadership-card{display:flex;min-height:0;overflow:hidden;flex-direction:column;border:0;border-radius:18px;background:#fff}.leadership-card figure{aspect-ratio:2116 / 2668;margin:0;border-radius:18px;overflow:hidden;background:#e8eef2}.leadership-card figure img{display:block;width:100%;height:auto;aspect-ratio:2116 / 2668;object-fit:contain}.leadership-card-copy{padding:22px}.leadership-card-copy .leadership-identity h3{margin:0;font-size:21px}.leadership-card-copy .leadership-identity p{margin:7px 0 0;color:var(--about-muted);font-size:12px}.leadership-card-copy blockquote{margin:22px 0 0;color:var(--about-muted);font-size:12px;line-height:1.8}@media(max-width:1100px){.leadership-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:800px){.leadership-grid{grid-template-columns:repeat(2,minmax(0,1fr));margin-top:38px}}@media(max-width:520px){.leadership-grid{grid-template-columns:1fr}}
 .about-journey-layout .journey-list i{right:0;top:5px}
 .about-journey-layout .journey-list article>div{margin:0;padding:0 34px 30px 0;border-bottom:1px solid var(--journey-line)}
 .about-journey-layout .journey-list h3{font-size:18px}

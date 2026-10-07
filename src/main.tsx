@@ -393,15 +393,20 @@ const mainMarkup = `
   </main>
 `;
 
+const footerGroups = mobileNavGroups.filter(([title]) => title !== 'Finloop AI');
+function footerGroupMarkup([title, path, items]: MobileNavGroup) {
+  return `<div class="footer-group"><h3>${title}</h3>${items.map(item => {
+    const href = title === '解决方案' ? `/solutions/${businessGoalSolutionItems.find(([, name]) => name === item)![0]}` : mobileItemHref(title, item, path);
+    return `<a href="${href}"${item === 'FinTaaS' || item === 'FinEAM' || item === '加入我们' ? ' target="_blank" rel="noopener noreferrer"' : ''}>${item}</a>`;
+  }).join('')}${title === '解决方案' ? '<a class="footer-ai-overview" href="/ai">Finloop AI 总览</a>' : ''}</div>`;
+}
+
 const footerMarkup = `
   <footer class="site-footer" id="footer">
     <div class="footer-top"><div class="footer-brand"><img src="/assets/finloop-logo.svg" alt="Finloop 星路科技" /></div><div class="footer-socials" aria-label="Social media"><span class="footer-social-logo footer-social-x" role="img" aria-label="X (Twitter)">𝕏</span><span class="footer-social-logo footer-social-linkedin" role="img" aria-label="LinkedIn">in</span></div></div>
     <div class="footer-content">
     <div class="footer-contact"><div><i data-lucide="map-pin" aria-hidden="true"></i><span>香港总部：香港中环花园道 3 号冠君大厦 21 楼 2101-2105 室</span></div><div><i data-lucide="mail" aria-hidden="true"></i><a href="mailto:CS@finloop.hk">CS@finloop.hk</a></div><div><i data-lucide="phone" aria-hidden="true"></i><a href="tel:+85230088996">(852) 3008 8996</a></div></div>
-    <div class="footer-directory">${mobileNavGroups.map(([title, path, items]) => `<div><h3>${title}</h3>${items.map(item => {
-      const href = title === '解决方案' ? `/solutions/${businessGoalSolutionItems.find(([, name]) => name === item)![0]}` : mobileItemHref(title, item, path);
-      return `<a href="${href}"${item === 'FinTaaS' || item === 'FinEAM' || item === '加入我们' ? ' target="_blank" rel="noopener noreferrer"' : ''}>${item}</a>`;
-    }).join('')}</div>`).join('')}</div>
+    <div class="footer-directory">${footerGroups.slice(0, 3).map(footerGroupMarkup).join('')}<div class="footer-stacked-groups">${footerGroups.slice(3).map(footerGroupMarkup).join('')}</div></div>
     </div>
     <div class="footer-legal"><span>© 2026 Finloop Finance Technology Holding Limited</span><nav aria-label="法律信息"><a href="#footer">隐私政策</a><a href="#footer">使用条款</a><a href="#footer">Cookie Policy</a><a href="#footer">金融免责声明</a><a href="#footer">监管声明</a></nav></div>
   </footer>
