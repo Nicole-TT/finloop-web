@@ -3,8 +3,14 @@ body .site-header.site-header {
   z-index: 2201;
 }
 
-/* Backdrop must also cover sticky cards and the floating assistant. */
+/* Cover page content while leaving the open AI sidebar unobscured. */
 body .mega-backdrop {
   inset: 0;
   z-index: 2200;
+}
+
+@media (min-width: 901px) {
+  body.assistant-sidebar-open .mega-backdrop {
+    right: var(--assistant-sidebar-width);
+  }
 }

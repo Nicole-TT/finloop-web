@@ -80,7 +80,7 @@ export function ParticleWord() {
       ink.drawImage(logo, (width - logoWidth) / 2, (height - logoHeight) / 2, logoWidth, logoHeight);
       const pixels = ink.getImageData(0, 0, mask.width, mask.height).data;
       ink.globalCompositeOperation = 'source-in';
-      ink.fillStyle = '#f0f1f3';
+      ink.fillStyle = 'rgba(240, 241, 243, 0.4)';
       ink.fillRect(0, 0, mask.width, mask.height);
       logoFill = mask;
       particles = [];

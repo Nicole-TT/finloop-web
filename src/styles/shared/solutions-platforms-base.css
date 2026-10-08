@@ -273,7 +273,7 @@
   margin: auto;
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
-  gap: 16px;
+  gap: 32px;
 }
 
 .platform-card {
@@ -291,10 +291,9 @@
 }
 
 @media (min-width: 861px) {
-  .platform-card { min-height: 360px; }
+  .platform-card { min-height: 0; }
   .platform-card:nth-child(-n+2) {
     grid-column: span 6;
-    min-height: 480px;
   }
 }
 
@@ -682,7 +681,7 @@
 
 .why-grid article {
   display: flex;
-  min-height: 380px;
+  min-height: 0;
   padding: 0;
   flex-direction: column;
   grid-column: span 3;
@@ -692,7 +691,7 @@
   overflow: hidden;
 }
 
-.why-copy { margin-top: auto; padding: 24px 28px 28px; }
+.why-copy { margin-top: 0; padding: 20px 28px 28px; }
 
 .why-grid h3 {
   margin: 0 0 10px;

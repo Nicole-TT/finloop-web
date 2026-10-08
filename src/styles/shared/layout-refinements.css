@@ -774,7 +774,7 @@ body:has(.hero) .site-header:not(.scrolled):not(.menu-open) .nav-link[aria-expan
     min-height: 0;
   }
 
-  .platform-directory { gap: 12px; }
+  .platform-directory { gap: 20px; }
 
   .platform-card,
   .platform-featured {

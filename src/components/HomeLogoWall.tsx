@@ -7,7 +7,7 @@ const logos = [
   ['fomopay.png', 'FOMO Pay'], ['1exchange.png', '1EXCHANGE'], ['exio.png', 'EX.IO'], ['bifu.png', 'BiFu'],
   ['chinaamc.png', '华夏基金（香港）'], ['osl.png', 'OSL'], ['bybit.png', 'BYBIT'], ['conflux.png', 'CONFLUX'],
   ['cicc.png', '中金财富'], ['capbridge.png', 'CAPBRIDGE'], ['marketnode.png', 'MARKETNODE'],
-  ['tiger-research.png', 'TIGER RESEARCH'], ['energy.png', '能科 ENERGY'], ['lotus.png', 'LOTUS'],
+  ['Anchorpoint.png', 'Anchorpoint'], ['energy.png', '能科 ENERGY'], ['lotus.png', 'LOTUS'],
   ['vobile.png', 'Vobile'],
 ];
 
@@ -68,6 +68,11 @@ export function HomeLogoWall() {
           </AnimatePresence>
         </li>))}
       </ul>
+      <div className="home-hsbc-banner">
+        <img className="home-hsbc-ribbon" src="/assets/home-figma/hsbc-ribbon.png" alt="" loading="lazy" />
+        <p>{t('获得汇丰战略投资')}</p>
+        <img className="home-hsbc-logo" src="/assets/home-figma/hsbc-strategic-logo.svg" alt="HSBC 汇丰" loading="lazy" />
+      </div>
     </div>
   </section>;
 }

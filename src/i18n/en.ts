@@ -1,5 +1,6 @@
 // Shared and homepage English copy. Chinese source text is the lookup key.
 export const en: Record<string, string> = {
+  "获得汇丰战略投资": "Welcomed HSBC as One of the Strategic Investors",
   "星路科技正式启航": "Finloop Begins Operations",
   "与多家香港头部机构签约，开启财富科技业务。": "Signed agreements with leading Hong Kong institutions to launch its wealth technology business.",
   "主办财富管理高峰论坛": "Hosting the Wealth Management Summit",
@@ -189,9 +190,9 @@ export const en: Record<string, string> = {
   "覆盖业务应用、FinOne 财富核心与 FinMix 交易基础设施。": "Spanning business applications, the FinOne wealth core and FinMix trading infrastructure.",
   "灵活部署与开放连接能力": "Flexible Deployment & Open Connectivity",
   "通过平台与 API 连接机构现有系统、产品网络和数字资产生态。": "Connect existing institutional systems, product networks and digital asset ecosystems through platforms and APIs.",
-  "金融级合规、安全和稳定性": "Compliance, Security & Stability",
+  "金融级安全合规": "Financial-Grade Security",
   "围绕机构业务要求，支持权限、治理与稳定的业务运营。": "Support access controls, governance and stable operations around institutional requirements.",
-  "Web2、Web3 与 AI 的组合能力": "Web2, Web3 & AI Working Together",
+  "Web2 · Web3 · AI": "Web2 · Web3 · AI",
   "连接传统财富、数字资产与进入真实金融工作流的 AI 能力。": "Connect traditional wealth, digital assets and AI within real financial workflows.",
   "从真实项目，看见财富科技如何落地": "They all trust us",
   "连接金融机构、数字资产与企业业务场景，以专业技术和持续服务推动财富科技融入真实业务流程。": "Connect financial institutions, digital assets and enterprise use cases through technology and ongoing service.",
@@ -210,7 +211,7 @@ export const en: Record<string, string> = {
   "合规持牌，市场认可": "Licensed Foundations. Industry Recognition.",
   "为机构财富、投资交易与相关金融服务提供合规基础支持，并持续获得香港政府及行业机构的市场认可。": "Supporting the regulatory foundations of institutional wealth, investment transactions and related financial services, with recognition from Hong Kong government and industry organizations.",
   "持牌金融体系": "Licensed Financial Institutions",
-  "依托复星财富控股旗下持牌金融机构体系，覆盖 1、2、4、6、9 号牌相关金融业务基础。": "Supported by licensed financial institutions under Fosun Wealth Holdings, covering activities related to Type 1, 2, 4, 6 and 9 licences.",
+  "星路金融持有香港证监会第 1、4、9 类牌照，涵盖证券交易、就证券提供意见及资产管理业务。": "Finloop Finance holds Type 1, 4 and 9 licences from the Hong Kong SFC, covering dealing in securities, advising on securities and asset management.",
   "机构级合规支持": "Institutional Compliance Support",
   "围绕机构财富、投资交易与相关金融服务，连接产品、交易与运营流程。": "Connect products, trading and operations across institutional wealth, investment transactions and related services.",
   "政府与行业认可": "Government & Industry Recognition",

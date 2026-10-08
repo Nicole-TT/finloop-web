@@ -1,3 +1,5 @@
+import { homeInsightMarkup, initHomeInsights } from './components/HomeInsight';
+import { capabilityIllustrations } from './components/CapabilityIllustrations';
 import { isEnglish, t, localePrefix, languageMenu, translateNode } from './i18n';
 import { HomeLogoWall } from './components/HomeLogoWall';
 import { animate } from 'motion';
@@ -323,11 +325,11 @@ const mainMarkup = `
     <section class="architecture section-pad" id="architecture">
       <div class="architecture-top"><div><h2>选择适合业务场景的金融平台</h2></div><p>从财富核心、机构工作台和企业资金管理，到数字资产、AI 与交易基础设施，进入对应平台了解产品定位与能力范围。</p></div>
       <div class="platform-directory" aria-label="Finloop 金融平台入口">
-        <a class="platform-card" href="/products/finone"><div><h3>FinOne</h3><p>为财富业务构建持久的核心能力，从容应对变化，持续拓展增长空间。</p></div><span>了解详情 <i data-lucide="arrow-right"></i></span></a>
-        <a class="platform-card" href="https://fineam.com.hk/" target="_blank" rel="noopener noreferrer"><div><h3>FinEAM</h3><p>让专业成就信任，让财富服务承载更长远的客户价值。</p></div><span>了解详情 <i data-lucide="arrow-right"></i></span></a>
-        <a class="platform-card" href="/products/xingqitong"><div><h3>星企通</h3><p>让企业资金更好地服务经营，为稳健发展增添从容与主动。</p></div><span>了解详情 <i data-lucide="arrow-right"></i></span></a>
-        <a class="platform-card" href="/products/web-portal"><div><h3>Web Portal</h3><p>连接市场机遇与专业行动，让机构交易更从容、更有掌控。</p></div><span>了解详情 <i data-lucide="arrow-right"></i></span></a>
-        <a class="platform-card" href="https://finlooprwa.com/fintaas/" target="_blank" rel="noopener noreferrer"><div><h3>FinTaaS</h3><p>拓展真实资产的数字价值，让传统金融与新兴生态产生更多可能。</p></div><span>了解详情 <i data-lucide="arrow-right"></i></span></a>
+        <a class="platform-card platform-card-finterprise platform-card-dark" href="/products/xingqitong"><div><h3>星企通</h3><p>让企业资金更好地服务经营，为稳健发展增添从容与主动。</p></div><span class="platform-card-arrow" aria-hidden="true"><i data-lucide="arrow-right"></i></span></a>
+        <a class="platform-card platform-card-fineam" href="https://fineam.com.hk/" target="_blank" rel="noopener noreferrer"><div><h3>FinEAM</h3><p>让专业成就信任，让财富服务承载更长远的客户价值。</p></div><span class="platform-card-arrow" aria-hidden="true"><i data-lucide="arrow-right"></i></span></a>
+        <a class="platform-card platform-card-finone" href="/products/finone"><div><h3>FinOne</h3><p>为财富业务构建持久的核心能力，从容应对变化，持续拓展增长空间。</p></div><span class="platform-card-arrow" aria-hidden="true"><i data-lucide="arrow-right"></i></span></a>
+        <a class="platform-card platform-card-webportal" href="/products/web-portal"><div><h3>Web Portal</h3><p>连接市场机遇与专业行动，让机构交易更从容、更有掌控。</p></div><span class="platform-card-arrow" aria-hidden="true"><i data-lucide="arrow-right"></i></span></a>
+        <a class="platform-card platform-card-fintaas platform-card-dark" href="https://finlooprwa.com/fintaas/" target="_blank" rel="noopener noreferrer"><div><h3>FinTaaS</h3><p>拓展真实资产的数字价值，让传统金融与新兴生态产生更多可能。</p></div><span class="platform-card-arrow" aria-hidden="true"><i data-lucide="arrow-right"></i></span></a>
       </div>
     </section>
 
@@ -341,7 +343,10 @@ const mainMarkup = `
             ['xinglutong', '星路通', '拓宽专业洞察的边界，让每一次判断与服务更有深度。'],
             ['fai', 'FinWork', '让个体智慧汇聚为组织能力，释放人机协作的长期价值。'],
             ['xingzhitong', '星智通', '企业人工智能应用基座，让 AI 的可能性不断延伸。'],
-          ].map(([slug, name, copy], index) => `<a class="home-ai-card" href="/ai/${slug}"><h3>${name}</h3><p>${copy}</p><img class="home-ai-card-glow" src="/assets/home-figma/ai-card-glow.svg" alt="" /><span class="home-ai-card-arrow" aria-hidden="true"><img src="/assets/home-figma/ai-arrow.svg" alt="" /></span>${index === 1 ? `<div class="home-ai-agents" aria-hidden="true">${Array.from({length:4}, () => '<span>Agent</span>').join('')}</div>` : index === 2 ? '<img class="home-ai-network" src="/assets/home-figma/ai-network.png" alt="" />' : ''}</a>`).join('')}
+          ].map(([slug, name, copy], index) => `<${index === 1 ? 'article' : 'a'} class="home-ai-card"${index === 1 ? '' : ` href="/ai/${slug}"`}><h3>${name}</h3><p>${copy}</p><img class="home-ai-card-glow" src="/assets/home-figma/ai-card-glow.svg" alt="" /><span class="home-ai-card-arrow" aria-hidden="true"><img src="/assets/home-figma/ai-arrow.svg" alt="" /></span><div class="home-ai-visual">${index === 1 ? `<div class="home-finwork-preview" aria-hidden="true"><div class="home-finwork-toolbar"><img src="/assets/home-figma/finwork/window-left.svg" alt="" /><span></span><img src="/assets/home-figma/finwork/window-right.svg" alt="" /></div><div class="home-finwork-body"><div class="home-finwork-sidebar">${Array.from({length:4}, () => '<span></span>').join('')}</div><div class="home-finwork-grid">${[['agents','Agents'],['knowledge','Knowledge'],['workflows','Workflows'],['documents','Documents'],['analytics','Analytics'],['automation','Automation'],['integration','Intergrations'],['collaboration','Collaboration'],['more','']].map(([icon,label]) => `<div class="home-finwork-tile"><div class="home-finwork-icon">${icon === 'agents' ? '<img class="home-finwork-under" src="/assets/home-figma/finwork/agents-under.svg" alt="" />' : icon === 'knowledge' ? '<span class="home-finwork-book"></span>' : ''}${icon === 'more' ? '<img class="home-finwork-under" src="/assets/home-figma/finwork/more-under.svg" alt="" /><div class="home-finwork-dots">'+Array.from({length:3},()=>'<img src="/assets/home-figma/finwork/dot.svg" alt="" />').join('')+'</div>' : `<img src="/assets/home-figma/finwork/${icon}.svg" alt="" />`}</div>${label ? `<span>${label}</span>` : ''}</div>`).join('')}</div></div></div>` : index === 2 ? `<div class="home-ai-models" aria-hidden="true">${[
+            ['chatGPT', 'Gemini', 'claude', 'deepseek', 'Qwen', 'Moonshot', 'MINIMAX'],
+            ['GLM', 'Seedance', 'Kling', 'Bge', 'Gork', 'xAI', 'xiaomi'],
+          ].map(logos => `<div class="home-ai-model-track">${[0, 1].map(() => `<div class="home-ai-model-group">${logos.map(logo => `<img src="/assets/ai_modal/${logo}.png" alt="" width="60" height="60" loading="lazy" />`).join('')}</div>`).join('')}</div>`).join('')}</div>` : homeInsightMarkup}</div></${index === 1 ? 'article' : 'a'}>`).join('')}
         </div>
       </div>
     </section>
@@ -349,10 +354,10 @@ const mainMarkup = `
     <section class="why section-pad" id="why">
       <div class="section-heading editorial-heading"><h2>不止提供软件，更连接真实金融业务</h2><p>Finloop 以金融业务和产品能力为基础，连接业务应用、财富核心、交易基础设施、数字资产与 AI。</p></div>
       <div class="why-grid">
-        <article><div class="why-visual why-visual-products" aria-hidden="true"><span></span><span></span><span></span><span></span></div><div class="why-copy"><h3>金融业务和产品能力</h3><p>连接传统财富产品、机构交易与业务运营流程。</p></div></article>
-        <article><div class="why-visual why-visual-connect" aria-hidden="true"><span></span><span></span><span></span><span></span></div><div class="why-copy"><h3>灵活部署与开放连接能力</h3><p>通过平台与 API 连接机构现有系统、产品网络和数字资产生态。</p></div></article>
-        <article><div class="why-visual why-visual-security" aria-hidden="true"><span></span><span></span><span></span></div><div class="why-copy"><h3>金融级合规、安全和稳定性</h3><p>围绕机构业务要求，支持权限、治理与稳定的业务运营。</p></div></article>
-        <article><div class="why-visual why-visual-ai" aria-hidden="true"><span></span><span></span><span></span><span></span></div><div class="why-copy"><h3>Web2、Web3 与 AI 的组合能力</h3><p>连接传统财富、数字资产与进入真实金融工作流的 AI 能力。</p></div></article>
+        <article>${capabilityIllustrations[0]}<div class="why-copy"><h3>金融业务和产品能力</h3><p>连接传统财富产品、机构交易与业务运营流程。</p></div></article>
+        <article>${capabilityIllustrations[1]}<div class="why-copy"><h3>灵活部署与开放连接能力</h3><p>通过平台与 API 连接机构现有系统、产品网络和数字资产生态。</p></div></article>
+        <article>${capabilityIllustrations[2]}<div class="why-copy"><h3>金融级安全合规</h3><p>围绕机构业务要求，支持权限、治理与稳定的业务运营。</p></div></article>
+        <article>${capabilityIllustrations[3]}<div class="why-copy"><h3>Web2 · Web3 · AI</h3><p>连接传统财富、数字资产与进入真实金融工作流的 AI 能力。</p></div></article>
       </div>
     </section>
 
@@ -360,7 +365,7 @@ const mainMarkup = `
       <div class="section-inner trust-layout">
         <div class="trust-title"><h2>合规持牌，市场认可</h2><p>为机构财富、投资交易与相关金融服务提供合规基础支持，并持续获得香港政府及行业机构的市场认可。</p></div>
         <div class="trust-pillars">
-          <article><i data-lucide="landmark" aria-hidden="true"></i><h3>持牌金融体系</h3><p>依托复星财富控股旗下持牌金融机构体系，覆盖 1、2、4、6、9 号牌相关金融业务基础。</p></article>
+          <article><i data-lucide="landmark" aria-hidden="true"></i><h3>持牌金融体系</h3><p>星路金融持有香港证监会第 1、4、9 类牌照，涵盖证券交易、就证券提供意见及资产管理业务。</p></article>
           <article><i data-lucide="shield-check" aria-hidden="true"></i><h3>机构级合规支持</h3><p>围绕机构财富、投资交易与相关金融服务，连接产品、交易与运营流程。</p></article>
           <article><i data-lucide="award" aria-hidden="true"></i><h3>政府与行业认可</h3><p>获得 OASES、香港数码港及多项金融科技与专业投资奖项认可。</p></article>
         </div>
@@ -531,6 +536,21 @@ function initializePage() {
     header.classList.remove('menu-theme-release');
   }
 
+  function closeMegaImmediately() {
+    cancelMegaClose();
+    ++menuSwitchId;
+    stopMenuAnimations();
+    activeMenu = null;
+    activePanel = null;
+    triggers.forEach(trigger => trigger.setAttribute('aria-expanded', 'false'));
+    header.classList.remove('menu-open', 'menu-theme-release');
+    megaBackdrop.classList.remove('visible');
+    megaBackdrop.style.opacity = '0';
+    (megaShell as HTMLElement).style.height = '0px';
+    megaShell.setAttribute('aria-hidden', 'true');
+    megaPanels.forEach(panel => panel.classList.remove('active'));
+  }
+
   async function closeMega() {
     if (!header.classList.contains('menu-open')) return;
     cancelMegaClose();
@@ -622,6 +642,7 @@ function initializePage() {
     link.addEventListener('click', () => closeMega());
   });
   megaLinks.forEach(link => link.addEventListener('click', () => closeMega()));
+  header.querySelector('.brand')?.addEventListener('click', closeMegaImmediately, { capture: true });
 
   triggers.forEach(trigger => {
     if (supportsHover) {
@@ -662,7 +683,59 @@ function initializePage() {
     if (entry.isIntersecting) { entry.target.classList.add('in-view'); observer.unobserve(entry.target); }
   }), { threshold: 0.12 });
 
+  const capabilityObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => entry.target.classList.toggle('is-running', entry.isIntersecting));
+  }, { threshold: 0.05 });
+
+  const finworkTimers = new WeakMap<Element, number>();
+  const finworkPrevious = new WeakMap<Element, number>();
+  const finworkObserver = new IntersectionObserver(entries => entries.forEach(entry => {
+    const grid = entry.target;
+    window.clearTimeout(finworkTimers.get(grid));
+    const tiles = Array.from(grid.querySelectorAll<HTMLElement>('.home-finwork-tile'));
+    if (!entry.isIntersecting) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      tiles.forEach((tile, index) => tile.classList.toggle('is-lit', index === 0));
+      return;
+    }
+    const illuminate = () => {
+      if (!grid.isConnected) return;
+      const previous = finworkPrevious.get(grid) ?? -1;
+      const candidates = tiles.map((_, index) => index).filter(index => index !== previous);
+      const next = candidates[Math.floor(Math.random() * candidates.length)];
+      tiles.forEach((tile, index) => tile.classList.toggle('is-lit', index === next));
+      finworkPrevious.set(grid, next);
+      finworkTimers.set(grid, window.setTimeout(() => {
+        tiles[next].classList.remove('is-lit');
+        finworkTimers.set(grid, window.setTimeout(illuminate, 1400));
+      }, 3000));
+    };
+    tiles.forEach(tile => tile.classList.remove('is-lit'));
+    finworkTimers.set(grid, window.setTimeout(illuminate, 1400));
+  }), { threshold: 0.1 });
+
   function observePageSections() {
+    initHomeInsights();
+    document.querySelectorAll<HTMLElement>('.home-ai-visual:not([data-sized])').forEach(region => {
+      region.dataset.sized = 'true';
+      const artwork = region.firstElementChild as HTMLElement;
+      const isWork = artwork.classList.contains('home-finwork-preview');
+      const width = isWork ? 412 : 442;
+      const height = isWork ? 261 : 232;
+      const resize = new ResizeObserver(() => {
+        if (!region.isConnected) { resize.disconnect(); return; }
+        region.style.setProperty('--art-scale', String(Math.min(region.clientWidth / width, region.clientHeight / height)));
+      });
+      resize.observe(region);
+    });
+    document.querySelectorAll('.home-finwork-grid:not([data-highlight-observed])').forEach(grid => {
+      grid.setAttribute('data-highlight-observed', 'true');
+      finworkObserver.observe(grid);
+    });
+    document.querySelectorAll('.capability-motion:not([data-motion-observed])').forEach(element => {
+      element.setAttribute('data-motion-observed', 'true');
+      capabilityObserver.observe(element);
+    });
     refreshPageIcons();
     const home = document.querySelector('.hero-scroll-scene');
     if (home) {
@@ -674,7 +747,8 @@ function initializePage() {
         elements.forEach((element, index) => {
           if (element.classList.contains('home-reveal-item')) return;
           element.classList.add('home-reveal-item');
-          element.style.setProperty('--reveal-delay', `${Math.min(index % 5, 3) * 70}ms`);
+          const delay = element.classList.contains('home-ai-card') ? Array.from(element.parentElement!.children).indexOf(element) * 120 : Math.min(index % 5, 3) * 70;
+          element.style.setProperty('--reveal-delay', `${delay}ms`);
           observer.observe(element);
         });
       });
